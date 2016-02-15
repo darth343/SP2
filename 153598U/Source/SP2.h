@@ -24,7 +24,14 @@ class SP2 : public Scene
 		GEO_FRONT,
 		GEO_BACK,
 		GEO_GROUND,
-
+		GEO_TIMEDISPLAY,
+		GEO_TIME,
+		GEO_FUEL1,
+		GEO_FUEL2,
+		GEO_FUEL3,
+		GEO_FUEL4,
+		GEO_FUEL5,
+		GEO_JETPACKUI,
 		GEO_MODEL1,
 
 		GEO_TEXT,
@@ -80,6 +87,7 @@ private:
 	void RenderSkybox(Vector3 position);
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
+	void RenderOBJonScreen(Mesh* mesh, float sizex, float sizey, float x, float y);
 	void Movement(double dt);
 	Mesh* Interaction(double dt);
 
@@ -96,6 +104,10 @@ private:
 	Light light[4];
 	Mesh * object;
 	float trans = 0;
+	string timeDisplay="Time : ";
+	float time=0;
+	int fuel = 100;
+	string jetfuelDisplay = "Jet Fuel: ";
 };
 
 #endif
