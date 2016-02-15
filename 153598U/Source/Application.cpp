@@ -79,7 +79,7 @@ void Application::Init()
 
 	//Create a window and create its OpenGL context
 	//m_window = glfwCreateWindow(800, 600, "Computer Graphics", glfwGetPrimaryMonitor(), NULL);
-	m_window = glfwCreateWindow(800, 600, "Computer Graphics", NULL, NULL);
+	m_window = glfwCreateWindow(800, 600, "SP2 Team 1 [ LOLICONS ]", NULL, NULL);
 	glfwSetWindowSizeCallback(m_window, resize_callback);
 	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPos(m_window, 800 / 2, 600 / 2);
@@ -115,7 +115,7 @@ void Application::Init()
 void Application::Run()
 {
 	//Main Loop
-	Scene *scene = new Assignment3();
+	Scene *scene = new SP2();
 	scene->Init();
 
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame

@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Assignment3.h"
+#include "SP2.h"
 
 using std::cout;
 using std::endl;
