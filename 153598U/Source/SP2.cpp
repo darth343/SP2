@@ -157,6 +157,7 @@ void SP2::Update(double dt)
 	if (Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
 
+	cout << "JEFF IS A FAGGOT" << endl;
 	camera.Update(dt);
 
 	Movement(dt);
@@ -511,7 +512,6 @@ void SP2::RenderMesh(Mesh * mesh, bool enableLight)
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
-
 void SP2::RenderSkybox(Vector3 position)
 {
 	float SkyScale = 500.f;
@@ -691,29 +691,30 @@ void SP2::Render()
 	//Skybox
 	RenderSkybox(camera.position);
 
-	if (object)
-	{
-		object->light = false;
-	}
-	else
-	{
-		for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
-		{
-			meshList[i]->light = true;
-		}
-	}
-
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_MODEL1]->position.x, meshList[GEO_MODEL1]->position.y, meshList[GEO_MODEL1]->position.z);
-	RenderMesh(meshList[GEO_MODEL1], meshList[GEO_MODEL1]->light);
-	modelStack.PopMatrix();
-
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//Ground
+	//if (object)
+	//{
+	//	object->light = false;
+	//}
+	//else
+	//{
+	//	for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+	//	{
+	//		meshList[i]->light = true;
+	//	}
+	//}
 	modelStack.PushMatrix();
 	modelStack.Scale(1000, 1000, 1000);
 	RenderMesh(meshList[GEO_GROUND], true);
 	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_MODEL1]->position.x, meshList[GEO_MODEL1]->position.y, meshList[GEO_MODEL1]->position.z);
+	RenderMesh(meshList[GEO_MODEL1], true);
+	modelStack.PopMatrix();
+
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//Ground
+
 
 }
 

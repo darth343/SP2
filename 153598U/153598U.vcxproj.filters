@@ -104,6 +104,9 @@
     <ClInclude Include="Source\SP2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Pathfinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\SimpleFragmentShader.fragmentshader">
