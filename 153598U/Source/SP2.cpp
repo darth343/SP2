@@ -118,26 +118,45 @@ void SP2::Init()
 
 	//SKY
 	meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1));
-	meshList[GEO_FRONT]->textureID = LoadTGA("Image//seaback.tga");
+	meshList[GEO_FRONT]->textureID = LoadTGA("Image//pink_planet_neg_x.tga");
 	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1));
-	meshList[GEO_BACK]->textureID = LoadTGA("Image//seafront.tga");
+	meshList[GEO_BACK]->textureID = LoadTGA("Image//pink_planet_pos_x.tga");
 	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1));
-	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//searight.tga");
+	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//pink_planet_pos_y.tga");
 	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1));
-	meshList[GEO_LEFT]->textureID = LoadTGA("Image//sealeft.tga");
+	meshList[GEO_LEFT]->textureID = LoadTGA("Image//pink_planet_neg_y.tga");
 	meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1));
-	meshList[GEO_TOP]->textureID = LoadTGA("Image//seaup.tga");
+	meshList[GEO_TOP]->textureID = LoadTGA("Image//pink_planet_pos_z.tga");
 	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1));
-	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//seadown.tga");
+	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//pink_planet_neg_z.tga");
 
 	//GROUND
 	meshList[GEO_GROUND] = MeshBuilder::GenerateGround("ground", Color(0.2, 0.2, 0.2));
 	meshList[GEO_GROUND]->textureID = LoadTGA("Image//sand.tga");
 
+	//Arun's Wall
 	meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("Model 1", "OBJ//wall.obj");
 	meshList[GEO_MODEL1]->position.Set(10, 0, 10);
 	meshList[GEO_MODEL1]->textureID = LoadTGA("Image//wallleft.tga");
 	meshList[GEO_MODEL1]->interactable = true;
+
+	//Map(FreeRun)
+
+	//Blocks
+	meshList[GEO_SP2_MODELBLOCK] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
+	meshList[GEO_SP2_MODELBLOCK]->position.Set(5, 3, 5);
+	meshList[GEO_SP2_MODELBLOCK]->interactable = true;
+
+	//Wall(Thin)
+	meshList[GEO_SP2_MODELWALLTHIN] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin).obj");
+	meshList[GEO_SP2_MODELWALLTHIN]->position.Set(-5, 3, -5);
+	meshList[GEO_SP2_MODELWALLTHIN]->interactable = true;
+
+	//Wall(Thick)
+	meshList[GEO_SP2_MODELWALLTHICK] = MeshBuilder::GenerateOBJ("Wall(Thick)", "OBJ//Wall(Thick).obj");
+	meshList[GEO_SP2_MODELWALLTHICK]->position.Set(-10, 3, -10);
+	meshList[GEO_SP2_MODELWALLTHICK]->interactable = true;
+
 
 		
 	// Enable blendings
@@ -703,9 +722,28 @@ void SP2::Render()
 		}
 	}
 
+	//Arun's Wall
 	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_MODEL1]->position.x, meshList[GEO_MODEL1]->position.y, meshList[GEO_MODEL1]->position.z);
 	RenderMesh(meshList[GEO_MODEL1], meshList[GEO_MODEL1]->light);
+	modelStack.PopMatrix();
+
+	//Block
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_SP2_MODELBLOCK]->position.x, meshList[GEO_SP2_MODELBLOCK]->position.y, meshList[GEO_SP2_MODELBLOCK]->position.z);
+	RenderMesh(meshList[GEO_SP2_MODELBLOCK], meshList[GEO_SP2_MODELBLOCK]->light);
+	modelStack.PopMatrix();
+
+	//Wall(Thin)
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_SP2_MODELWALLTHIN]->position.x, meshList[GEO_SP2_MODELWALLTHIN]->position.y, meshList[GEO_SP2_MODELWALLTHIN]->position.z);
+	RenderMesh(meshList[GEO_SP2_MODELWALLTHIN], meshList[GEO_SP2_MODELWALLTHIN]->light);
+	modelStack.PopMatrix();
+
+	//Wall(Thick)
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_SP2_MODELWALLTHICK]->position.x, meshList[GEO_SP2_MODELWALLTHICK]->position.y, meshList[GEO_SP2_MODELWALLTHICK]->position.z);
+	RenderMesh(meshList[GEO_SP2_MODELWALLTHICK], meshList[GEO_SP2_MODELWALLTHICK]->light);
 	modelStack.PopMatrix();
 
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
