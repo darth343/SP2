@@ -12,7 +12,6 @@
 #include <Vector>
 using std::vector;
 using std::string;
-using std::map;
 class SP2 : public Scene
 {
 	struct TestBullet
@@ -47,6 +46,112 @@ class SP2 : public Scene
 		//GEO_SP2_MODELBLOCK,
 		//GEO_SP2_MODELWALLTHIN,
 		//GEO_SP2_MODELWALLTHICK,
+		GEO_STARTLINE,
+		//GEO_TIMEDISPLAY,
+		//GEO_TIME,
+		//GEO_FUEL1,
+		//GEO_FUEL2,
+		//GEO_FUEL3,
+		//GEO_FUEL4,
+		//GEO_FUEL5,
+		//GEO_JETPACKUI,
+
+		//Walls
+		GEO_LEFTWALL1,
+		GEO_RIGHTWALL1,
+		GEO_LEFTWALL2,
+		GEO_RIGHTWALL2,
+		GEO_LEFTWALL3,
+		GEO_RIGHTWALL3,
+		GEO_LEFTWALL4,
+		GEO_RIGHTWALL4,
+		GEO_LEFTWALL5,
+		GEO_RIGHTWALL5,
+		GEO_LEFTWALL6,
+		GEO_RIGHTWALL6,
+		GEO_LEFTWALL7,
+		GEO_RIGHTWALL7,
+		GEO_LEFTWALL8,
+		GEO_RIGHTWALL8,
+		GEO_LEFTWALL9,
+		GEO_RIGHTWALL9,
+		GEO_LEFTWALL10,
+		GEO_RIGHTWALL10,
+		GEO_LEFTWALL11,
+		GEO_RIGHTWALL11,
+		GEO_LEFTWALL12,
+		GEO_RIGHTWALL12,
+		GEO_LEFTWALL13,
+		GEO_RIGHTWALL13,
+		GEO_LEFTWALL14,
+		GEO_RIGHTWALL14,
+		GEO_LEFTWALL15,
+		GEO_RIGHTWALL15,
+		GEO_LEFTWALL16,
+		GEO_RIGHTWALL16,
+		GEO_LEFTWALL17,
+		GEO_RIGHTWALL17,
+		GEO_LEFTWALL18,
+		GEO_RIGHTWALL18,
+		GEO_LEFTWALL19,
+		GEO_RIGHTWALL19,
+		GEO_LEFTWALL20,
+		GEO_RIGHTWALL20,
+		GEO_LEFTWALL21,
+		GEO_RIGHTWALL21,
+		GEO_LEFTWALL22,
+		GEO_RIGHTWALL22,
+		GEO_LEFTWALL23,
+		GEO_RIGHTWALL23,
+		GEO_LEFTWALL24,
+		GEO_RIGHTWALL24,
+		GEO_LEFTWALL25,
+		GEO_RIGHTWALL25,
+		GEO_LEFTWALL26,
+		GEO_RIGHTWALL26,
+		GEO_LEFTWALL27,
+		GEO_RIGHTWALL27,
+		GEO_LEFTWALL28,
+		GEO_RIGHTWALL28,
+		GEO_LEFTWALL29,
+		GEO_RIGHTWALL29,
+		//WallEnd
+
+		//Blocks
+		GEO_BLOCK1,
+		GEO_BLOCK2,
+		GEO_BLOCK3,
+		GEO_BLOCK4,
+		GEO_BLOCK5,
+		GEO_BLOCK6,
+		GEO_BLOCK7,
+		GEO_BLOCK8,
+		GEO_BLOCK9,
+		GEO_BLOCK10,
+		//BlocksEnd
+
+		//Wall(Thin)
+		GEO_THIN1,
+		GEO_THIN2,
+		GEO_THIN3,
+		//Wall(Thin)End
+
+		//Wall(Thin)2
+		GEO_THINz1,
+		GEO_THINz2,
+		GEO_THINz3,
+		GEO_THINz4,
+		GEO_THINz5,
+		GEO_THINz6,
+		GEO_THINz7,
+		GEO_THINz8,
+		GEO_THINz9,
+		//Wall(Thin)2End
+
+		//Wall(Thick)
+		GEO_THICK1,
+		GEO_THICK2,
+		//Wall(Thick)End
 		GEO_TEXT,
 
 		NUM_GEOMETRY,
@@ -102,6 +207,7 @@ private:
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderOBJonScreen(Mesh* mesh, float sizex, float sizey, float x, float y);
 	void Movement(double dt);
+	void CharacMovement(double dt);
 	Mesh* Interaction(double dt);
 	Mesh* Shooting(double dt);
 
@@ -113,6 +219,7 @@ private:
 	TestBullet temp;
 	TestBullet tempMag;
 	vector<TestBullet> bullets;
+	float gravity = 10;
 	float rotateAngle;
 	float fps;
 	Camera5 camera;
@@ -128,7 +235,6 @@ private:
 	float time = 0;
 	float delay = 0;
 	int fuel = 100;
-	//string timeString;
 	string jetfuelDisplay = "Jet Fuel: ";
 	bool shot=false ; // when object get shot
 	bool objectDied = false;//when object is dead
