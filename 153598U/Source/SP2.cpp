@@ -129,7 +129,7 @@ void SP2::Init()
 	meshList[GEO_TOP]->textureID = LoadTGA("Image//pink_planet_pos_z.tga");
 	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1));
 	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//pink_planet_neg_z.tga");
-
+	meshList[GEO_BULLET] = MeshBuilder::GenerateCube("bullet", Color(1, 1, 1));
 	//GROUND
 	meshList[GEO_GROUND] = MeshBuilder::GenerateGround("ground", Color(0.2, 0.2, 0.2));
 	meshList[GEO_GROUND]->textureID = LoadTGA("Image//sand.tga");
@@ -151,7 +151,7 @@ void SP2::Init()
 	meshList[GEO_STARTLINE] = MeshBuilder::GenerateQuad("startline", Color(0.8, 0.0, 0.2));
 	meshList[GEO_STARTLINE]->position.Set(0, 0, -480);
 
-	//Arun Wall Left
+	////Arun Wall Left
 	meshList[GEO_LEFTWALL1] = MeshBuilder::GenerateOBJ("Left Wall", "OBJ//wall.obj");
 	meshList[GEO_LEFTWALL1]->position.Set(20, 0, 0);
 	meshList[GEO_LEFTWALL1]->interactable = true;
@@ -642,309 +642,308 @@ Mesh* SP2::Interaction(double dt)
 
 void SP2::Movement(double dt)
 {
-	int speed = 50;
+	//int speed = 50;
 
-	float offset = 2;
-	int cameraX = -1;
-	int grav = 1;
-	
+	//float offset = 2;
+	//int cameraX = -1;
+	//int grav = 1;
+	//
+	/////////////////////////////////////////////////////////////////////////////
+	////					JETPACK												//
+	////																	    //
 	///////////////////////////////////////////////////////////////////////////
-	//					JETPACK												//
-	//																	    //
-	/////////////////////////////////////////////////////////////////////////
-	fuel += 0.5;
-	if (Application::IsKeyPressed(VK_SPACE) && Application::IsKeyPressed(VK_LCONTROL) &&fuel>0)
-	{
+	//fuel += 0.5;
+	//if (Application::IsKeyPressed(VK_SPACE) && Application::IsKeyPressed(VK_LCONTROL) &&fuel>0)
+	//{
 
-			camera.position.Set(camera.position.x, camera.position.y + dt * 8, camera.position.z);
-			fuel -= 0.08;
-			//std::cout << fuel;
-	}
+	//		camera.position.Set(camera.position.x, camera.position.y + dt * 8, camera.position.z);
+	//		fuel -= 0.08;
+	//		//std::cout << fuel;
+	//}
 
-	else
-	{
-		if (fuel <100)
-		{
-		fuel =fuel+1;
-		std::cout << fuel << endl;
-			if (fuel >=100)
-			{
-			fuel = 100;
-			}
-		}
-		if (camera.position.y >= 5)
-		{
-			camera.position.Set(camera.position.x, camera.position.y + dt *(-9-(grav*10)), camera.position.z);
-			grav++;
-		}
-		
-		
-	}
-	
+	//else
+	//{
+	//	if (fuel <100)
+	//	{
+	//	fuel =fuel+1;
+	//	std::cout << fuel << endl;
+	//		if (fuel >=100)
+	//		{
+	//		fuel = 100;
+	//		}
+	//	}
+	//	if (camera.position.y >= 5)
+	//	{
+	//		camera.position.Set(camera.position.x, camera.position.y + dt *(-9-(grav*10)), camera.position.z);
+	//		grav++;
+	//	}
+	//	
+	//	
+	//}
+	//
+	/////////////////////////////////////////////////////////////////////////////
+	////					CAMERA												//
+	////																	    //
 	///////////////////////////////////////////////////////////////////////////
-	//					CAMERA												//
-	//																	    //
-	/////////////////////////////////////////////////////////////////////////
-	if (Application::IsKeyPressed('W'))
-	{
-		if (camera.position.x + camera.view.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.view.Normalized().x * dt * speed - 1 > -498)
-		{
-			bool move = false;
-			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
-						camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.x + camera.view.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x + camera.view.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 + offset  >= meshList[i]->max->y + meshList[i]->position.y + offset)
-					{
-						move = true;
-					}
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.x += camera.view.Normalized().x * dt * speed;
-		}
+	//if (Application::IsKeyPressed('W'))
+	//{
+	//	if (camera.position.x + camera.view.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.view.Normalized().x * dt * speed - 1 > -498)
+	//	{
+	//		bool move = false;
+	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
+	//		{
+	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+	//			{
+	//				if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
+	//					camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
+	//					camera.position.x + camera.view.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
+	//					camera.position.x + camera.view.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
+	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+	//					camera.position.y - 5 + offset  >= meshList[i]->max->y + meshList[i]->position.y + offset)
+	//				{
+	//					move = true;
+	//				}
+	//				else
+	//				{
+	//					move = false;
+	//					break;
+	//				}
+	//			}
+	//			else
+	//			{
+	//				move = true;
+	//			}
+	//		}
+	//		if (move)
+	//			camera.position.x += camera.view.Normalized().x * dt * speed;
+	//	}
 
-		if (camera.position.z + camera.view.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.view.Normalized().z * dt * speed - 1 > -498)
-		{
-			bool move = false;
-			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						camera.position.z + camera.view.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.z + camera.view.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
-						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
-						move = true;
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.z += camera.view.Normalized().z * dt * speed;
-		}
-	}
-	if (Application::IsKeyPressed('S'))
-	{
-		if (camera.position.x - camera.view.Normalized().x * dt * speed + 1 < 498 && camera.position.x - camera.view.Normalized().x * dt * speed - 1 > -498)
-		{
-			bool move = false;
+	//	if (camera.position.z + camera.view.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.view.Normalized().z * dt * speed - 1 > -498)
+	//	{
+	//		bool move = false;
+	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
+	//		{
+	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+	//			{
+	//				if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
+	//					camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
+	//					camera.position.z + camera.view.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
+	//					camera.position.z + camera.view.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
+	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+	//					camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
+	//					move = true;
+	//				else
+	//				{
+	//					move = false;
+	//					break;
+	//				}
+	//			}
+	//			else
+	//			{
+	//				move = true;
+	//			}
+	//		}
+	//		if (move)
+	//			camera.position.z += camera.view.Normalized().z * dt * speed;
+	//	}
+	//}
+	//if (Application::IsKeyPressed('S'))
+	//{
+	//	if (camera.position.x - camera.view.Normalized().x * dt * speed + 1 < 498 && camera.position.x - camera.view.Normalized().x * dt * speed - 1 > -498)
+	//	{
+	//		bool move = false;
 
 
-			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
-						camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.x - camera.view.Normalized().x * dt * speed * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x - camera.view.Normalized().x * dt * speed * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
-						move = true;
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.x -= camera.view.Normalized().x * dt * speed;
-		}
-		
-		if (camera.position.z - camera.view.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.view.Normalized().z * dt * speed - 1 > -498)
-		{
-			bool move = false;
+	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
+	//		{
+	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+	//			{
+	//				if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
+	//					camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
+	//					camera.position.x - camera.view.Normalized().x * dt * speed * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
+	//					camera.position.x - camera.view.Normalized().x * dt * speed * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
+	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+	//					camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
+	//					move = true;
+	//				else
+	//				{
+	//					move = false;
+	//					break;
+	//				}
+	//			}
+	//			else
+	//			{
+	//				move = true;
+	//			}
+	//		}
+	//		if (move)
+	//			camera.position.x -= camera.view.Normalized().x * dt * speed;
+	//	}
+	//	
+	//	if (camera.position.z - camera.view.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.view.Normalized().z * dt * speed - 1 > -498)
+	//	{
+	//		bool move = false;
 
 
-			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						camera.position.z - camera.view.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.z - camera.view.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
-						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
-						move = true;
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.z -= camera.view.Normalized().z * dt * speed;
-		}
-	}
-	if (Application::IsKeyPressed('A'))
-	{
-		if (camera.position.x - camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x - camera.right.Normalized().x * dt * speed - 1 > -498)
-		{
-			bool move = false;
-			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
-						camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.x - camera.right.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x - camera.right.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
-						move = true;
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.x -= camera.right.Normalized().x * dt * speed;
-		}
-		
-		if (camera.position.z - camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.right.Normalized().z * dt * speed - 1 > -498)
-		{
-			bool move = false;
-			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						camera.position.z - camera.right.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.z - camera.right.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
-						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
-						move = true;
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.z -= camera.right.Normalized().z * dt * speed;
-		}
-	}
-	if (Application::IsKeyPressed('D'))
-	{
-		if (camera.position.x + camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.right.Normalized().x * dt * speed - 1 > -498)
-		{
-			bool move = false;
-			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
-						camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.x + camera.right.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x + camera.right.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
-						move = true;
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.x += camera.right.Normalized().x * dt * speed;
-		}
-		
-		if (camera.position.z + camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.right.Normalized().z * dt * speed - 1 > -498)
-		{
-			bool move = false;
-			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						camera.position.z + camera.right.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.z + camera.right.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
-						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
-						move = true;
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.z += camera.right.Normalized().z * dt * speed;
-		}
-	}
+	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
+	//		{
+	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+	//			{
+	//				if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
+	//					camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
+	//					camera.position.z - camera.view.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
+	//					camera.position.z - camera.view.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
+	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+	//					camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
+	//					move = true;
+	//				else
+	//				{
+	//					move = false;
+	//					break;
+	//				}
+	//			}
+	//			else
+	//			{
+	//				move = true;
+	//			}
+	//		}
+	//		if (move)
+	//			camera.position.z -= camera.view.Normalized().z * dt * speed;
+	//	}
+	//}
+	//if (Application::IsKeyPressed('A'))
+	//{
+	//	if (camera.position.x - camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x - camera.right.Normalized().x * dt * speed - 1 > -498)
+	//	{
+	//		bool move = false;
+	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
+	//		{
+	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+	//			{
+	//				if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
+	//					camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
+	//					camera.position.x - camera.right.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
+	//					camera.position.x - camera.right.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
+	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+	//					camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
+	//					move = true;
+	//				else
+	//				{
+	//					move = false;
+	//					break;
+	//				}
+	//			}
+	//			else
+	//			{
+	//				move = true;
+	//			}
+	//		}
+	//		if (move)
+	//			camera.position.x -= camera.right.Normalized().x * dt * speed;
+	//	}
+	//	
+	//	if (camera.position.z - camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.right.Normalized().z * dt * speed - 1 > -498)
+	//	{
+	//		bool move = false;
+	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
+	//		{
+	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+	//			{
+	//				if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
+	//					camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
+	//					camera.position.z - camera.right.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
+	//					camera.position.z - camera.right.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
+	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+	//					camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
+	//					move = true;
+	//				else
+	//				{
+	//					move = false;
+	//					break;
+	//				}
+	//			}
+	//			else
+	//			{
+	//				move = true;
+	//			}
+	//		}
+	//		if (move)
+	//			camera.position.z -= camera.right.Normalized().z * dt * speed;
+	//	}
+	//}
+	//if (Application::IsKeyPressed('D'))
+	//{
+	//	if (camera.position.x + camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.right.Normalized().x * dt * speed - 1 > -498)
+	//	{
+	//		bool move = false;
+	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
+	//		{
+	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+	//			{
+	//				if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
+	//					camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
+	//					camera.position.x + camera.right.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
+	//					camera.position.x + camera.right.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
+	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+	//					camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
+	//					move = true;
+	//				else
+	//				{
+	//					move = false;
+	//					break;
+	//				}
+	//			}
+	//			else
+	//			{
+	//				move = true;
+	//			}
+	//		}
+	//		if (move)
+	//			camera.position.x += camera.right.Normalized().x * dt * speed;
+	//	}
+	//	
+	//	if (camera.position.z + camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.right.Normalized().z * dt * speed - 1 > -498)
+	//	{
+	//		bool move = false;
+	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
+	//		{
+	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+	//			{
+	//				if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
+	//					camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
+	//					camera.position.z + camera.right.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
+	//					camera.position.z + camera.right.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
+	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+	//					camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
+	//					move = true;
+	//				else
+	//				{
+	//					move = false;
+	//					break;
+	//				}
+	//			}
+	//			else
+	//			{
+	//				move = true;
+	//			}
+	//		}
+	//		if (move)
+	//			camera.position.z += camera.right.Normalized().z * dt * speed;
+	//	}
+	//}
 }
 
 void SP2::CharacMovement(double dt)
 {
-	int speed = 10;
+	int speed = 50;
 	float offset = 2;
 	int cameraX = -1;
-
 	if (Application::IsKeyPressed('W'))
 	{
 		if (camera.position.x + camera.view.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.view.Normalized().x * dt * speed - 1 > -498)
 		{
 			bool move = false;
-			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
 			{
 				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
@@ -975,7 +974,7 @@ void SP2::CharacMovement(double dt)
 		if (camera.position.z + camera.view.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.view.Normalized().z * dt * speed - 1 > -498)
 		{
 			bool move = false;
-			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
 			{
 				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
@@ -1008,7 +1007,7 @@ void SP2::CharacMovement(double dt)
 			bool move = false;
 
 
-			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
 			{
 				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
@@ -1039,7 +1038,7 @@ void SP2::CharacMovement(double dt)
 			bool move = false;
 
 
-			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
 			{
 				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
@@ -1070,7 +1069,7 @@ void SP2::CharacMovement(double dt)
 		if (camera.position.x - camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x - camera.right.Normalized().x * dt * speed - 1 > -498)
 		{
 			bool move = false;
-			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
 			{
 				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
@@ -1099,7 +1098,7 @@ void SP2::CharacMovement(double dt)
 		if (camera.position.z - camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.right.Normalized().z * dt * speed - 1 > -498)
 		{
 			bool move = false;
-			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
 			{
 				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
@@ -1130,7 +1129,7 @@ void SP2::CharacMovement(double dt)
 		if (camera.position.x + camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.right.Normalized().x * dt * speed - 1 > -498)
 		{
 			bool move = false;
-			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
 			{
 				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
@@ -1159,7 +1158,7 @@ void SP2::CharacMovement(double dt)
 		if (camera.position.z + camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.right.Normalized().z * dt * speed - 1 > -498)
 		{
 			bool move = false;
-			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
 			{
 				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
@@ -1185,12 +1184,13 @@ void SP2::CharacMovement(double dt)
 				camera.position.z += camera.right.Normalized().z * dt * speed;
 		}
 	}
+	cout << camera.position.y << endl;
 	if (Application::IsKeyPressed(VK_SPACE))
 	{
 		if (camera.position.y + camera.position.Normalized().y * dt * speed + 1 < 498 && camera.position.y + camera.position.Normalized().y * dt * speed - 1 > -498)
 		{
 			bool move = false;
-			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
 			{
 				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
@@ -1217,14 +1217,16 @@ void SP2::CharacMovement(double dt)
 				}
 			}
 			if (move)
-				camera.position.y += camera.position.Normalized().y * dt * speed;
+			{
+				cout << "jump" << endl;
+				camera.position.y += dt * speed/2;
+			}
 		}
 	}
 	else
 	{
-
 		bool fall = false;
-		for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
 		{
 			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 			{
@@ -1253,7 +1255,7 @@ void SP2::CharacMovement(double dt)
 		if (fall == true && camera.position.y - 5 - gravity > 0)
 		{
 			gravity += dt;
-			camera.position.y -= gravity;
+			camera.position.y -= gravity * 1.8;
 		}
 		else
 		{
@@ -1304,7 +1306,7 @@ void SP2::RenderMesh(Mesh * mesh, bool enableLight)
 }
 void SP2::RenderSkybox(Vector3 position)
 {
-	float SkyScale = 500.f;
+	float SkyScale = 1000.f;
 	float offset = 1;
 
 
@@ -2008,7 +2010,7 @@ void SP2::Render()
 	if (object &&objectDied==false)
 	{
 		std::ostringstream enemyHp;
-		//emyHp << std::setprecision(3) << bullets[0t].object->health;
+	//	enemyHp << std::setprecision(3) << bullets[0t].object->health;
 		RenderTextOnScreen(meshList[GEO_ENEMYHEALTHDISPLAY], "Enemy HP: ", Color(0, 1, 0), 2, 25, 10);
 	RenderTextOnScreen(meshList[GEO_ENEMYHEALTHDISPLAY],enemyHp.str(), Color(1, 1, 1), 2, 37, 10);
 	}

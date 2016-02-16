@@ -47,14 +47,6 @@ class SP2 : public Scene
 		//GEO_SP2_MODELWALLTHIN,
 		//GEO_SP2_MODELWALLTHICK,
 		GEO_STARTLINE,
-		//GEO_TIMEDISPLAY,
-		//GEO_TIME,
-		//GEO_FUEL1,
-		//GEO_FUEL2,
-		//GEO_FUEL3,
-		//GEO_FUEL4,
-		//GEO_FUEL5,
-		//GEO_JETPACKUI,
 
 		//Walls
 		GEO_LEFTWALL1,
@@ -230,7 +222,6 @@ private:
 	int healthPoints=100;
 	vector<int> Health;
 	vector<int> objectIDAll;
-	map	<Mesh*, int> objectHealth;
 	string timeDisplay="Time : ";
 	float time = 0;
 	float delay = 0;
