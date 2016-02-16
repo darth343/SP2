@@ -912,7 +912,6 @@ void SP2::CharacMovement(double dt)
 					camera.position.z < meshList[i]->position.z + meshList[i]->max->z - offset + 3.8
 					)
 				{
-					cout << "IN OBJECT" << count++ << endl;
 					if (camera.position.y - 5 - gravity > meshList[i]->position.y + meshList[i]->max->y)
 					{
 						fall = true;
@@ -925,7 +924,6 @@ void SP2::CharacMovement(double dt)
 				}
 				else
 				{
-					cout << "OUTSIDE OBJECT " << count++ << endl;
 					fall = true;
 				}
 			}
