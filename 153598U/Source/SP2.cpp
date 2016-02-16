@@ -172,13 +172,13 @@ Mesh* SP2::Interaction(double dt)
 
 	for (Vector3 temp = camera.view.Normalized(); temp.Length() <= range ; temp += camera.view.Normalized())
 	{
-		for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+		for (int i = GEO_MODEL1; i < GEO_TEXT; i++) //Anything after GEO_MODEL1, will have collision
 		{
 			if (meshList[i]->min != nullptr || meshList[i]->max != nullptr)
 			{
-				if ((temp.x + camera.position.x <= meshList[i]->max->x + meshList[i]->position.x + offset && temp.x + camera.position.x >= meshList[i]->min->x + meshList[i]->position.x - offset)
-					&& (temp.y + camera.position.y <= meshList[i]->max->y + meshList[i]->position.y + offset && temp.y + camera.position.y >= meshList[i]->min->y + meshList[i]->position.y - offset)
-					&& (temp.z + camera.position.z <= meshList[i]->max->z + meshList[i]->position.z + offset && temp.z + camera.position.z >= meshList[i]->min->z + meshList[i]->position.z - offset))
+				if ((temp.x + camera.position.x <= meshList[i]->max->x + meshList[i]->position.x + offset && temp.x + camera.position.x >= meshList[i]->min->x + meshList[i]->position.x - offset) //Check min and max for x
+					&& (temp.y + camera.position.y <= meshList[i]->max->y + meshList[i]->position.y + offset && temp.y + camera.position.y >= meshList[i]->min->y + meshList[i]->position.y - offset) //Check min and max for y
+					&& (temp.z + camera.position.z <= meshList[i]->max->z + meshList[i]->position.z + offset && temp.z + camera.position.z >= meshList[i]->min->z + meshList[i]->position.z - offset)) //Check min and max for z
 				{
 					if (meshList[i]->interactable == false)
 					{
@@ -297,10 +297,7 @@ void SP2::Movement(double dt)
 			if (move)
 				camera.position.x -= camera.view.Normalized().x * dt * speed;
 		}
-		//if (camera.position.y - camera.view.Normalized().y * dt * speed + 1 < 498 && camera.position.y - camera.view.Normalized().y * dt * speed - 1 > -498)
-		//{
-		//	camera.position.y -= camera.view.Normalized().y * dt * speed;
-		//}
+		
 		if (camera.position.z - camera.view.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.view.Normalized().z * dt * speed - 1 > -498)
 		{
 			bool move = false;
@@ -362,10 +359,7 @@ void SP2::Movement(double dt)
 			if (move)
 				camera.position.x -= camera.right.Normalized().x * dt * speed;
 		}
-		//if (camera.position.y - camera.right.Normalized().y * dt * speed + 1 < 498 && camera.position.y - camera.right.Normalized().y * dt * speed - 1 > -498)
-		//{
-		//	camera.position.y -= camera.right.Normalized().y * dt * speed;
-		//}
+		
 		if (camera.position.z - camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.right.Normalized().z * dt * speed - 1 > -498)
 		{
 			bool move = false;
@@ -425,10 +419,7 @@ void SP2::Movement(double dt)
 			if (move)
 				camera.position.x += camera.right.Normalized().x * dt * speed;
 		}
-		//if (camera.position.y + camera.right.Normalized().y * dt * speed + 1 < 498 && camera.position.y + camera.right.Normalized().y * dt * speed - 1 > -498)
-		//{
-		//	camera.position.y += camera.right.Normalized().y * dt * speed;
-		//}
+		
 		if (camera.position.z + camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.right.Normalized().z * dt * speed - 1 > -498)
 		{
 			bool move = false;
@@ -527,14 +518,6 @@ void SP2::Movement(double dt)
 		}
 	}
 
-	//if (Application::IsKeyPressed(VK_SHIFT))
-	//{
-	//	camera.position.y -= dt * speed / 2;
-	//}
-	//if (Application::IsKeyPressed(VK_SPACE))
-	//{
-	//	camera.position.y += dt * speed / 2;
-	//}
 }
 
 void SP2::RenderMesh(Mesh * mesh, bool enableLight)
