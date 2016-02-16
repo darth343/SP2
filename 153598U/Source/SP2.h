@@ -93,6 +93,7 @@ private:
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderOBJonScreen(Mesh* mesh, float sizex, float sizey, float x, float y);
 	void Movement(double dt);
+	void CharacMovement(double dt);
 	Mesh* Interaction(double dt);
 
 
@@ -100,7 +101,7 @@ private:
 	Mesh*  meshList[NUM_GEOMETRY];
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
-
+	float gravity = 10;
 	float rotateAngle;
 	float fps;
 	Camera5 camera;
