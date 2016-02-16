@@ -135,9 +135,9 @@ void SP2::Init()
 	meshList[GEO_GROUND]->textureID = LoadTGA("Image//sand.tga");
 
 	//Arun's Wall
-	//meshList[GEO_LEFTWALL1] = MeshBuilder::GenerateOBJ("Model 1", "OBJ//wall.obj");
+	meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("Model 1", "OBJ//wall.obj");
 
-	/*meshList[GEO_FRONT]->textureID = LoadTGA("Image//front.tga");
+	meshList[GEO_FRONT]->textureID = LoadTGA("Image//front.tga");
 	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1));
 	meshList[GEO_BACK]->textureID = LoadTGA("Image//back.tga");
 	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1));
@@ -147,15 +147,15 @@ void SP2::Init()
 	meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1));
 	meshList[GEO_TOP]->textureID = LoadTGA("Image//top.tga");
 	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1));
-	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//bottom.tga");*/
-	//meshList[GEO_FUEL1] = MeshBuilder::GenerateQuad("fuel1", Color(0.8, 0, 0));
-	//meshList[GEO_FUEL2] = MeshBuilder::GenerateQuad("fuel2", Color(1, 0, 0));
-	//meshList[GEO_FUEL3] = MeshBuilder::GenerateQuad("fuel3", Color(0, 0.8, 0));
-	//meshList[GEO_FUEL4] = MeshBuilder::GenerateQuad("fuel4", Color(0, 1, 0));
-	//meshList[GEO_FUEL5] = MeshBuilder::GenerateQuad("fuel5", Color(0.2,1, 0.2));
+	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//bottom.tga");
+	meshList[GEO_FUEL1] = MeshBuilder::GenerateQuad("fuel1", Color(0.8, 0, 0));
+	meshList[GEO_FUEL2] = MeshBuilder::GenerateQuad("fuel2", Color(1, 0, 0));
+	meshList[GEO_FUEL3] = MeshBuilder::GenerateQuad("fuel3", Color(0, 0.8, 0));
+	meshList[GEO_FUEL4] = MeshBuilder::GenerateQuad("fuel4", Color(0, 1, 0));
+	meshList[GEO_FUEL5] = MeshBuilder::GenerateQuad("fuel5", Color(0.2,1, 0.2));
 	//meshList[GEO_JETPACKUI] = MeshBuilder::GenerateQuad("Jetpack UI", Color(1, 2, 1));
 
-	//GROUND
+	////GROUND
 	meshList[GEO_GROUND] = MeshBuilder::GenerateGround("ground", Color(0.2, 0.2, 0.2));
 	meshList[GEO_GROUND]->textureID = LoadTGA("Image//sand.tga");
 
@@ -398,6 +398,12 @@ void SP2::Init()
 	meshList[GEO_RIGHTWALL29]->position.Set(-20, 0, -490);
 	meshList[GEO_RIGHTWALL29]->interactable = true;
 
+	meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("Model 1", "OBJ//wall.obj");
+
+	meshList[GEO_MODEL1]->position.Set(10, 0, 10);
+	meshList[GEO_MODEL1]->textureID = LoadTGA("Image//wallleft.tga");
+	meshList[GEO_MODEL1]->interactable = true;
+
 	//Map(FreeRun)
 
 	//Blocks
@@ -504,12 +510,12 @@ void SP2::Init()
 
 
 	//TEXT
-	//meshList[GEO_TIMEDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
-	//meshList[GEO_TIMEDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
-	//meshList[GEO_JETPACKUI] = MeshBuilder::GenerateText("text", 16, 16);
-	//meshList[GEO_JETPACKUI]->textureID = LoadTGA("Image//calibri.tga");
-	//meshList[GEO_TIME] = MeshBuilder::GenerateText("text", 16, 16);
-	//meshList[GEO_TIME]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_TIMEDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
+	meshList[GEO_TIMEDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_JETPACKUI] = MeshBuilder::GenerateText("text", 16, 16);
+	meshList[GEO_JETPACKUI]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_TIME] = MeshBuilder::GenerateText("text", 16, 16);
+	meshList[GEO_TIME]->textureID = LoadTGA("Image//calibri.tga");
 	// Enable blendings
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -529,7 +535,7 @@ void SP2::Update(double dt)
 
 	camera.Update(dt);
 
-	Movement(dt);
+	CharacMovement(dt);
 
 	object = Interaction(dt);
 }
@@ -545,9 +551,9 @@ Mesh* SP2::Interaction(double dt)
 		{
 			if (meshList[i]->min != nullptr || meshList[i]->max != nullptr)
 			{
-				if ((temp.x + camera.position.x <= meshList[i]->max->x + meshList[i]->position.x + offset && temp.x + camera.position.x >= meshList[i]->min->x + meshList[i]->position.x - offset)
-					&& (temp.y + camera.position.y <= meshList[i]->max->y + meshList[i]->position.y + offset && temp.y + camera.position.y >= meshList[i]->min->y + meshList[i]->position.y - offset)
-					&& (temp.z + camera.position.z <= meshList[i]->max->z + meshList[i]->position.z + offset && temp.z + camera.position.z >= meshList[i]->min->z + meshList[i]->position.z - offset))
+				if ((temp.x + camera.position.x <= meshList[i]->max->x + meshList[i]->position.x + offset && temp.x + camera.position.x >= meshList[i]->min->x + meshList[i]->position.x - offset) //Check min and max for x
+					&& (temp.y + camera.position.y <= meshList[i]->max->y + meshList[i]->position.y + offset && temp.y + camera.position.y >= meshList[i]->min->y + meshList[i]->position.y - offset) //Check min and max for y
+					&& (temp.z + camera.position.z <= meshList[i]->max->z + meshList[i]->position.z + offset && temp.z + camera.position.z >= meshList[i]->min->z + meshList[i]->position.z - offset)) //Check min and max for z
 				{
 					if (meshList[i]->interactable == false)
 					{
@@ -565,7 +571,7 @@ Mesh* SP2::Interaction(double dt)
 	}
 	return nullptr;
 }
-int count = 0;
+
 void SP2::Movement(double dt)
 {
 	int speed = 50;
@@ -579,6 +585,7 @@ void SP2::Movement(double dt)
 	//																	    //
 	/////////////////////////////////////////////////////////////////////////
 	fuel += 0.5;
+
 	if (Application::IsKeyPressed(VK_SPACE)&& fuel>0)
 	{
 
@@ -706,10 +713,7 @@ void SP2::Movement(double dt)
 			if (move)
 				camera.position.x -= camera.view.Normalized().x * dt * speed;
 		}
-		//if (camera.position.y - camera.view.Normalized().y * dt * speed + 1 < 498 && camera.position.y - camera.view.Normalized().y * dt * speed - 1 > -498)
-		//{
-		//	camera.position.y -= camera.view.Normalized().y * dt * speed;
-		//}
+		
 		if (camera.position.z - camera.view.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.view.Normalized().z * dt * speed - 1 > -498)
 		{
 			bool move = false;
@@ -771,10 +775,7 @@ void SP2::Movement(double dt)
 			if (move)
 				camera.position.x -= camera.right.Normalized().x * dt * speed;
 		}
-		//if (camera.position.y - camera.right.Normalized().y * dt * speed + 1 < 498 && camera.position.y - camera.right.Normalized().y * dt * speed - 1 > -498)
-		//{
-		//	camera.position.y -= camera.right.Normalized().y * dt * speed;
-		//}
+		
 		if (camera.position.z - camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.right.Normalized().z * dt * speed - 1 > -498)
 		{
 			bool move = false;
@@ -834,10 +835,7 @@ void SP2::Movement(double dt)
 			if (move)
 				camera.position.x += camera.right.Normalized().x * dt * speed;
 		}
-		//if (camera.position.y + camera.right.Normalized().y * dt * speed + 1 < 498 && camera.position.y + camera.right.Normalized().y * dt * speed - 1 > -498)
-		//{
-		//	camera.position.y += camera.right.Normalized().y * dt * speed;
-		//}
+		
 		if (camera.position.z + camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.right.Normalized().z * dt * speed - 1 > -498)
 		{
 			bool move = false;
@@ -936,16 +934,338 @@ void SP2::Movement(double dt)
 		}
 	}
 
-	//if (Application::IsKeyPressed(VK_SHIFT))
-	//{
-	//	camera.position.y -= dt * speed / 2;
-	//}
-	//if (Application::IsKeyPressed(VK_SPACE))
-	//{
-	//	camera.position.y += dt * speed / 2;
-	//}
 }
+int count = 0;
+void SP2::CharacMovement(double dt)
+{
+	int speed = 10;
+	float offset = 2;
+	int cameraX = -1;
 
+	if (Application::IsKeyPressed('W'))
+	{
+		if (camera.position.x + camera.view.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.view.Normalized().x * dt * speed - 1 > -498)
+		{
+			bool move = false;
+			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			{
+				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+				{
+					if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||  //Check min and max for z axis. If bigger than min, smaller than max, walk = false 
+						camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset || //Check max for z axis. If bigger than min, smaller than max, walk = false 
+						camera.position.x + camera.view.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset || //Check min for x axis. If bigger than min, smaller than max, walk = false 
+						camera.position.x + camera.view.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset || //Check max for x axis. If bigger than min, smaller than max, walk = false 
+						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+						camera.position.y - 5 + offset >= meshList[i]->max->y + meshList[i]->position.y + offset)
+					{
+						move = true;
+					}
+					else
+					{
+						move = false;
+						break;
+					}
+				}
+				else
+				{
+					move = true;
+				}
+			}
+			if (move)
+				camera.position.x += camera.view.Normalized().x * dt * speed;
+		}
+
+		if (camera.position.z + camera.view.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.view.Normalized().z * dt * speed - 1 > -498)
+		{
+			bool move = false;
+			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			{
+				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+				{
+					if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
+						camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
+						camera.position.z + camera.view.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
+						camera.position.z + camera.view.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
+						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+						camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
+						move = true;
+					else
+					{
+						move = false;
+						break;
+					}
+				}
+				else
+				{
+					move = true;
+				}
+			}
+			if (move)
+				camera.position.z += camera.view.Normalized().z * dt * speed;
+		}
+	}
+	if (Application::IsKeyPressed('S'))
+	{
+		if (camera.position.x - camera.view.Normalized().x * dt * speed + 1 < 498 && camera.position.x - camera.view.Normalized().x * dt * speed - 1 > -498)
+		{
+			bool move = false;
+
+
+			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			{
+				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+				{
+					if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
+						camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
+						camera.position.x - camera.view.Normalized().x * dt * speed * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
+						camera.position.x - camera.view.Normalized().x * dt * speed * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
+						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+						camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
+						move = true;
+					else
+					{
+						move = false;
+						break;
+					}
+				}
+				else
+				{
+					move = true;
+				}
+			}
+			if (move)
+				camera.position.x -= camera.view.Normalized().x * dt * speed;
+		}
+
+		if (camera.position.z - camera.view.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.view.Normalized().z * dt * speed - 1 > -498)
+		{
+			bool move = false;
+
+
+			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			{
+				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+				{
+					if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
+						camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
+						camera.position.z - camera.view.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
+						camera.position.z - camera.view.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
+						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+						camera.position.y - 5 + offset> meshList[i]->max->y + meshList[i]->position.y + offset)
+						move = true;
+					else
+					{
+						move = false;
+						break;
+					}
+				}
+				else
+				{
+					move = true;
+				}
+			}
+			if (move)
+				camera.position.z -= camera.view.Normalized().z * dt * speed;
+		}
+	}
+	if (Application::IsKeyPressed('A'))
+	{
+		if (camera.position.x - camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x - camera.right.Normalized().x * dt * speed - 1 > -498)
+		{
+			bool move = false;
+			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			{
+				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+				{
+					if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
+						camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
+						camera.position.x - camera.right.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
+						camera.position.x - camera.right.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
+						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+						camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
+						move = true;
+					else
+					{
+						move = false;
+						break;
+					}
+				}
+				else
+				{
+					move = true;
+				}
+			}
+			if (move)
+				camera.position.x -= camera.right.Normalized().x * dt * speed;
+		}
+
+		if (camera.position.z - camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.right.Normalized().z * dt * speed - 1 > -498)
+		{
+			bool move = false;
+			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			{
+				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+				{
+					if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
+						camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
+						camera.position.z - camera.right.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
+						camera.position.z - camera.right.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
+						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+						camera.position.y - 5 + offset> meshList[i]->max->y + meshList[i]->position.y + offset)
+						move = true;
+					else
+					{
+						move = false;
+						break;
+					}
+				}
+				else
+				{
+					move = true;
+				}
+			}
+			if (move)
+				camera.position.z -= camera.right.Normalized().z * dt * speed;
+		}
+	}
+	if (Application::IsKeyPressed('D'))
+	{
+		if (camera.position.x + camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.right.Normalized().x * dt * speed - 1 > -498)
+		{
+			bool move = false;
+			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			{
+				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+				{
+					if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
+						camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
+						camera.position.x + camera.right.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
+						camera.position.x + camera.right.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
+						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+						camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
+						move = true;
+					else
+					{
+						move = false;
+						break;
+					}
+				}
+				else
+				{
+					move = true;
+				}
+			}
+			if (move)
+				camera.position.x += camera.right.Normalized().x * dt * speed;
+		}
+
+		if (camera.position.z + camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.right.Normalized().z * dt * speed - 1 > -498)
+		{
+			bool move = false;
+			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			{
+				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+				{
+					if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
+						camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
+						camera.position.z + camera.right.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
+						camera.position.z + camera.right.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
+						0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
+						camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
+						move = true;
+					else
+					{
+						move = false;
+						break;
+					}
+				}
+				else
+				{
+					move = true;
+				}
+			}
+			if (move)
+				camera.position.z += camera.right.Normalized().z * dt * speed;
+		}
+	}
+	if (Application::IsKeyPressed(VK_SPACE))
+	{
+		if (camera.position.y + camera.position.Normalized().y * dt * speed + 1 < 498 && camera.position.y + camera.position.Normalized().y * dt * speed - 1 > -498)
+		{
+			bool move = false;
+			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+			{
+				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+				{
+					if (camera.position.y + camera.position.Normalized().y * dt * speed < meshList[i]->min->y ||
+						camera.position.y + camera.position.Normalized().y * dt * speed > meshList[i]->max->y ||
+						camera.position.x < meshList[i]->min->x + meshList[i]->position.x ||
+						camera.position.x < meshList[i]->max->x + meshList[i]->position.x ||
+						camera.position.z < meshList[i]->min->z + meshList[i]->position.z ||
+						camera.position.z < meshList[i]->max->z + meshList[i]->position.z
+						)
+					{
+
+						move = true;
+					}
+					else
+					{
+						move = false;
+						break;
+					}
+				}
+				else
+				{
+					move = true;
+				}
+			}
+			if (move)
+				camera.position.y += camera.position.Normalized().y * dt * speed;
+		}
+	}
+	else
+	{
+
+		bool fall = false;
+		for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+		{
+			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+			{
+				if (camera.position.x  > meshList[i]->position.x + meshList[i]->min->x + offset - 3.8 &&
+					camera.position.x < meshList[i]->position.x + meshList[i]->max->x - offset + 3.8 &&
+					camera.position.z > meshList[i]->position.z + meshList[i]->min->z + offset - 3.8 &&
+					camera.position.z < meshList[i]->position.z + meshList[i]->max->z - offset + 3.8
+					)
+				{
+					if (camera.position.y - 5 - gravity > meshList[i]->position.y + meshList[i]->max->y)
+					{
+						fall = true;
+					}
+					else
+					{
+						fall = false;
+						break;
+					}
+				}
+				else
+				{
+					fall = true;
+				}
+			}
+		}
+		if (fall == true && camera.position.y - 5 - gravity > 0)
+		{
+			gravity += dt;
+			camera.position.y -= gravity;
+		}
+		else
+		{
+			gravity = 10 * dt;
+		}
+	}
+
+
+}
 void SP2::RenderMesh(Mesh * mesh, bool enableLight)
 {
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
@@ -1642,57 +1962,57 @@ void SP2::Render()
 
 
 	
-	//if (fuel >20)
-	//{
-	//	modelStack.PushMatrix();
-	//	RenderOBJonScreen(meshList[GEO_FUEL1], 4, 7, 25, 4.8);
-	//	modelStack.PopMatrix();
-	//}
-	//
-	//if (fuel > 40)
-	//{
-	//	modelStack.PushMatrix();
-	//	RenderOBJonScreen(meshList[GEO_FUEL2], 4, 7, 30, 4.8);
-	//	modelStack.PopMatrix();
-	//}
-	//
-	//	
-	//	
-	//
-	//	if (fuel > 60)
-	//	{
+	if (fuel >20)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_FUEL1], 4, 7, 25, 4.8);
+		modelStack.PopMatrix();
+	}
+	
+	if (fuel > 40)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_FUEL2], 4, 7, 30, 4.8);
+		modelStack.PopMatrix();
+	}
+	
+		
+		
+	
+		if (fuel > 60)
+		{
 
 
-	//		modelStack.PushMatrix();
-	//		RenderOBJonScreen(meshList[GEO_FUEL3], 4, 7, 35, 4.8);
-	//		modelStack.PopMatrix();
-	//	}
-	//
-	//if (fuel>80)
-	//{
-	//	modelStack.PushMatrix();
-	//	RenderOBJonScreen(meshList[GEO_FUEL4], 4, 7, 40, 4.8);
-	//	modelStack.PopMatrix();
-	//	
-	//}
-	//	
-	//
-	//if (fuel ==100)
-	//{
-	//	modelStack.PushMatrix();
-	//	RenderOBJonScreen(meshList[GEO_FUEL5], 4, 7, 45, 4.8);
-	//	modelStack.PopMatrix();
-	//}
-	////modelStack.PushMatrix();
-	////RenderOBJonScreen(meshList[GEO_LEFTWALL1], 10, 10, 10);
-	////modelStack.PopMatrix();
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_FUEL3], 4, 7, 35, 4.8);
+			modelStack.PopMatrix();
+		}
+	
+	if (fuel>80)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_FUEL4], 4, 7, 40, 4.8);
+		modelStack.PopMatrix();
+		
+	}
+		
+	
+	if (fuel ==100)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_FUEL5], 4, 7, 45, 4.8);
+		modelStack.PopMatrix();
+	}
+	//modelStack.PushMatrix();
+	//RenderOBJonScreen(meshList[GEO_MODEL1], 10, 10, 10);
+	//modelStack.PopMatrix();
 
 
-	//RenderTextOnScreen(meshList[GEO_JETPACKUI], jetfuelDisplay, Color(0, 1, 0), 2, 2, 2);
-	//RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeDisplay, Color(0, 1, 0), 2, 2, 12);
-//	std::ostringstream timeString;
-//	timeString << std::setprecision(3) << time;
-//	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeString.str(), Color(0, 1, 0), 2, 8, 12);
+	RenderTextOnScreen(meshList[GEO_JETPACKUI], jetfuelDisplay, Color(0, 1, 0), 2, 2, 2);
+	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeDisplay, Color(0, 1, 0), 2, 2, 12);
+	std::ostringstream timeString;
+	timeString << std::setprecision(3) << time;
+	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeString.str(), Color(0, 1, 0), 2, 8, 12);
 }
 
 void SP2::Exit()
