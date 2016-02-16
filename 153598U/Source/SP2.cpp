@@ -115,72 +115,58 @@ void SP2::Init()
 	projectionStack.LoadMatrix(projection);
 
 	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference", 1000, 1000, 1000);
-
-	//SKY
-	meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1));
-	meshList[GEO_FRONT]->textureID = LoadTGA("Image//pink_planet_neg_x.tga");
-	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1));
-	meshList[GEO_BACK]->textureID = LoadTGA("Image//pink_planet_pos_x.tga");
-	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1));
-	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//pink_planet_pos_y.tga");
-	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1));
-	meshList[GEO_LEFT]->textureID = LoadTGA("Image//pink_planet_neg_y.tga");
-	meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1));
-	meshList[GEO_TOP]->textureID = LoadTGA("Image//pink_planet_pos_z.tga");
-	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1));
-	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//pink_planet_neg_z.tga");
-
 	//GROUND
 	meshList[GEO_GROUND] = MeshBuilder::GenerateGround("ground", Color(0.2, 0.2, 0.2));
 	meshList[GEO_GROUND]->textureID = LoadTGA("Image//sand.tga");
 
 	//Arun's Wall
-	meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("Model 1", "OBJ//wall.obj");
+	//meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("Model 1", "OBJ//wall.obj");
 
-	meshList[GEO_FRONT]->textureID = LoadTGA("Image//front.tga");
+	meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1,1,1));
+	meshList[GEO_FRONT]->textureID = LoadTGA("Image//seafront.tga");
 	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1));
-	meshList[GEO_BACK]->textureID = LoadTGA("Image//back.tga");
+	meshList[GEO_BACK]->textureID = LoadTGA("Image//seaback.tga");
 	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1));
-	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//right.tga");
+	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//searight.tga");
 	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1));
-	meshList[GEO_LEFT]->textureID = LoadTGA("Image//left.tga");
+	meshList[GEO_LEFT]->textureID = LoadTGA("Image//sealeft.tga");
 	meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1));
-	meshList[GEO_TOP]->textureID = LoadTGA("Image//top.tga");
+	meshList[GEO_TOP]->textureID = LoadTGA("Image//seaup.tga");
 	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1));
-	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//bottom.tga");
+	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//seadown.tga");
 	meshList[GEO_FUEL1] = MeshBuilder::GenerateQuad("fuel1", Color(0.8, 0, 0));
 	meshList[GEO_FUEL2] = MeshBuilder::GenerateQuad("fuel2", Color(1, 0, 0));
 	meshList[GEO_FUEL3] = MeshBuilder::GenerateQuad("fuel3", Color(0, 0.8, 0));
 	meshList[GEO_FUEL4] = MeshBuilder::GenerateQuad("fuel4", Color(0, 1, 0));
 	meshList[GEO_FUEL5] = MeshBuilder::GenerateQuad("fuel5", Color(0.2,1, 0.2));
-	//meshList[GEO_JETPACKUI] = MeshBuilder::GenerateQuad("Jetpack UI", Color(1, 2, 1));
+	meshList[GEO_JETPACKUI] = MeshBuilder::GenerateQuad("Jetpack UI", Color(1, 2, 1));
 
 	////GROUND
 	meshList[GEO_GROUND] = MeshBuilder::GenerateGround("ground", Color(0.2, 0.2, 0.2));
 	meshList[GEO_GROUND]->textureID = LoadTGA("Image//sand.tga");
 
 	meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("Model 1", "OBJ//ship.obj");
-
 	meshList[GEO_MODEL1]->position.Set(10, 0, 10);
 	meshList[GEO_MODEL1]->textureID = LoadTGA("Image//ship.tga");
-	meshList[GEO_MODEL1]->interactable = true;
+	meshList[GEO_MODEL1]->shootable = true;
+	meshList[GEO_BULLET] = MeshBuilder::GenerateCube("text",Color(1,1,1));
 
 	//Map(FreeRun)
 
 	//Blocks
-	meshList[GEO_SP2_MODELBLOCK] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
-	meshList[GEO_SP2_MODELBLOCK]->position.Set(5, 3, 5);
-	meshList[GEO_SP2_MODELBLOCK]->interactable = true;
+	//meshList[GEO_SP2_MODELBLOCK] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
+	//meshList[GEO_SP2_MODELBLOCK]->position.Set(5, 3, 5);
+	//meshList[GEO_SP2_MODELBLOCK]->interactable = true;
 
-	//Wall(Thin)
-	meshList[GEO_SP2_MODELWALLTHIN] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin).obj");
-	meshList[GEO_SP2_MODELWALLTHIN]->position.Set(-5, 3, -5);
-	meshList[GEO_SP2_MODELWALLTHIN]->interactable = true;
+	////Wall(Thin)
+	//meshList[GEO_SP2_MODELWALLTHIN] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin).obj");
+	//meshList[GEO_SP2_MODELWALLTHIN]->position.Set(-5, 3, -5);
+	//meshList[GEO_SP2_MODELWALLTHIN]->interactable = true;
 
-	//Wall(Thick)
-	meshList[GEO_SP2_MODELWALLTHICK] = MeshBuilder::GenerateOBJ("Wall(Thick)", "OBJ//Wall(Thick).obj");
-	meshList[GEO_SP2_MODELWALLTHICK]->position.Set(-10, 3, -10);
-	meshList[GEO_SP2_MODELWALLTHICK]->interactable = true;
+	////Wall(Thick)
+	//meshList[GEO_SP2_MODELWALLTHICK] = MeshBuilder::GenerateOBJ("Wall(Thick)", "OBJ//Wall(Thick).obj");
+	//meshList[GEO_SP2_MODELWALLTHICK]->position.Set(-10, 3, -10);
+	//meshList[GEO_SP2_MODELWALLTHICK]->interactable = true;
 
 
 	//TEXT
@@ -190,6 +176,10 @@ void SP2::Init()
 	meshList[GEO_JETPACKUI]->textureID = LoadTGA("Image//calibri.tga");
 	meshList[GEO_TIME] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TIME]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_ENEMYHEALTH] = MeshBuilder::GenerateText("text", 16, 16);
+	meshList[GEO_ENEMYHEALTH]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_ENEMYHEALTHDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
+	meshList[GEO_ENEMYHEALTHDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
 	// Enable blendings
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -206,14 +196,87 @@ void SP2::Update(double dt)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
 	if (Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
-
+	time += dt;
 	camera.Update(dt);
-
 	Movement(dt);
-
-	object = Interaction(dt);
+	Vector3 bulletSpeed = (0.1, 0.1, 0.1);
+	//bullet = camera.view;
+	if (Application::IsKeyPressed(VK_LBUTTON) && time > delay)
+	{
+		temp.Position = camera.position;
+		temp.start = temp.Position;
+		temp.trajectory = camera.view.Normalized();
+		temp.object = Shooting(dt);
+		bullets.push_back(temp);
+		delay = time + 0.1;
+	}
+	float bulletspeed = 0.5;
+	for (amtBullet = 0; amtBullet < bullets.size(); amtBullet++)
+	{
+		
+		bullets[amtBullet].Position.x += bullets[amtBullet].trajectory.Normalized().x * bulletspeed;
+		bullets[amtBullet].Position.y += bullets[amtBullet].trajectory.Normalized().y * bulletspeed;
+		bullets[amtBullet].Position.z += bullets[amtBullet].trajectory.Normalized().z * bulletspeed;
+		//cout << bullets[0].Position << endl;
+		if (bullets[amtBullet].object)
+		{
+			int offset = 10;
+			if ((bullets[amtBullet].Position.x > bullets[amtBullet].object->min->x - offset && bullets[amtBullet].Position.x < bullets[amtBullet].object->max->x + offset) &&
+				(bullets[amtBullet].Position.y > bullets[amtBullet].object->min->y - offset&& bullets[amtBullet].Position.x < bullets[amtBullet].object->max->y + offset) &&
+				(bullets[amtBullet].Position.z > bullets[amtBullet].object->min->z - offset&& bullets[amtBullet].Position.x < bullets[amtBullet].object->max->z + offset)
+				)
+			{
+				cout << "hit" << endl;
+				bullets[amtBullet].object->health -= 10;
+				if (bullets[amtBullet].object->health <= 0)
+				{
+					objectDied = true;
+					bullets[amtBullet].object->health = 0;
+				}
+				bullets.erase(bullets.begin() + amtBullet);
+			}
+		}
+		else
+		{
+			if (Vector3(bullets[amtBullet].Position - bullets[amtBullet].start).Length() >= 100)
+			{
+				bullets.erase(bullets.begin() + amtBullet);
+			}
+		}
+	}
 }
 
+Mesh* SP2::Shooting(double dt)
+{
+	float range = 1000;
+	float offset = 0.5;
+
+	for (Vector3 temp = camera.view*0.001; temp.Length() <= range; temp += camera.view.Normalized())
+	{
+		for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+		{
+			if (meshList[i]->min != nullptr || meshList[i]->max != nullptr)
+			{
+				if ((temp.x + camera.position.x <= meshList[i]->max->x + meshList[i]->position.x + offset && temp.x + camera.position.x >= meshList[i]->min->x + meshList[i]->position.x - offset)
+					&& (temp.y + camera.position.y <= meshList[i]->max->y + meshList[i]->position.y + offset && temp.y + camera.position.y >= meshList[i]->min->y + meshList[i]->position.y - offset)
+					&& (temp.z + camera.position.z <= meshList[i]->max->z + meshList[i]->position.z + offset && temp.z + camera.position.z >= meshList[i]->min->z + meshList[i]->position.z - offset))
+				{
+					if (meshList[i]->shootable == false)
+					{
+						return nullptr;
+						break;
+					}
+					else
+					{
+						return meshList[i];
+						break;
+					}
+				}
+			}
+		}
+	}
+	return nullptr;
+}// bad shooting*/ // mesh shooting
 Mesh* SP2::Interaction(double dt)
 {
 	float range = 20;
@@ -221,6 +284,7 @@ Mesh* SP2::Interaction(double dt)
 
 	for (Vector3 temp = camera.view.Normalized(); temp.Length() <= range ; temp += camera.view.Normalized())
 	{
+		
 		for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
 		{
 			if (meshList[i]->min != nullptr || meshList[i]->max != nullptr)
@@ -248,25 +312,22 @@ Mesh* SP2::Interaction(double dt)
 int count = 0;
 void SP2::Movement(double dt)
 {
-	int speed = 15;
+	int speed = 35;
 	float offset = 2;
 	int cameraX = -1;
 	int grav = 1;
-	time += dt;
 	
 	///////////////////////////////////////////////////////////////////////////
 	//					JETPACK												//
 	//																	    //
 	/////////////////////////////////////////////////////////////////////////
 	fuel += 0.5;
-	std::cout << fuel << endl;
-	
-	if (Application::IsKeyPressed(VK_SPACE)&& fuel>0)
+	//std::cout << fuel << endl;
+	if (Application::IsKeyPressed(VK_SPACE) && Application::IsKeyPressed(VK_LCONTROL) &&fuel>0)
 	{
 
-			camera.position.Set(camera.position.x, camera.position.y + dt * 9, camera.position.z);
+			camera.position.Set(camera.position.x, camera.position.y + dt * 8, camera.position.z);
 			fuel -= 0.08;
-
 			//std::cout << fuel;
 	}
 
@@ -549,9 +610,9 @@ void SP2::Movement(double dt)
 				camera.position.z += camera.right.Normalized().z * dt * speed;
 		}
 	}
-	if (Application::IsKeyPressed(VK_SPACE))
+	/*if (Application::IsKeyPressed(VK_SPACE))
 	{
-		if (camera.position.y + camera.position.Normalized().y * dt * speed + 1 < 498 && camera.position.y + camera.position.Normalized().y * dt * speed - 1 > -498)
+		if (camera.position.y + camera.position.Normalized().y * dt * speed + 1< 498 && camera.position.y + camera.position.Normalized().y * dt * speed - 1 > -498)
 		{
 			bool move = false;
 			for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
@@ -616,7 +677,7 @@ void SP2::Movement(double dt)
 		{
 			camera.position.y -= gravity;
 		}
-	}
+	}*/
 
 	//if (Application::IsKeyPressed(VK_SHIFT))
 	//{
@@ -892,36 +953,45 @@ void SP2::Render()
 	RenderMesh(meshList[GEO_GROUND], true);
 	modelStack.PopMatrix();
 
+
+	if (bullets.size() != NULL)
+	{
+		for (int a = 0; a <bullets.size(); a++)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(bullets[a].Position.x, bullets[a].Position.y, bullets[a].Position.z);
+			modelStack.Scale(0.1, 0.1,0.1);
+			RenderMesh(meshList[GEO_BULLET], true);
+			modelStack.PopMatrix();
+		}
+
+	}
 	//Arun's Wall
 	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_MODEL1]->position.x, meshList[GEO_MODEL1]->position.y, meshList[GEO_MODEL1]->position.z);
 	RenderMesh(meshList[GEO_MODEL1], true);
 	modelStack.PopMatrix();
 
-	//Block
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_SP2_MODELBLOCK]->position.x, meshList[GEO_SP2_MODELBLOCK]->position.y, meshList[GEO_SP2_MODELBLOCK]->position.z);
-	RenderMesh(meshList[GEO_SP2_MODELBLOCK], meshList[GEO_SP2_MODELBLOCK]->light);
-	modelStack.PopMatrix();
+	////Block
+	//modelStack.PushMatrix();
+	//modelStack.Translate(meshList[GEO_SP2_MODELBLOCK]->position.x, meshList[GEO_SP2_MODELBLOCK]->position.y, meshList[GEO_SP2_MODELBLOCK]->position.z);
+	//RenderMesh(meshList[GEO_SP2_MODELBLOCK], meshList[GEO_SP2_MODELBLOCK]->light);
+	//modelStack.PopMatrix();
 
-	//Wall(Thin)
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_SP2_MODELWALLTHIN]->position.x, meshList[GEO_SP2_MODELWALLTHIN]->position.y, meshList[GEO_SP2_MODELWALLTHIN]->position.z);
-	RenderMesh(meshList[GEO_SP2_MODELWALLTHIN], meshList[GEO_SP2_MODELWALLTHIN]->light);
-	modelStack.PopMatrix();
+	////Wall(Thin)
+	//modelStack.PushMatrix();
+	//modelStack.Translate(meshList[GEO_SP2_MODELWALLTHIN]->position.x, meshList[GEO_SP2_MODELWALLTHIN]->position.y, meshList[GEO_SP2_MODELWALLTHIN]->position.z);
+	//RenderMesh(meshList[GEO_SP2_MODELWALLTHIN], meshList[GEO_SP2_MODELWALLTHIN]->light);
+	//modelStack.PopMatrix();
 
-	//Wall(Thick)
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_SP2_MODELWALLTHICK]->position.x, meshList[GEO_SP2_MODELWALLTHICK]->position.y, meshList[GEO_SP2_MODELWALLTHICK]->position.z);
-	RenderMesh(meshList[GEO_SP2_MODELWALLTHICK], meshList[GEO_SP2_MODELWALLTHICK]->light);
-	modelStack.PopMatrix();
+	////Wall(Thick)
+	//modelStack.PushMatrix();
+	//modelStack.Translate(meshList[GEO_SP2_MODELWALLTHICK]->position.x, meshList[GEO_SP2_MODELWALLTHICK]->position.y, meshList[GEO_SP2_MODELWALLTHICK]->position.z);
+	//RenderMesh(meshList[GEO_SP2_MODELWALLTHICK], meshList[GEO_SP2_MODELWALLTHICK]->light);
+	//modelStack.PopMatrix();
 
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//Ground
-
-
-
-	
 	if (fuel >20)
 	{
 		modelStack.PushMatrix();
@@ -935,9 +1005,6 @@ void SP2::Render()
 		RenderOBJonScreen(meshList[GEO_FUEL2], 4, 7, 30, 4.8);
 		modelStack.PopMatrix();
 	}
-	
-		
-		
 	
 		if (fuel > 60)
 		{
@@ -963,11 +1030,13 @@ void SP2::Render()
 		RenderOBJonScreen(meshList[GEO_FUEL5], 4, 7, 45, 4.8);
 		modelStack.PopMatrix();
 	}
-	//modelStack.PushMatrix();
-	//RenderOBJonScreen(meshList[GEO_MODEL1], 10, 10, 10);
-	//modelStack.PopMatrix();
-
-
+	if (object &&objectDied==false)
+	{
+		std::ostringstream enemyHp;
+		//emyHp << std::setprecision(3) << bullets[0t].object->health;
+		RenderTextOnScreen(meshList[GEO_ENEMYHEALTHDISPLAY], "Enemy HP: ", Color(0, 1, 0), 2, 25, 10);
+	RenderTextOnScreen(meshList[GEO_ENEMYHEALTHDISPLAY],enemyHp.str(), Color(1, 1, 1), 2, 37, 10);
+	}
 	RenderTextOnScreen(meshList[GEO_JETPACKUI], jetfuelDisplay, Color(0, 1, 0), 2, 2, 2);
 	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeDisplay, Color(0, 1, 0), 2, 2, 12);
 	std::ostringstream timeString;

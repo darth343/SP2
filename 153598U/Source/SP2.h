@@ -8,20 +8,28 @@
 #include "MatrixStack.h"
 #include "Light.h"
 #include "timer.h"
+#include <map>
 #include <Vector>
 using std::vector;
 using std::string;
-
+using std::map;
 class SP2 : public Scene
 {
+	struct TestBullet
+	{
+		Vector3 Position;
+		Vector3 start;
+		Vector3 trajectory;
+		Mesh * object;
+	};
 	enum GEOMETRY_TYPE
 	{
 		GEO_AXES,
+		GEO_FRONT,
 		GEO_LEFT,
 		GEO_RIGHT,
 		GEO_TOP,
 		GEO_BOTTOM,
-		GEO_FRONT,
 		GEO_BACK,
 		GEO_GROUND,
 		GEO_TIMEDISPLAY,
@@ -32,12 +40,13 @@ class SP2 : public Scene
 		GEO_FUEL4,
 		GEO_FUEL5,
 		GEO_JETPACKUI,
+		GEO_ENEMYHEALTH,
+		GEO_ENEMYHEALTHDISPLAY,
+		GEO_BULLET,
 		GEO_MODEL1,
-
-		GEO_SP2_MODELBLOCK,
-		GEO_SP2_MODELWALLTHIN,
-		GEO_SP2_MODELWALLTHICK,
-
+		//GEO_SP2_MODELBLOCK,
+		//GEO_SP2_MODELWALLTHIN,
+		//GEO_SP2_MODELWALLTHICK,
 		GEO_TEXT,
 
 		NUM_GEOMETRY,
@@ -94,13 +103,16 @@ private:
 	void RenderOBJonScreen(Mesh* mesh, float sizex, float sizey, float x, float y);
 	void Movement(double dt);
 	Mesh* Interaction(double dt);
-
+	Mesh* Shooting(double dt);
 
 	unsigned m_vertexArrayID;
 	Mesh*  meshList[NUM_GEOMETRY];
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
-
+	int amtBullet=0;
+	TestBullet temp;
+	TestBullet tempMag;
+	vector<TestBullet> bullets;
 	float rotateAngle;
 	float fps;
 	Camera5 camera;
@@ -108,10 +120,18 @@ private:
 	Light light[4];
 	Mesh * object;
 	float trans = 0;
+	int healthPoints=100;
+	vector<int> Health;
+	vector<int> objectIDAll;
+	map	<Mesh*, int> objectHealth;
 	string timeDisplay="Time : ";
-	float time=0;
+	float time = 0;
+	float delay = 0;
 	int fuel = 100;
+	//string timeString;
 	string jetfuelDisplay = "Jet Fuel: ";
+	bool shot=false ; // when object get shot
+	bool objectDied = false;//when object is dead
 };
 
 #endif
