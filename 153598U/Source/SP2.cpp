@@ -118,28 +118,78 @@ void SP2::Init()
 
 	//SKY
 	meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1));
-	meshList[GEO_FRONT]->textureID = LoadTGA("Image//seaback.tga");
+	meshList[GEO_FRONT]->textureID = LoadTGA("Image//pink_planet_neg_x.tga");
 	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1));
-	meshList[GEO_BACK]->textureID = LoadTGA("Image//seafront.tga");
+	meshList[GEO_BACK]->textureID = LoadTGA("Image//pink_planet_pos_x.tga");
 	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1));
-	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//searight.tga");
+	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//pink_planet_pos_y.tga");
 	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1));
-	meshList[GEO_LEFT]->textureID = LoadTGA("Image//sealeft.tga");
+	meshList[GEO_LEFT]->textureID = LoadTGA("Image//pink_planet_neg_y.tga");
 	meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1));
-	meshList[GEO_TOP]->textureID = LoadTGA("Image//seaup.tga");
+	meshList[GEO_TOP]->textureID = LoadTGA("Image//pink_planet_pos_z.tga");
 	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1));
-	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//seadown.tga");
+	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//pink_planet_neg_z.tga");
 
 	//GROUND
 	meshList[GEO_GROUND] = MeshBuilder::GenerateGround("ground", Color(0.2, 0.2, 0.2));
 	meshList[GEO_GROUND]->textureID = LoadTGA("Image//sand.tga");
 
+	//Arun's Wall
 	meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("Model 1", "OBJ//wall.obj");
+
+	meshList[GEO_FRONT]->textureID = LoadTGA("Image//front.tga");
+	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1));
+	meshList[GEO_BACK]->textureID = LoadTGA("Image//back.tga");
+	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1));
+	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//right.tga");
+	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1));
+	meshList[GEO_LEFT]->textureID = LoadTGA("Image//left.tga");
+	meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1));
+	meshList[GEO_TOP]->textureID = LoadTGA("Image//top.tga");
+	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1));
+	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//bottom.tga");
+	meshList[GEO_FUEL1] = MeshBuilder::GenerateQuad("fuel1", Color(0.8, 0, 0));
+	meshList[GEO_FUEL2] = MeshBuilder::GenerateQuad("fuel2", Color(1, 0, 0));
+	meshList[GEO_FUEL3] = MeshBuilder::GenerateQuad("fuel3", Color(0, 0.8, 0));
+	meshList[GEO_FUEL4] = MeshBuilder::GenerateQuad("fuel4", Color(0, 1, 0));
+	meshList[GEO_FUEL5] = MeshBuilder::GenerateQuad("fuel5", Color(0.2,1, 0.2));
+	//meshList[GEO_JETPACKUI] = MeshBuilder::GenerateQuad("Jetpack UI", Color(1, 2, 1));
+
+	////GROUND
+	meshList[GEO_GROUND] = MeshBuilder::GenerateGround("ground", Color(0.2, 0.2, 0.2));
+	meshList[GEO_GROUND]->textureID = LoadTGA("Image//sand.tga");
+
+	meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("Model 1", "OBJ//ship.obj");
+
 	meshList[GEO_MODEL1]->position.Set(10, 0, 10);
-	meshList[GEO_MODEL1]->textureID = LoadTGA("Image//wallleft.tga");
+	meshList[GEO_MODEL1]->textureID = LoadTGA("Image//ship.tga");
 	meshList[GEO_MODEL1]->interactable = true;
 
-		
+	//Map(FreeRun)
+
+	//Blocks
+	meshList[GEO_SP2_MODELBLOCK] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
+	meshList[GEO_SP2_MODELBLOCK]->position.Set(5, 3, 5);
+	meshList[GEO_SP2_MODELBLOCK]->interactable = true;
+
+	//Wall(Thin)
+	meshList[GEO_SP2_MODELWALLTHIN] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin).obj");
+	meshList[GEO_SP2_MODELWALLTHIN]->position.Set(-5, 3, -5);
+	meshList[GEO_SP2_MODELWALLTHIN]->interactable = true;
+
+	//Wall(Thick)
+	meshList[GEO_SP2_MODELWALLTHICK] = MeshBuilder::GenerateOBJ("Wall(Thick)", "OBJ//Wall(Thick).obj");
+	meshList[GEO_SP2_MODELWALLTHICK]->position.Set(-10, 3, -10);
+	meshList[GEO_SP2_MODELWALLTHICK]->interactable = true;
+
+
+	//TEXT
+	meshList[GEO_TIMEDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
+	meshList[GEO_TIMEDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_JETPACKUI] = MeshBuilder::GenerateText("text", 16, 16);
+	meshList[GEO_JETPACKUI]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_TIME] = MeshBuilder::GenerateText("text", 16, 16);
+	meshList[GEO_TIME]->textureID = LoadTGA("Image//calibri.tga");
 	// Enable blendings
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -157,7 +207,6 @@ void SP2::Update(double dt)
 	if (Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
 
-	cout << "JEFF IS A FAGGOT" << endl;
 	camera.Update(dt);
 
 	Movement(dt);
@@ -202,7 +251,49 @@ void SP2::Movement(double dt)
 	int speed = 15;
 	float offset = 2;
 	int cameraX = -1;
+	int grav = 1;
+	time += dt;
 	
+	///////////////////////////////////////////////////////////////////////////
+	//					JETPACK												//
+	//																	    //
+	/////////////////////////////////////////////////////////////////////////
+	fuel += 0.5;
+	std::cout << fuel << endl;
+	
+	if (Application::IsKeyPressed(VK_SPACE)&& fuel>0)
+	{
+
+			camera.position.Set(camera.position.x, camera.position.y + dt * 9, camera.position.z);
+			fuel -= 0.08;
+
+			//std::cout << fuel;
+	}
+
+	else
+	{
+		if (fuel <100)
+		{
+		fuel =fuel+1;
+		std::cout << fuel << endl;
+			if (fuel >=100)
+			{
+			fuel = 100;
+			}
+		}
+		if (camera.position.y >= 5)
+		{
+			camera.position.Set(camera.position.x, camera.position.y + dt *(-9-(grav*10)), camera.position.z);
+			grav++;
+		}
+		
+		
+	}
+	
+	///////////////////////////////////////////////////////////////////////////
+	//					CAMERA												//
+	//																	    //
+	/////////////////////////////////////////////////////////////////////////
 	if (Application::IsKeyPressed('W'))
 	{
 		if (camera.position.x + camera.view.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.view.Normalized().x * dt * speed - 1 > -498)
@@ -659,6 +750,34 @@ void SP2::RenderText(Mesh* mesh, std::string text, Color color)
 	glEnable(GL_DEPTH_TEST);
 }
 
+void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float y)
+{
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -100, 100); //size of screen UI
+	//Mtx44 projection;
+	//ortho.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
+
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity(); //No need camera for ortho mode
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity(); //Reset modelStack
+	//modelStack.PushMatrix();
+	modelStack.Translate(x, y, 0);
+	modelStack.Rotate(90, 1, 0, 0);
+	modelStack.Scale(sizex, sizey,1);
+	////modelStack.Translate(camera.position.x + camera.view.x, camera.position.y + camera.view.y, camera.position.z + camera.view.z);
+	//modelStack.Translate(camera.view.x, camera.view.y + camera.position.y, camera.view.z);
+	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+	RenderMesh(mesh, false);
+	projectionStack.PopMatrix();
+	viewStack.PopMatrix();
+	modelStack.PopMatrix();
+
+}
+
 void SP2::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
 {
 	if (!mesh || mesh->textureID <= 0) //Proper error check
@@ -756,15 +875,87 @@ void SP2::Render()
 	RenderMesh(meshList[GEO_GROUND], true);
 	modelStack.PopMatrix();
 
+	//Arun's Wall
 	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_MODEL1]->position.x, meshList[GEO_MODEL1]->position.y, meshList[GEO_MODEL1]->position.z);
 	RenderMesh(meshList[GEO_MODEL1], true);
+	modelStack.PopMatrix();
+
+	//Block
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_SP2_MODELBLOCK]->position.x, meshList[GEO_SP2_MODELBLOCK]->position.y, meshList[GEO_SP2_MODELBLOCK]->position.z);
+	RenderMesh(meshList[GEO_SP2_MODELBLOCK], meshList[GEO_SP2_MODELBLOCK]->light);
+	modelStack.PopMatrix();
+
+	//Wall(Thin)
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_SP2_MODELWALLTHIN]->position.x, meshList[GEO_SP2_MODELWALLTHIN]->position.y, meshList[GEO_SP2_MODELWALLTHIN]->position.z);
+	RenderMesh(meshList[GEO_SP2_MODELWALLTHIN], meshList[GEO_SP2_MODELWALLTHIN]->light);
+	modelStack.PopMatrix();
+
+	//Wall(Thick)
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_SP2_MODELWALLTHICK]->position.x, meshList[GEO_SP2_MODELWALLTHICK]->position.y, meshList[GEO_SP2_MODELWALLTHICK]->position.z);
+	RenderMesh(meshList[GEO_SP2_MODELWALLTHICK], meshList[GEO_SP2_MODELWALLTHICK]->light);
 	modelStack.PopMatrix();
 
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//Ground
 
 
+
+	
+	if (fuel >20)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_FUEL1], 4, 7, 25, 4.8);
+		modelStack.PopMatrix();
+	}
+	
+	if (fuel > 40)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_FUEL2], 4, 7, 30, 4.8);
+		modelStack.PopMatrix();
+	}
+	
+		
+		
+	
+		if (fuel > 60)
+		{
+
+
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_FUEL3], 4, 7, 35, 4.8);
+			modelStack.PopMatrix();
+		}
+	
+	if (fuel>80)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_FUEL4], 4, 7, 40, 4.8);
+		modelStack.PopMatrix();
+		
+	}
+		
+	
+	if (fuel ==100)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_FUEL5], 4, 7, 45, 4.8);
+		modelStack.PopMatrix();
+	}
+	//modelStack.PushMatrix();
+	//RenderOBJonScreen(meshList[GEO_MODEL1], 10, 10, 10);
+	//modelStack.PopMatrix();
+
+
+	RenderTextOnScreen(meshList[GEO_JETPACKUI], jetfuelDisplay, Color(0, 1, 0), 2, 2, 2);
+	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeDisplay, Color(0, 1, 0), 2, 2, 12);
+	std::ostringstream timeString;
+	timeString << std::setprecision(3) << time;
+	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeString.str(), Color(0, 1, 0), 2, 8, 12);
 }
 
 void SP2::Exit()
