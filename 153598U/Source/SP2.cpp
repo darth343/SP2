@@ -8,6 +8,7 @@
 #include "Application.h"
 #include "Camera2.h"
 #include "Utility.h"
+//#include "Shooting.h"
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -129,7 +130,7 @@ void SP2::Init()
 	meshList[GEO_TOP]->textureID = LoadTGA("Image//pink_planet_pos_z.tga");
 	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1));
 	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//pink_planet_neg_z.tga");
-	meshList[GEO_BULLET] = MeshBuilder::GenerateCube("bullet", Color(1, 1, 1));
+	meshList[GEO_BULLET] = MeshBuilder::GenerateCube("bullet", Color(0, 1, 0));
 	//GROUND
 	meshList[GEO_GROUND] = MeshBuilder::GenerateGround("ground", Color(0.2, 0.2, 0.2));
 	meshList[GEO_GROUND]->textureID = LoadTGA("Image//sand.tga");
@@ -509,7 +510,12 @@ void SP2::Init()
 	// Enable blendings
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	enemy temp;
+	temp.health = 100;
+	meshList[GEO_ENEMY] = MeshBuilder::GenerateOBJ("apple", "OBJ//customer.obj");
+	temp.EnemyMesh = meshList[GEO_ENEMY];
+	temp.EnemyMesh->position = Vector3(0, 5, -496);
+	mobs.push_back(temp);
 }
 
 void SP2::Update(double dt)
@@ -527,86 +533,37 @@ void SP2::Update(double dt)
 	//Movement(dt);
 	Vector3 bulletSpeed = (0.1, 0.1, 0.1);
 	//bullet = camera.view;
-	if (Application::IsKeyPressed(VK_LBUTTON) && time > delay)
-	{
-		temp.Position = camera.position;
-		temp.start = temp.Position;
-		temp.trajectory = camera.view.Normalized();
-		temp.object = Shooting(dt);
-		bullets.push_back(temp);
-		delay = time + 0.1;
-	}
-	float bulletspeed = 0.5;
-	for (amtBullet = 0; amtBullet < bullets.size(); amtBullet++)
-	{
-		
-		bullets[amtBullet].Position.x += bullets[amtBullet].trajectory.Normalized().x * bulletspeed;
-		bullets[amtBullet].Position.y += bullets[amtBullet].trajectory.Normalized().y * bulletspeed;
-		bullets[amtBullet].Position.z += bullets[amtBullet].trajectory.Normalized().z * bulletspeed;
-		//cout << bullets[0].Position << endl;
-		if (bullets[amtBullet].object)
-		{
-			int offset = 10;
-			if ((bullets[amtBullet].Position.x > bullets[amtBullet].object->min->x - offset && bullets[amtBullet].Position.x < bullets[amtBullet].object->max->x + offset) &&
-				(bullets[amtBullet].Position.y > bullets[amtBullet].object->min->y - offset&& bullets[amtBullet].Position.x < bullets[amtBullet].object->max->y + offset) &&
-				(bullets[amtBullet].Position.z > bullets[amtBullet].object->min->z - offset&& bullets[amtBullet].Position.x < bullets[amtBullet].object->max->z + offset)
-				)
-			{
-				cout << "hit" << endl;
-				bullets[amtBullet].object->health -= 10;
-				if (bullets[amtBullet].object->health <= 0)
-				{
-					objectDied = true;
-					bullets[amtBullet].object->health = 0;
-				}
-				bullets.erase(bullets.begin() + amtBullet);
-			}
-		}
-		else
-		{
-			if (Vector3(bullets[amtBullet].Position - bullets[amtBullet].start).Length() >= 100)
-			{
-				bullets.erase(bullets.begin() + amtBullet);
-			}
-		}
-	}
 
+	cout << mobs[0].health << endl;
 	CharacMovement(dt);
-
-	object = Interaction(dt);
+	shoot.ShootingBullets(camera, dt, time, meshList);
+	shoot.bulletHitDetection(mobs, dt, camera);
+	/*if (right)
+	{
+		rightoffset += 0.01;
+		mobs[0].EnemyMesh->position.x += rightoffset;
+		if (rightoffset > 0.4)
+		{
+			rightoffset = 0;
+			right = false;
+		}
+	}
+	else
+	{
+		rightoffset -= 0.01;
+		mobs[0].EnemyMesh->position.x += rightoffset;
+		if (rightoffset < -0.4)
+		{
+			rightoffset = 0;
+			right = true;
+		}
+	}
+*/
+	/*mobs[0].EnemyMesh->position.x + rightoffset;*/
 }
 
-Mesh* SP2::Shooting(double dt)
-{
-	float range = 1000;
-	float offset = 0.5;
+// bad shooting*/ // mesh shooting
 
-	for (Vector3 temp = camera.view*0.001; temp.Length() <= range; temp += camera.view.Normalized())
-	{
-		for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
-		{
-			if (meshList[i]->min != nullptr || meshList[i]->max != nullptr)
-			{
-				if ((temp.x + camera.position.x <= meshList[i]->max->x + meshList[i]->position.x + offset && temp.x + camera.position.x >= meshList[i]->min->x + meshList[i]->position.x - offset)
-					&& (temp.y + camera.position.y <= meshList[i]->max->y + meshList[i]->position.y + offset && temp.y + camera.position.y >= meshList[i]->min->y + meshList[i]->position.y - offset)
-					&& (temp.z + camera.position.z <= meshList[i]->max->z + meshList[i]->position.z + offset && temp.z + camera.position.z >= meshList[i]->min->z + meshList[i]->position.z - offset))
-				{
-					if (meshList[i]->shootable == false)
-					{
-						return nullptr;
-						break;
-					}
-					else
-					{
-						return meshList[i];
-						break;
-					}
-				}
-			}
-		}
-	}
-	return nullptr;
-}// bad shooting*/ // mesh shooting
 Mesh* SP2::Interaction(double dt)
 {
 	float range = 20;
@@ -1184,7 +1141,6 @@ void SP2::CharacMovement(double dt)
 				camera.position.z += camera.right.Normalized().z * dt * speed;
 		}
 	}
-	cout << camera.position.y << endl;
 	if (Application::IsKeyPressed(VK_SPACE))
 	{
 		if (camera.position.y + camera.position.Normalized().y * dt * speed + 1 < 498 && camera.position.y + camera.position.Normalized().y * dt * speed - 1 > -498)
@@ -1218,7 +1174,6 @@ void SP2::CharacMovement(double dt)
 			}
 			if (move)
 			{
-				cout << "jump" << endl;
 				camera.position.y += dt * speed/2;
 			}
 		}
@@ -1522,25 +1477,36 @@ void SP2::Render()
 			meshList[i]->light = true;
 		}
 	}*/
+	//Enemy Rendering
+	for (int i = 0; i < mobs.size(); i++)
+	{
+		if (mobs[i].health > 0)
+		{
+			modelStack.PushMatrix();
+			//modelStack.Scale(10, 10, 10);
+			modelStack.Translate(mobs[i].EnemyMesh->position.x, mobs[i].EnemyMesh->position.y, mobs[i].EnemyMesh->position.z);
+			RenderMesh(mobs[i].EnemyMesh, false);
+			modelStack.PopMatrix();
+		}
 
+	}
 	//Ground
 	modelStack.PushMatrix();
 	modelStack.Scale(1500, 1500, 1500);
 	RenderMesh(meshList[GEO_GROUND], true);
 	modelStack.PopMatrix();
+	
 
-	if (bullets.size() != NULL)
-	{
-		for (int a = 0; a <bullets.size(); a++)
+		for (int a = 0; a <shoot.bullets.size(); a++)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(bullets[a].Position.x, bullets[a].Position.y, bullets[a].Position.z);
-			modelStack.Scale(0.1, 0.1,0.1);
+			modelStack.Translate(shoot.bullets[a].Position.x, shoot.bullets[a].Position.y, shoot.bullets[a].Position.z);
+			modelStack.Scale(0.5, 0.5,0.5);
 			RenderMesh(meshList[GEO_BULLET], true);
 			modelStack.PopMatrix();
 		}
 
-	}
+	
 	//Arun's Wall
 	//STARTLINE
 	modelStack.PushMatrix();
@@ -2007,10 +1973,10 @@ void SP2::Render()
 		RenderOBJonScreen(meshList[GEO_FUEL5], 4, 7, 45, 4.8);
 		modelStack.PopMatrix();
 	}
-	if (object &&objectDied==false)
+	if ( shoot.object && shoot.objectDied==false)
 	{
 		std::ostringstream enemyHp;
-	//	enemyHp << std::setprecision(3) << bullets[0t].object->health;
+	//	enemyHp << std::setprecision(3) <<	 shoot.object->health;
 		RenderTextOnScreen(meshList[GEO_ENEMYHEALTHDISPLAY], "Enemy HP: ", Color(0, 1, 0), 2, 25, 10);
 	RenderTextOnScreen(meshList[GEO_ENEMYHEALTHDISPLAY],enemyHp.str(), Color(1, 1, 1), 2, 37, 10);
 	}

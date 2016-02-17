@@ -8,20 +8,16 @@
 #include "MatrixStack.h"
 #include "Light.h"
 #include "timer.h"
+#include "Shooting.h"
+#include "Enemy.h"
 #include <map>
 #include <Vector>
 using std::vector;
 using std::string;
 class SP2 : public Scene
 {
-	struct TestBullet
-	{
-		Vector3 Position;
-		Vector3 start;
-		Vector3 trajectory;
-		Mesh * object;
-	};
-	enum GEOMETRY_TYPE
+public:
+	static enum GEOMETRY_TYPE
 	{
 		GEO_AXES,
 		GEO_FRONT,
@@ -144,6 +140,8 @@ class SP2 : public Scene
 		GEO_THICK1,
 		GEO_THICK2,
 		//Wall(Thick)End
+
+		GEO_ENEMY,
 		GEO_TEXT,
 
 		NUM_GEOMETRY,
@@ -184,15 +182,17 @@ class SP2 : public Scene
 
 		U_TOTAL,
 	};
-public:
 	SP2();
 	~SP2();
-
 	virtual void Init();
 	virtual void Update(double dt);
 	virtual void Render();
 	virtual void Exit();
-private:
+	//Mesh* Shootable(double dt);
+	float time = 0;
+	Mesh* meshList[NUM_GEOMETRY];
+	Shooting shoot;
+
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	void RenderSkybox(Vector3 position);
 	void RenderText(Mesh* mesh, std::string text, Color color);
@@ -201,34 +201,27 @@ private:
 	void Movement(double dt);
 	void CharacMovement(double dt);
 	Mesh* Interaction(double dt);
-	Mesh* Shooting(double dt);
 
-	unsigned m_vertexArrayID;
-	Mesh*  meshList[NUM_GEOMETRY];
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
-	int amtBullet=0;
-	TestBullet temp;
-	TestBullet tempMag;
-	vector<TestBullet> bullets;
+	unsigned m_vertexArrayID;
+	
 	float gravity = 10;
 	float rotateAngle;
 	float fps;
-	Camera5 camera;
 	MS modelStack, viewStack, projectionStack;
 	Light light[4];
-	Mesh * object;
+	//Mesh * object;
 	float trans = 0;
 	int healthPoints=100;
-	vector<int> Health;
-	vector<int> objectIDAll;
-	string timeDisplay="Time : ";
-	float time = 0;
-	float delay = 0;
+	vector<enemy> mobs;
+	string timeDisplay = "Time : ";
 	int fuel = 100;
 	string jetfuelDisplay = "Jet Fuel: ";
-	bool shot=false ; // when object get shot
-	bool objectDied = false;//when object is dead
+	Camera5 camera;
+	float rightoffset = 0;
+	bool right = false;
+
 };
 
 #endif
