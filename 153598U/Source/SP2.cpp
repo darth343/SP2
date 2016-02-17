@@ -1184,6 +1184,7 @@ void SP2::CharacMovement(double dt)
 				camera.position.z += camera.right.Normalized().z * dt * speed;
 		}
 	}
+
 	cout << camera.position.y << endl;
 	if (Application::IsKeyPressed(VK_SPACE))
 	{
@@ -1197,12 +1198,12 @@ void SP2::CharacMovement(double dt)
 					if (camera.position.y + camera.position.Normalized().y * dt * speed < meshList[i]->min->y ||
 						camera.position.y + camera.position.Normalized().y * dt * speed > meshList[i]->max->y ||
 						camera.position.x < meshList[i]->min->x + meshList[i]->position.x ||
-						camera.position.x < meshList[i]->max->x + meshList[i]->position.x ||
+						camera.position.x > meshList[i]->max->x + meshList[i]->position.x ||
 						camera.position.z < meshList[i]->min->z + meshList[i]->position.z ||
-						camera.position.z < meshList[i]->max->z + meshList[i]->position.z
+						camera.position.z > meshList[i]->max->z + meshList[i]->position.z
 						)
 					{
-
+						
 						move = true;
 					}
 					else
@@ -1218,7 +1219,6 @@ void SP2::CharacMovement(double dt)
 			}
 			if (move)
 			{
-				cout << "jump" << endl;
 				camera.position.y += dt * speed/2;
 			}
 		}
@@ -1236,7 +1236,7 @@ void SP2::CharacMovement(double dt)
 					camera.position.z < meshList[i]->position.z + meshList[i]->max->z - offset + 3.8
 					)
 				{
-					if (camera.position.y - 5 - gravity > meshList[i]->position.y + meshList[i]->max->y)
+					if (camera.position.y - 6 - gravity > meshList[i]->position.y + meshList[i]->max->y)
 					{
 						fall = true;
 					}
