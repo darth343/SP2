@@ -31,6 +31,7 @@ class SP2 : public Scene
 		GEO_BOTTOM,
 		GEO_BACK,
 		GEO_GROUND,
+		GEO_SHIPFLOOR,
 		GEO_TIMEDISPLAY,
 		GEO_TIME,
 		GEO_FUEL1,
@@ -120,12 +121,21 @@ class SP2 : public Scene
 		GEO_BLOCK8,
 		GEO_BLOCK9,
 		GEO_BLOCK10,
+		GEO_BLOCK11,
+		GEO_BLOCK12,
+		GEO_BLOCK13,
+		GEO_BLOCK14,
+		GEO_BLOCK17,
+		GEO_BLOCK18,
 		//BlocksEnd
 
 		//Wall(Thin)
 		GEO_THIN1,
 		GEO_THIN2,
 		GEO_THIN3,
+		GEO_THIN4,
+		GEO_THIN5,
+		GEO_THIN6,
 		//Wall(Thin)End
 
 		//Wall(Thin)2
@@ -138,6 +148,9 @@ class SP2 : public Scene
 		GEO_THINz7,
 		GEO_THINz8,
 		GEO_THINz9,
+		GEO_THINz10,
+		GEO_THINz11,
+		GEO_THINz12,
 		//Wall(Thin)2End
 
 		//Wall(Thick)

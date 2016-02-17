@@ -134,6 +134,11 @@ void SP2::Init()
 	meshList[GEO_GROUND] = MeshBuilder::GenerateGround("ground", Color(0.2, 0.2, 0.2));
 	meshList[GEO_GROUND]->textureID = LoadTGA("Image//sand.tga");
 
+	meshList[GEO_SHIPFLOOR] = MeshBuilder::GenerateOBJ("Floor", "OBJ//ShipFloor.obj");
+	meshList[GEO_SHIPFLOOR]->textureID = LoadTGA("Image//ShipFloor.tga");
+	meshList[GEO_SHIPFLOOR]->position.Set(0, -1, 0);
+	meshList[GEO_SHIPFLOOR]->interactable = true;
+
 	//Arun's Wall
 	//meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("Model 1", "OBJ//wall.obj");
 	meshList[GEO_FUEL1] = MeshBuilder::GenerateQuad("fuel1", Color(0.8, 0, 0));
@@ -435,6 +440,30 @@ void SP2::Init()
 	meshList[GEO_BLOCK10]->position.Set(0, 3, 80);
 	meshList[GEO_BLOCK10]->interactable = true;
 
+	meshList[GEO_BLOCK11] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
+	meshList[GEO_BLOCK11]->position.Set(15, 3, 120);
+	meshList[GEO_BLOCK11]->interactable = true;
+
+	meshList[GEO_BLOCK12] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
+	meshList[GEO_BLOCK12]->position.Set(-15, 3, 120);
+	meshList[GEO_BLOCK12]->interactable = true;
+
+	meshList[GEO_BLOCK13] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
+	meshList[GEO_BLOCK13]->position.Set(0, 3, 140);
+	meshList[GEO_BLOCK13]->interactable = true;
+
+	meshList[GEO_BLOCK14] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
+	meshList[GEO_BLOCK14]->position.Set(0, 3, 190);
+	meshList[GEO_BLOCK14]->interactable = true;
+
+	meshList[GEO_BLOCK17] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
+	meshList[GEO_BLOCK17]->position.Set(10, 3, 450);
+	meshList[GEO_BLOCK17]->interactable = true;
+
+	meshList[GEO_BLOCK18] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
+	meshList[GEO_BLOCK18]->position.Set(-10, 3, 450);
+	meshList[GEO_BLOCK18]->interactable = true;
+
 	//Wall(Thin)
 	meshList[GEO_THIN1] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin).obj");
 	meshList[GEO_THIN1]->position.Set(0, 3, -350);
@@ -447,6 +476,18 @@ void SP2::Init()
 	meshList[GEO_THIN3] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin).obj");
 	meshList[GEO_THIN3]->position.Set(0, 3, 40);
 	meshList[GEO_THIN3]->interactable = true;
+
+	meshList[GEO_THIN4] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin).obj");
+	meshList[GEO_THIN4]->position.Set(0, 3, 230);
+	meshList[GEO_THIN4]->interactable = true;
+
+	meshList[GEO_THIN5] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin).obj");
+	meshList[GEO_THIN5]->position.Set(0, 3, 330);
+	meshList[GEO_THIN5]->interactable = true;
+
+	meshList[GEO_THIN6] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin).obj");
+	meshList[GEO_THIN6]->position.Set(0, 3, 400);
+	meshList[GEO_THIN6]->interactable = true;
 
 	//Wall(Thin)2
 	meshList[GEO_THINz1] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin)2.obj");
@@ -485,6 +526,17 @@ void SP2::Init()
 	meshList[GEO_THINz9]->position.Set(-10, 3, 80);
 	meshList[GEO_THINz9]->interactable = true;
 
+	meshList[GEO_THINz10] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin)2.obj");
+	meshList[GEO_THINz10]->position.Set(15, 3, 150);
+	meshList[GEO_THINz10]->interactable = true;
+
+	meshList[GEO_THINz11] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin)2.obj");
+	meshList[GEO_THINz11]->position.Set(-15, 3, 150);
+	meshList[GEO_THINz11]->interactable = true;
+
+	meshList[GEO_THINz12] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin)2.obj");
+	meshList[GEO_THINz12]->position.Set(0, 3, 160);
+	meshList[GEO_THINz12]->interactable = true;
 
 	//Wall(Thick)
 	meshList[GEO_THICK1] = MeshBuilder::GenerateOBJ("Wall(Thick)", "OBJ//Wall(Thick).obj");
@@ -1524,10 +1576,10 @@ void SP2::Render()
 	}*/
 
 	//Ground
-	modelStack.PushMatrix();
+	/*modelStack.PushMatrix();
 	modelStack.Scale(1500, 1500, 1500);
 	RenderMesh(meshList[GEO_GROUND], true);
-	modelStack.PopMatrix();
+	modelStack.PopMatrix();*/
 
 	if (bullets.size() != NULL)
 	{
@@ -1542,6 +1594,13 @@ void SP2::Render()
 
 	}
 	//Arun's Wall
+
+	//FloorShip
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_SHIPFLOOR]->position.x, meshList[GEO_SHIPFLOOR]->position.y, meshList[GEO_SHIPFLOOR]->position.z);
+	RenderMesh(meshList[GEO_SHIPFLOOR], true);
+	modelStack.PopMatrix();
+
 	//STARTLINE
 	modelStack.PushMatrix();
 	modelStack.Scale(40, 10, 5);
@@ -1892,7 +1951,25 @@ void SP2::Render()
 	RenderMesh(meshList[GEO_BLOCK10], meshList[GEO_BLOCK10]->light);
 	modelStack.PopMatrix();
 
-	
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_BLOCK11]->position.x, meshList[GEO_BLOCK11]->position.y, meshList[GEO_BLOCK11]->position.z);
+	RenderMesh(meshList[GEO_BLOCK11], meshList[GEO_BLOCK11]->light);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_BLOCK12]->position.x, meshList[GEO_BLOCK12]->position.y, meshList[GEO_BLOCK12]->position.z);
+	RenderMesh(meshList[GEO_BLOCK12], meshList[GEO_BLOCK12]->light);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_BLOCK13]->position.x, meshList[GEO_BLOCK13]->position.y, meshList[GEO_BLOCK13]->position.z);
+	RenderMesh(meshList[GEO_BLOCK13], meshList[GEO_BLOCK13]->light);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_BLOCK14]->position.x, meshList[GEO_BLOCK14]->position.y, meshList[GEO_BLOCK14]->position.z);
+	RenderMesh(meshList[GEO_BLOCK14], meshList[GEO_BLOCK14]->light);
+	modelStack.PopMatrix();
 
 	//Wall(Thin)
 	modelStack.PushMatrix();
@@ -1908,6 +1985,16 @@ void SP2::Render()
 	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_THIN3]->position.x, meshList[GEO_THIN3]->position.y, meshList[GEO_THIN3]->position.z);
 	RenderMesh(meshList[GEO_THIN3], meshList[GEO_THIN3]->light);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_THIN4]->position.x, meshList[GEO_THIN4]->position.y, meshList[GEO_THIN4]->position.z);
+	RenderMesh(meshList[GEO_THIN4], meshList[GEO_THIN4]->light);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_THIN5]->position.x, meshList[GEO_THIN5]->position.y, meshList[GEO_THIN5]->position.z);
+	RenderMesh(meshList[GEO_THIN5], meshList[GEO_THIN5]->light);
 	modelStack.PopMatrix();
 
 	//Wall(Thin)2
@@ -1954,6 +2041,21 @@ void SP2::Render()
 	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_THINz9]->position.x, meshList[GEO_THINz9]->position.y, meshList[GEO_THINz9]->position.z);
 	RenderMesh(meshList[GEO_THINz9], meshList[GEO_THINz9]->light);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_THINz10]->position.x, meshList[GEO_THINz10]->position.y, meshList[GEO_THINz10]->position.z);
+	RenderMesh(meshList[GEO_THINz10], meshList[GEO_THINz10]->light);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_THINz11]->position.x, meshList[GEO_THINz11]->position.y, meshList[GEO_THINz11]->position.z);
+	RenderMesh(meshList[GEO_THINz11], meshList[GEO_THINz11]->light);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_THINz12]->position.x, meshList[GEO_THINz12]->position.y, meshList[GEO_THINz12]->position.z);
+	RenderMesh(meshList[GEO_THINz12], meshList[GEO_THINz12]->light);
 	modelStack.PopMatrix();
 
 	//Wall(Thick)
