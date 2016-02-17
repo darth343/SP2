@@ -543,7 +543,6 @@ void SP2::Update(double dt)
 		bullets[amtBullet].Position.x += bullets[amtBullet].trajectory.Normalized().x * bulletspeed;
 		bullets[amtBullet].Position.y += bullets[amtBullet].trajectory.Normalized().y * bulletspeed;
 		bullets[amtBullet].Position.z += bullets[amtBullet].trajectory.Normalized().z * bulletspeed;
-		//cout << bullets[0].Position << endl;
 		if (bullets[amtBullet].object)
 		{
 			int offset = 10;
@@ -552,7 +551,6 @@ void SP2::Update(double dt)
 				(bullets[amtBullet].Position.z > bullets[amtBullet].object->min->z - offset&& bullets[amtBullet].Position.x < bullets[amtBullet].object->max->z + offset)
 				)
 			{
-				cout << "hit" << endl;
 				bullets[amtBullet].object->health -= 10;
 				if (bullets[amtBullet].object->health <= 0)
 				{
@@ -1185,7 +1183,6 @@ void SP2::CharacMovement(double dt)
 		}
 	}
 
-	cout << camera.position.y << endl;
 	if (Application::IsKeyPressed(VK_SPACE))
 	{
 		if (camera.position.y + camera.position.Normalized().y * dt * speed + 1 < 498 && camera.position.y + camera.position.Normalized().y * dt * speed - 1 > -498)
@@ -1220,6 +1217,7 @@ void SP2::CharacMovement(double dt)
 			if (move)
 			{
 				camera.position.y += dt * speed/2;
+				gravity = 10 * dt;
 			}
 		}
 	}
