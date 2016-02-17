@@ -1,0 +1,22 @@
+#ifndef FLYINGCLASS_H
+#define FLYINGCLASS_H
+#include "Camera5.h"
+#include "Mesh.h"
+
+class Flying
+{
+public:
+	Flying();
+	~Flying();
+	void Fly(double dt, Camera5 &camera, Mesh ** meshList);
+	float getFuel() { return fuel; };
+	float getStatus() { return activated; };
+
+private:
+	bool activated;
+	float fuel;
+	float speed;
+	float gravity;
+};
+
+#endif

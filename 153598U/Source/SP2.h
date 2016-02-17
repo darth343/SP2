@@ -10,10 +10,12 @@
 #include "timer.h"
 #include <map>
 #include <Vector>
+#include "FlyingClass.h"
 using std::vector;
 using std::string;
 class SP2 : public Scene
 {
+public:
 	struct TestBullet
 	{
 		Vector3 Position;
@@ -21,7 +23,7 @@ class SP2 : public Scene
 		Vector3 trajectory;
 		Mesh * object;
 	};
-	enum GEOMETRY_TYPE
+	static enum GEOMETRY_TYPE
 	{
 		GEO_AXES,
 		GEO_FRONT,
@@ -197,7 +199,6 @@ class SP2 : public Scene
 
 		U_TOTAL,
 	};
-public:
 	SP2();
 	~SP2();
 
@@ -224,7 +225,6 @@ private:
 	TestBullet temp;
 	TestBullet tempMag;
 	vector<TestBullet> bullets;
-	float gravity = 10;
 	float rotateAngle;
 	float fps;
 	Camera5 camera;
@@ -238,10 +238,10 @@ private:
 	string timeDisplay="Time : ";
 	float time = 0;
 	float delay = 0;
-	int fuel = 100;
 	string jetfuelDisplay = "Jet Fuel: ";
 	bool shot=false ; // when object get shot
 	bool objectDied = false;//when object is dead
+	Flying jetPack;
 };
 
 #endif
