@@ -497,15 +497,15 @@ void SP2::Init()
 
 	//TEXT
 	meshList[GEO_TIMEDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TIMEDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_TIMEDISPLAY]->textureID = LoadTGA("Image//Impact.tga");
 	meshList[GEO_JETPACKUI] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_JETPACKUI]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_JETPACKUI]->textureID = LoadTGA("Image//Impact.tga");
 	meshList[GEO_TIME] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TIME]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_TIME]->textureID = LoadTGA("Image//Impact.tga");
 	meshList[GEO_ENEMYHEALTH] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_ENEMYHEALTH]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_ENEMYHEALTH]->textureID = LoadTGA("Image//Impact.tga");
 	meshList[GEO_ENEMYHEALTHDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_ENEMYHEALTHDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_ENEMYHEALTHDISPLAY]->textureID = LoadTGA("Image//Impact.tga");
 	// Enable blendings
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

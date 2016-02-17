@@ -15,6 +15,7 @@ public:
 	void ClearOpenList() { m_openList.clear(); };
 	void ClearVisitedList() { m_visitedList.clear(); };
 	void ClearPathToGoal() { m_pathToGoal.clear(); };
+	void ContinuePath();
 	bool m_initializedStartGoal;
 	bool m_found;
 private:

@@ -45,7 +45,7 @@ void PathFinding::FindPath(Vector3 currentPos, Vector3 targetPos)
 	}
 	if (m_initializedStartGoal)
 	{
-		//ContinuePath();
+		ContinuePath();
 	}
 }
 
@@ -88,20 +88,65 @@ Node * PathFinding::getNextCell()
 
 void PathFinding::PathOpened(int x, int z, float newCost, Node * parent)
 {
-	//int id = z  * Node::WORLD_SIZE + x;
-	//for (int i = 0; i < m_visitedList.size(); i++)
-	//{
-	//	if (id == m_visitedList[i]->m_id)
-	//	{
-	//		return;
-	//	}
-	//}
+	int id = z  * Node::WORLD_SIZE + x;
+	for (int i = 0; i < m_visitedList.size(); i++)
+	{
+		if (id == m_visitedList[i]->m_id)
+		{
+			return;
+		}
+	}
 
-	//Node * newChild = new Node(x, z, parent);
-	//newChild->G = newCost;
-	//newChild->H = parent->Distance(m_goal);
+	Node * newChild = new Node(x, z, parent);
+	newChild->G = newCost;
+	newChild->H = parent->Distance(m_goal);
 
-	//for (int i = 0; i < m_openList.size(); i++)
-	//{
-	//}
+	for (int i = 0; i < m_openList.size(); i++)
+	{
+		if (id == m_openList[i]->m_id)
+		{
+			float newF = newChild->G + newCost + m_openList[i]->H;
+			if (m_openList[i]->getF() > newF) // if F is smaller than current node's f
+			{
+				m_openList[i]->G = newChild->G + newCost;
+				m_openList[i]->parent = newChild;
+			}
+			else // if F is not better
+			{
+				delete newChild;
+				return;
+			}
+		}
+	}
+	m_openList.push_back(newChild);
 }
+
+void PathFinding::ContinuePath()
+{
+	if (m_openList.empty())
+	{
+		return;
+	}
+
+	Node * currentNode = getNextCell();
+
+	if (currentNode->m_id == m_goal->m_id)
+	{
+		m_goal->parent = currentNode->parent;
+		Node * getPath;
+
+		for (getPath = m_goal; getPath != NULL; getPath = getPath->parent)
+		{
+			m_pathToGoal.push_back(new Vector3(getPath->m_X, 0, getPath->m_Z));
+		}
+
+		m_found = true;
+		return;
+	}
+	else
+	{
+		//rightCell
+		PathOpened(currentNode->m_X + 1, currentNode->m_Z,currentNode->G + 1 ,currentNode);
+	}
+}
+
