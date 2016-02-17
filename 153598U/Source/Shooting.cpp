@@ -25,8 +25,6 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 		temp.trajectory = camera.view.Normalized();
 		bullets.push_back(temp);
 		delay = time + 0.1;
-		//cout << "BULLET SIZE: " << bullets.size() << endl;
-		
 	}
 	if (bullets.size() > 0)
 	{
@@ -35,7 +33,6 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 			bullets[i].Position.x += bullets[i].trajectory.Normalized().x * bulletspeed;
 			bullets[i].Position.y += bullets[i].trajectory.Normalized().y * bulletspeed;
 			bullets[i].Position.z += bullets[i].trajectory.Normalized().z * bulletspeed;
-			//	bulletHitDetection(meshList, object, dt,camera);
 		}
 	}
 }
@@ -59,7 +56,6 @@ void Shooting::bulletHitDetection(vector<enemy> &mobs, double dt, Camera5 camera
 			for (int i = 0; i < mobs.size(); i++)
 			{
 				if (mobs[i].EnemyMesh->min != nullptr || mobs[i].EnemyMesh->max != nullptr){
-					//cout << "hit" << endl;
 
 					int offset = 0.5;
 					if ((bullets[a].Position.x >mobs[i].EnemyMesh->min->x + mobs[i].EnemyMesh->position.x - offset && bullets[a].Position.x < mobs[i].EnemyMesh->max->x + mobs[i].EnemyMesh->position.x + offset) &&
@@ -67,16 +63,7 @@ void Shooting::bulletHitDetection(vector<enemy> &mobs, double dt, Camera5 camera
 						(bullets[a].Position.z >mobs[i].EnemyMesh->min->z + mobs[i].EnemyMesh->position.z - offset&& bullets[a].Position.z < mobs[i].EnemyMesh->max->z + mobs[i].EnemyMesh->position.z + offset)
 						)
 					{
-						//mobs[i].EnemyMesh->health -= 10;
-						//if (meshList[i]->health <= 0)
-						//{
-						//	objectDied = true;
-						//	meshList[i]->health = 0;
-						//}
-						//bullets.erase(bullets.begin() + a);
-						//cout << bullets.size() << endl ;
 						mobs[i].health -= 10;
-						//cout << "HIT" << endl;
 						bullets.erase(bullets.begin() + a);
 						break;
 					}

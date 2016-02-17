@@ -12,6 +12,7 @@
 #include "Enemy.h"
 #include <map>
 #include <Vector>
+#include "FlyingClass.h"
 using std::vector;
 using std::string;
 class SP2 : public Scene
@@ -27,6 +28,7 @@ public:
 		GEO_BOTTOM,
 		GEO_BACK,
 		GEO_GROUND,
+		GEO_SHIPFLOOR,
 		GEO_TIMEDISPLAY,
 		GEO_TIME,
 		GEO_FUEL1,
@@ -116,12 +118,21 @@ public:
 		GEO_BLOCK8,
 		GEO_BLOCK9,
 		GEO_BLOCK10,
+		GEO_BLOCK11,
+		GEO_BLOCK12,
+		GEO_BLOCK13,
+		GEO_BLOCK14,
+		GEO_BLOCK17,
+		GEO_BLOCK18,
 		//BlocksEnd
 
 		//Wall(Thin)
 		GEO_THIN1,
 		GEO_THIN2,
 		GEO_THIN3,
+		GEO_THIN4,
+		GEO_THIN5,
+		GEO_THIN6,
 		//Wall(Thin)End
 
 		//Wall(Thin)2
@@ -134,6 +145,9 @@ public:
 		GEO_THINz7,
 		GEO_THINz8,
 		GEO_THINz9,
+		GEO_THINz10,
+		GEO_THINz11,
+		GEO_THINz12,
 		//Wall(Thin)2End
 
 		//Wall(Thick)
@@ -189,10 +203,8 @@ public:
 	virtual void Render();
 	virtual void Exit();
 	//Mesh* Shootable(double dt);
-	float time = 0;
 	Mesh* meshList[NUM_GEOMETRY];
 	Shooting shoot;
-
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	void RenderSkybox(Vector3 position);
 	void RenderText(Mesh* mesh, std::string text, Color color);
@@ -212,16 +224,13 @@ public:
 	MS modelStack, viewStack, projectionStack;
 	Light light[4];
 	//Mesh * object;
-	float trans = 0;
-	int healthPoints=100;
 	vector<enemy> mobs;
-	string timeDisplay = "Time : ";
-	int fuel = 100;
-	string jetfuelDisplay = "Jet Fuel: ";
 	Camera5 camera;
-	float rightoffset = 0;
-	bool right = false;
-
+	string timeDisplay="Time : ";
+	float time = 0;
+	float delay = 0;
+	string jetfuelDisplay = "Jet Fuel: ";
+	Flying jetPack;
 };
 
 #endif
