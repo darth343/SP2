@@ -106,7 +106,6 @@ void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList)
 			{
 				activated = true;
 			}
-			cout << "Increasing fuel rate: " << fuel << endl;
 		}
 	}
 }

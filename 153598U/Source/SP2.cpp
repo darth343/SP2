@@ -129,10 +129,15 @@ void SP2::Init()
 	meshList[GEO_TOP]->textureID = LoadTGA("Image//pink_planet_pos_z.tga");
 	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1));
 	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//pink_planet_neg_z.tga");
-	meshList[GEO_BULLET] = MeshBuilder::GenerateCube("bullet", Color(1, 1, 1));
+	meshList[GEO_BULLET] = MeshBuilder::GenerateCube("bullet", Color(0, 1, 0));
 	//GROUND
 	meshList[GEO_GROUND] = MeshBuilder::GenerateGround("ground", Color(0.2, 0.2, 0.2));
 	meshList[GEO_GROUND]->textureID = LoadTGA("Image//sand.tga");
+
+	meshList[GEO_SHIPFLOOR] = MeshBuilder::GenerateOBJ("Floor", "OBJ//ship.obj");
+	meshList[GEO_SHIPFLOOR]->textureID = LoadTGA("Image//ShipFloor.tga");
+	meshList[GEO_SHIPFLOOR]->position.Set(0, -1, 0);
+	meshList[GEO_SHIPFLOOR]->interactable = true;
 
 	//Arun's Wall
 	//meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("Model 1", "OBJ//wall.obj");
@@ -439,6 +444,30 @@ void SP2::Init()
 	meshList[GEO_BLOCK10]->position.Set(0, 3, 80);
 	meshList[GEO_BLOCK10]->interactable = true;
 
+	meshList[GEO_BLOCK11] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
+	meshList[GEO_BLOCK11]->position.Set(15, 3, 120);
+	meshList[GEO_BLOCK11]->interactable = true;
+
+	meshList[GEO_BLOCK12] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
+	meshList[GEO_BLOCK12]->position.Set(-15, 3, 120);
+	meshList[GEO_BLOCK12]->interactable = true;
+
+	meshList[GEO_BLOCK13] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
+	meshList[GEO_BLOCK13]->position.Set(0, 3, 140);
+	meshList[GEO_BLOCK13]->interactable = true;
+
+	meshList[GEO_BLOCK14] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
+	meshList[GEO_BLOCK14]->position.Set(0, 3, 190);
+	meshList[GEO_BLOCK14]->interactable = true;
+
+	meshList[GEO_BLOCK17] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
+	meshList[GEO_BLOCK17]->position.Set(10, 3, 450);
+	meshList[GEO_BLOCK17]->interactable = true;
+
+	meshList[GEO_BLOCK18] = MeshBuilder::GenerateOBJ("Block", "OBJ//Block.obj");
+	meshList[GEO_BLOCK18]->position.Set(-10, 3, 450);
+	meshList[GEO_BLOCK18]->interactable = true;
+
 	//Wall(Thin)
 	meshList[GEO_THIN1] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin).obj");
 	meshList[GEO_THIN1]->position.Set(0, 3, -350);
@@ -451,6 +480,18 @@ void SP2::Init()
 	meshList[GEO_THIN3] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin).obj");
 	meshList[GEO_THIN3]->position.Set(0, 3, 40);
 	meshList[GEO_THIN3]->interactable = true;
+
+	meshList[GEO_THIN4] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin).obj");
+	meshList[GEO_THIN4]->position.Set(0, 3, 230);
+	meshList[GEO_THIN4]->interactable = true;
+
+	meshList[GEO_THIN5] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin).obj");
+	meshList[GEO_THIN5]->position.Set(0, 3, 330);
+	meshList[GEO_THIN5]->interactable = true;
+
+	meshList[GEO_THIN6] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin).obj");
+	meshList[GEO_THIN6]->position.Set(0, 3, 400);
+	meshList[GEO_THIN6]->interactable = true;
 
 	//Wall(Thin)2
 	meshList[GEO_THINz1] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin)2.obj");
@@ -489,6 +530,17 @@ void SP2::Init()
 	meshList[GEO_THINz9]->position.Set(-10, 3, 80);
 	meshList[GEO_THINz9]->interactable = true;
 
+	meshList[GEO_THINz10] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin)2.obj");
+	meshList[GEO_THINz10]->position.Set(15, 3, 150);
+	meshList[GEO_THINz10]->interactable = true;
+
+	meshList[GEO_THINz11] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin)2.obj");
+	meshList[GEO_THINz11]->position.Set(-15, 3, 150);
+	meshList[GEO_THINz11]->interactable = true;
+
+	meshList[GEO_THINz12] = MeshBuilder::GenerateOBJ("Wall(Thin)", "OBJ//Wall(Thin)2.obj");
+	meshList[GEO_THINz12]->position.Set(0, 3, 160);
+	meshList[GEO_THINz12]->interactable = true;
 
 	//Wall(Thick)
 	meshList[GEO_THICK1] = MeshBuilder::GenerateOBJ("Wall(Thick)", "OBJ//Wall(Thick).obj");
@@ -500,16 +552,16 @@ void SP2::Init()
 	meshList[GEO_THICK2]->interactable = true;
 
 	//TEXT
-	meshList[GEO_TIMEDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TIMEDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_JETPACKUI] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_JETPACKUI]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_TIME] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TIME]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_ENEMYHEALTH] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_ENEMYHEALTH]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_ENEMYHEALTHDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_ENEMYHEALTHDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
+	//meshList[GEO_TIMEDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_TIMEDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
+	//meshList[GEO_JETPACKUI] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_JETPACKUI]->textureID = LoadTGA("Image//calibri.tga");
+	//meshList[GEO_TIME] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_TIME]->textureID = LoadTGA("Image//calibri.tga");
+	//meshList[GEO_ENEMYHEALTH] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_ENEMYHEALTH]->textureID = LoadTGA("Image//calibri.tga");
+	//meshList[GEO_ENEMYHEALTHDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_ENEMYHEALTHDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
 
@@ -519,105 +571,71 @@ void SP2::Init()
 	// Enable blendings
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	enemy temp;
+//	temp.health = 100;
+	meshList[GEO_ENEMY] = MeshBuilder::GenerateOBJ("apple", "OBJ//customer.obj");
+	////////////////////////////
+	//        Head          //
+	//////////////////////////
+	//for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+	//{ 
+	//temp.enemyMesh = meshList[i]; 
+	//	mobs.push_back(temp); 
+	//}
+	//temp.enemyMesh->position = Vector3(0, 5, -496);
+	
 
 	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
-
-
+	shoot.Gun.delayMultiplier = 0.3;
+	shoot.Gun.semiAuto = false;
+	shoot.Gun.stopFiring = false;
+	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
 }
 
 void SP2::Update(double dt)
 {
 	if (Application::IsKeyPressed('1')) //enable back face culling
-		glEnable(GL_CULL_FACE);
+		//	glEnable(GL_CULL_FACE);
+	{
+		shoot.Gun.delayMultiplier = 0.5;
+		shoot.Gun.semiAuto = false;
+	}
 	if (Application::IsKeyPressed('2')) //disable back face cullings
-		glDisable(GL_CULL_FACE);
+		//glDisable(GL_CULL_FACE);
+	{
+		shoot.Gun.semiAuto = true;
+		shoot.Gun.delayMultiplier = 0.4;
+		cout << "Semi Auto mode" << endl;
+	}
 	if (Application::IsKeyPressed('3'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
 	if (Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+	
+	//Gun.stopFiring = false;
+//	Gun.shotOne = false;
 	time += dt;
 	camera.Update(dt);
+
 	//Movement(dt);
 	Vector3 bulletSpeed = (0.1, 0.1, 0.1);
 	//bullet = camera.view;
-	if (Application::IsKeyPressed(VK_LBUTTON) && time > delay)
-	{
-		temp.Position = camera.position;
-		temp.start = temp.Position;
-		temp.trajectory = camera.view.Normalized();
-		temp.object = Shooting(dt);
-		bullets.push_back(temp);
-		delay = time + 0.1;
-	}
-	float bulletspeed = 0.5;
-	for (amtBullet = 0; amtBullet < bullets.size(); amtBullet++)
-	{
+	CharacMovement(dt);	
+
+
 		
-		bullets[amtBullet].Position.x += bullets[amtBullet].trajectory.Normalized().x * bulletspeed;
-		bullets[amtBullet].Position.y += bullets[amtBullet].trajectory.Normalized().y * bulletspeed;
-		bullets[amtBullet].Position.z += bullets[amtBullet].trajectory.Normalized().z * bulletspeed;
-		if (bullets[amtBullet].object)
-		{
-			int offset = 10;
-			if ((bullets[amtBullet].Position.x > bullets[amtBullet].object->min->x - offset && bullets[amtBullet].Position.x < bullets[amtBullet].object->max->x + offset) &&
-				(bullets[amtBullet].Position.y > bullets[amtBullet].object->min->y - offset&& bullets[amtBullet].Position.x < bullets[amtBullet].object->max->y + offset) &&
-				(bullets[amtBullet].Position.z > bullets[amtBullet].object->min->z - offset&& bullets[amtBullet].Position.x < bullets[amtBullet].object->max->z + offset)
-				)
-			{
-				bullets[amtBullet].object->health -= 10;
-				if (bullets[amtBullet].object->health <= 0)
-				{
-					objectDied = true;
-					bullets[amtBullet].object->health = 0;
-				}
-				bullets.erase(bullets.begin() + amtBullet);
-			}
-		}
-		else
-		{
-			if (Vector3(bullets[amtBullet].Position - bullets[amtBullet].start).Length() >= 100)
-			{
-				bullets.erase(bullets.begin() + amtBullet);
-			}
-		}
-	}
+			//Gun.shotTwo = false;
+		//shoot.bulletHitDetection(mobs, dt, camera);
+		//object = shoot.Shootable(dt, camera, meshList, mobs);
+			
 
-	CharacMovement(dt);
-
-	object = Interaction(dt);
+	shoot.bulletHitDetection(mobs, dt, camera);		
+	shoot.ShootingBullets(camera, dt, time, meshList);
+	object = shoot.Shootable(dt, camera, meshList,mobs);
+	//Gun.stopFiring = true;
+	
 }
 
-Mesh* SP2::Shooting(double dt)
-{
-	float range = 1000;
-	float offset = 0.5;
-
-	for (Vector3 temp = camera.view*0.001; temp.Length() <= range; temp += camera.view.Normalized())
-	{
-		for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
-		{
-			if (meshList[i]->min != nullptr || meshList[i]->max != nullptr)
-			{
-				if ((temp.x + camera.position.x <= meshList[i]->max->x + meshList[i]->position.x + offset && temp.x + camera.position.x >= meshList[i]->min->x + meshList[i]->position.x - offset)
-					&& (temp.y + camera.position.y <= meshList[i]->max->y + meshList[i]->position.y + offset && temp.y + camera.position.y >= meshList[i]->min->y + meshList[i]->position.y - offset)
-					&& (temp.z + camera.position.z <= meshList[i]->max->z + meshList[i]->position.z + offset && temp.z + camera.position.z >= meshList[i]->min->z + meshList[i]->position.z - offset))
-				{
-					if (meshList[i]->shootable == false)
-					{
-						return nullptr;
-						break;
-					}
-					else
-					{
-						return meshList[i];
-						break;
-					}
-				}
-			}
-		}
-	}
-	return nullptr;
-}// bad shooting*/ // mesh shooting
 Mesh* SP2::Interaction(double dt)
 {
 	float range = 20;
@@ -1464,27 +1482,38 @@ void SP2::Render()
 			meshList[i]->light = true;
 		}
 	}*/
+	//Enemy Rendering
+	//for (int i = 0; i < mobs.size(); i++)
+	//{
+	//	if (mobs[i].enemyMesh->health  > 0)
+	//	{
+	//		modelStack.PushMatrix();
+	//		//modelStack.Scale(10, 10, 10);
+	//		modelStack.Translate(mobs[i].enemyMesh->position.x, mobs[i].enemyMesh->position.y, mobs[i].enemyMesh->position.z);
+	//		RenderMesh(mobs[i].enemyMesh, false);
+	//		modelStack.PopMatrix();
+	//	}
 
-	//Ground
-	modelStack.PushMatrix();
-	modelStack.Scale(1500, 1500, 1500);
-	RenderMesh(meshList[GEO_GROUND], true);
-	modelStack.PopMatrix();
+	//}
 
-	if (bullets.size() != NULL)
-	{
-		for (int a = 0; a <bullets.size(); a++)
+		for (int a = 0; a <shoot.bullets.size(); a++)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(bullets[a].Position.x, bullets[a].Position.y, bullets[a].Position.z);
-			modelStack.Scale(0.1, 0.1,0.1);
+			modelStack.Translate(shoot.bullets[a].Position.x, shoot.bullets[a].Position.y, shoot.bullets[a].Position.z);
+			modelStack.Scale(0.5, 0.5,0.5);
 			RenderMesh(meshList[GEO_BULLET], true);
 			modelStack.PopMatrix();
 		}
 
-	}
-
+	
 	//Arun's Wall
+
+	//FloorShip
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_SHIPFLOOR]->position.x, meshList[GEO_SHIPFLOOR]->position.y, meshList[GEO_SHIPFLOOR]->position.z);
+	RenderMesh(meshList[GEO_SHIPFLOOR], true);
+	modelStack.PopMatrix();
+
 	//STARTLINE
 	modelStack.PushMatrix();
 	modelStack.Scale(40, 10, 5);
@@ -1835,7 +1864,25 @@ void SP2::Render()
 	RenderMesh(meshList[GEO_BLOCK10], meshList[GEO_BLOCK10]->light);
 	modelStack.PopMatrix();
 
-	
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_BLOCK11]->position.x, meshList[GEO_BLOCK11]->position.y, meshList[GEO_BLOCK11]->position.z);
+	RenderMesh(meshList[GEO_BLOCK11], meshList[GEO_BLOCK11]->light);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_BLOCK12]->position.x, meshList[GEO_BLOCK12]->position.y, meshList[GEO_BLOCK12]->position.z);
+	RenderMesh(meshList[GEO_BLOCK12], meshList[GEO_BLOCK12]->light);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_BLOCK13]->position.x, meshList[GEO_BLOCK13]->position.y, meshList[GEO_BLOCK13]->position.z);
+	RenderMesh(meshList[GEO_BLOCK13], meshList[GEO_BLOCK13]->light);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_BLOCK14]->position.x, meshList[GEO_BLOCK14]->position.y, meshList[GEO_BLOCK14]->position.z);
+	RenderMesh(meshList[GEO_BLOCK14], meshList[GEO_BLOCK14]->light);
+	modelStack.PopMatrix();
 
 	//Wall(Thin)
 	modelStack.PushMatrix();
@@ -1851,6 +1898,16 @@ void SP2::Render()
 	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_THIN3]->position.x, meshList[GEO_THIN3]->position.y, meshList[GEO_THIN3]->position.z);
 	RenderMesh(meshList[GEO_THIN3], meshList[GEO_THIN3]->light);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_THIN4]->position.x, meshList[GEO_THIN4]->position.y, meshList[GEO_THIN4]->position.z);
+	RenderMesh(meshList[GEO_THIN4], meshList[GEO_THIN4]->light);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_THIN5]->position.x, meshList[GEO_THIN5]->position.y, meshList[GEO_THIN5]->position.z);
+	RenderMesh(meshList[GEO_THIN5], meshList[GEO_THIN5]->light);
 	modelStack.PopMatrix();
 
 	//Wall(Thin)2
@@ -1899,6 +1956,21 @@ void SP2::Render()
 	RenderMesh(meshList[GEO_THINz9], meshList[GEO_THINz9]->light);
 	modelStack.PopMatrix();
 
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_THINz10]->position.x, meshList[GEO_THINz10]->position.y, meshList[GEO_THINz10]->position.z);
+	RenderMesh(meshList[GEO_THINz10], meshList[GEO_THINz10]->light);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_THINz11]->position.x, meshList[GEO_THINz11]->position.y, meshList[GEO_THINz11]->position.z);
+	RenderMesh(meshList[GEO_THINz11], meshList[GEO_THINz11]->light);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_THINz12]->position.x, meshList[GEO_THINz12]->position.y, meshList[GEO_THINz12]->position.z);
+	RenderMesh(meshList[GEO_THINz12], meshList[GEO_THINz12]->light);
+	modelStack.PopMatrix();
+
 	//Wall(Thick)
 	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_THICK1]->position.x, meshList[GEO_THICK1]->position.y, meshList[GEO_THICK1]->position.z);
@@ -1912,6 +1984,29 @@ void SP2::Render()
 
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	//////////////////////////////////
+	//			Enemy Health        //
+	/////////////////////////////////
+	if (object )
+	{
+	//	cout << healthDisplay.health<<endl;
+		if (object->ifShootable == true)
+		{
+			std::ostringstream enemyHp;
+			enemyHp << std::setprecision(3) << object->health;
+			RenderTextOnScreen(meshList[GEO_TEXT], "Enemy HP: ", Color(0, 1, 0), 2, 25, 10);
+			RenderTextOnScreen(meshList[GEO_TEXT], enemyHp.str(), Color(1, 1, 1), 2, 37, 10);
+			//		std::ostringstream enemyHp;
+		}
+	}
+	
+	//////////////////////////////////
+	//			JetFuel             //
+	/////////////////////////////////
+	if (jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 2, 3);
+	}
 	if (jetPack.getFuel() > 15)
 	{
 		modelStack.PushMatrix();
@@ -1948,20 +2043,32 @@ void SP2::Render()
 		RenderOBJonScreen(meshList[GEO_FUEL5], 4, 1, 23, 21);
 		modelStack.PopMatrix();
 	}
-	if (object &&objectDied==false)
+	RenderTextOnScreen(meshList[GEO_TEXT],"Jet Fuel: ", Color(0, 1, 0), 2, 2, 2);
+
+	//////////////////////////////////
+	//			Time               //
+	/////////////////////////////////
+
+	RenderTextOnScreen(meshList[GEO_TEXT],"Time: ", Color(0, 1, 0), 2, 2, 12);
+	std::ostringstream timeString;
+	timeString << std::setprecision(3) << time;
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 12);
+
+
+	//////////////////////////////////
+	//			Gun                //
+	/////////////////////////////////
+	RenderTextOnScreen(meshList[GEO_TEXT], "Gun Mode: ", Color(0, 1, 0), 2, 2, 8);
+	if (shoot.Gun.semiAuto==false)
 	{
-		std::ostringstream enemyHp;
-	//	enemyHp << std::setprecision(3) << bullets[0t].object->health;
-		RenderTextOnScreen(meshList[GEO_ENEMYHEALTHDISPLAY], "Enemy HP: ", Color(0, 1, 0), 2, 25, 10);
-	RenderTextOnScreen(meshList[GEO_ENEMYHEALTHDISPLAY],enemyHp.str(), Color(1, 1, 1), 2, 37, 10);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Automatic Mode", Color(0, 1, 0), 2, 12 , 8);
 	}
-	if (jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
+	else if (shoot.Gun.semiAuto == true)
 	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 2, 3);
+		RenderTextOnScreen(meshList[GEO_TEXT], " Semi Auto Mode", Color(0, 1, 0), 2, 12, 8);
 	}
 	RenderTextOnScreen(meshList[GEO_TEXT], "Jet Fuel: ", Color(1, 1, 1), 2, 0, 11);
 	RenderTextOnScreen(meshList[GEO_TEXT], timeDisplay, Color(0, 1, 0), 2, 2, 12);
-	std::ostringstream timeString;
 	timeString << std::setprecision(3) << time;
 	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 12);
 	//UI Background Panal
@@ -1971,7 +2078,6 @@ void SP2::Render()
 	modelStack.PopMatrix();
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	RenderOBJonScreen(meshList[GEO_HELMET], 80, 60, 40 , 30);
-
 }
 
 void SP2::Exit()
