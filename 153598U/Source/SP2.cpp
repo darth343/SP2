@@ -136,12 +136,16 @@ void SP2::Init()
 
 	//Arun's Wall
 	//meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("Model 1", "OBJ//wall.obj");
-	meshList[GEO_FUEL1] = MeshBuilder::GenerateQuad("fuel1", Color(0.8, 0, 0));
-	meshList[GEO_FUEL2] = MeshBuilder::GenerateQuad("fuel2", Color(1, 0, 0));
-	meshList[GEO_FUEL3] = MeshBuilder::GenerateQuad("fuel3", Color(0, 0.8, 0));
-	meshList[GEO_FUEL4] = MeshBuilder::GenerateQuad("fuel4", Color(0, 1, 0));
-	meshList[GEO_FUEL5] = MeshBuilder::GenerateQuad("fuel5", Color(0.2,1, 0.2));
+	meshList[GEO_FUEL1] = MeshBuilder::GenerateQuad("fuel1", Color(0.2, 0.2, 0.2));
+	meshList[GEO_FUEL2] = MeshBuilder::GenerateQuad("fuel2", Color(0.4, 0.4, 0.4));
+	meshList[GEO_FUEL3] = MeshBuilder::GenerateQuad("fuel3", Color(0.6, 0.6, 0.6));
+	meshList[GEO_FUEL4] = MeshBuilder::GenerateQuad("fuel4", Color(0.8, 0.8, 0.8));
+	meshList[GEO_FUEL5] = MeshBuilder::GenerateQuad("fuel5", Color(1, 1, 1));
 	meshList[GEO_JETPACKUI] = MeshBuilder::GenerateQuad("Jetpack UI", Color(1, 2, 1));
+
+	//UI Background
+	meshList[GEO_UIBG] = MeshBuilder::GenerateQuad("UI Background Panal", Color(0, 0.28, 0.58));
+
 
 	////GROUND
 	meshList[GEO_GROUND] = MeshBuilder::GenerateGround("ground", Color(0.2, 0.2, 0.2));
@@ -508,9 +512,16 @@ void SP2::Init()
 	meshList[GEO_ENEMYHEALTHDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
+
+	//UI
+	meshList[GEO_HELMET] = MeshBuilder::GenerateQuad("UI", Color(0,0,0));
+	meshList[GEO_HELMET]->textureID = LoadTGA("Image//HelmetUI.tga");
 	// Enable blendings
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
+
 
 }
 
@@ -1340,8 +1351,16 @@ void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float 
 	modelStack.LoadIdentity(); //Reset modelStack
 	//modelStack.PushMatrix();
 	modelStack.Translate(x, y, 0);
+	if (mesh == meshList[GEO_UIBG])
+	{
+		modelStack.Rotate(180, 0, 0, 1);
+	}
+	modelStack.Scale(sizex, sizey, 1);
 	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Scale(sizex, sizey,1);
+	if (mesh == meshList[GEO_HELMET])
+	{
+		modelStack.Rotate(-90, 0, 1, 0);
+	}
 	////modelStack.Translate(camera.position.x + camera.view.x, camera.position.y + camera.view.y, camera.position.z + camera.view.z);
 	//modelStack.Translate(camera.view.x, camera.view.y + camera.position.y, camera.view.z);
 	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
@@ -1464,6 +1483,7 @@ void SP2::Render()
 		}
 
 	}
+
 	//Arun's Wall
 	//STARTLINE
 	modelStack.PushMatrix();
@@ -1895,37 +1915,37 @@ void SP2::Render()
 	if (jetPack.getFuel() > 15)
 	{
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL1], 4, 7, 25, 4.8);
+		RenderOBJonScreen(meshList[GEO_FUEL1], 4, 1, 3, 21);
 		modelStack.PopMatrix();
 	}
 	
 	if (jetPack.getFuel() > 40)
 	{
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL2], 4, 7, 30, 4.8);
+		RenderOBJonScreen(meshList[GEO_FUEL2], 4, 1, 8, 21);
 		modelStack.PopMatrix();
 	}
 	
 	if (jetPack.getFuel() > 60)
 	{
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL3], 4, 7, 35, 4.8);
+		RenderOBJonScreen(meshList[GEO_FUEL3], 4, 1, 13, 21);
 		modelStack.PopMatrix();
 	}
 	
 	if (jetPack.getFuel() >80)
 	{
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL4], 4, 7, 40, 4.8);
+		RenderOBJonScreen(meshList[GEO_FUEL4], 4, 1, 18, 21);
 		modelStack.PopMatrix();
 		
 	}
 		
 	
-	if (jetPack.getFuel() == 100)
+	if (jetPack.getFuel() > 95)
 	{
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL5], 4, 7, 45, 4.8);
+		RenderOBJonScreen(meshList[GEO_FUEL5], 4, 1, 23, 21);
 		modelStack.PopMatrix();
 	}
 	if (object &&objectDied==false)
@@ -1939,11 +1959,19 @@ void SP2::Render()
 	{
 		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 2, 3);
 	}
-	RenderTextOnScreen(meshList[GEO_JETPACKUI], jetfuelDisplay, Color(0, 1, 0), 2, 2, 2);
-	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeDisplay, Color(0, 1, 0), 2, 2, 12);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Jet Fuel: ", Color(1, 1, 1), 2, 0, 11);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeDisplay, Color(0, 1, 0), 2, 2, 12);
 	std::ostringstream timeString;
 	timeString << std::setprecision(3) << time;
-	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeString.str(), Color(0, 1, 0), 2, 8, 12);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 12);
+	//UI Background Panal
+	glBlendFunc(1, 1);
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_UIBG], 40, 10, 10, 20);
+	modelStack.PopMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	RenderOBJonScreen(meshList[GEO_HELMET], 80, 60, 40 , 30);
+
 }
 
 void SP2::Exit()

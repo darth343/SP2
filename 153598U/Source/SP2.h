@@ -41,9 +41,11 @@ public:
 		GEO_FUEL4,
 		GEO_FUEL5,
 		GEO_JETPACKUI,
+		GEO_UIBG,
 		GEO_ENEMYHEALTH,
 		GEO_ENEMYHEALTHDISPLAY,
 		GEO_BULLET,
+		GEO_HELMET,
 		GEO_MODEL1,
 		//GEO_SP2_MODELBLOCK,
 		//GEO_SP2_MODELWALLTHIN,
@@ -147,7 +149,7 @@ public:
 		GEO_THICK2,
 		//Wall(Thick)End
 		GEO_TEXT,
-
+		
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -225,7 +227,6 @@ private:
 	string timeDisplay="Time : ";
 	float time = 0;
 	float delay = 0;
-	string jetfuelDisplay = "Jet Fuel: ";
 	bool shot=false ; // when object get shot
 	bool objectDied = false;//when object is dead
 	Flying jetPack;
