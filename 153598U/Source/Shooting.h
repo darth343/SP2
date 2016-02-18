@@ -6,6 +6,8 @@
 #include "Vector3.h"
 #include "Enemy.h"
 #include <iostream>
+#include "Gun.h"
+#include "Damage.h"
 using std::cout;
 using std::endl;
 using std::vector;
@@ -25,15 +27,19 @@ public:
 	~Shooting();
 	void ShootingBullets(Camera5 camera, double dt, float time,Mesh** meshList);
 	void bulletHitDetection(vector<enemy> &mobs, double dt, Camera5 camera);
+	Mesh* Shootable(double dt, Camera5 camera, Mesh** meshList, vector<enemy> &mobs);
 	vector<TestBullet> bullets;
-	bool shot; // when object get shot
+	//bool ifShootable; // when object get shot
 	bool objectDied;//when object is dead
 //	Mesh * shootable(double dt, Camera5 camera, Mesh ** meshList);
 	float bulletspeed = 5;
 	TestBullet tempMag;
 	//Camera5 camera;
 	float delay = 0;
+	//float delayMultiplier = 0.1;
 	Mesh * object;
+	Gun Gun;
+	Damage damage;
 };
 
 

@@ -548,48 +548,82 @@ void SP2::Init()
 	meshList[GEO_THICK2]->interactable = true;
 
 	//TEXT
-	meshList[GEO_TIMEDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TIMEDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_JETPACKUI] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_JETPACKUI]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_TIME] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TIME]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_ENEMYHEALTH] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_ENEMYHEALTH]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_ENEMYHEALTHDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_ENEMYHEALTHDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
+	//meshList[GEO_TIMEDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_TIMEDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
+	//meshList[GEO_JETPACKUI] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_JETPACKUI]->textureID = LoadTGA("Image//calibri.tga");
+	//meshList[GEO_TIME] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_TIME]->textureID = LoadTGA("Image//calibri.tga");
+	//meshList[GEO_ENEMYHEALTH] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_ENEMYHEALTH]->textureID = LoadTGA("Image//calibri.tga");
+	//meshList[GEO_ENEMYHEALTHDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_ENEMYHEALTHDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
 	// Enable blendings
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	enemy temp;
-	temp.health = 100;
+//	temp.health = 100;
 	meshList[GEO_ENEMY] = MeshBuilder::GenerateOBJ("apple", "OBJ//customer.obj");
-	temp.EnemyMesh = meshList[GEO_ENEMY];
-	temp.EnemyMesh->position = Vector3(0, 5, -496);
-	mobs.push_back(temp);
+	////////////////////////////
+	//        Head          //
+	//////////////////////////
+	for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+	{ 
+	temp.enemyMesh = meshList[i]; 
+		mobs.push_back(temp); 
+	}
+	temp.enemyMesh->position = Vector3(0, 5, -496);
+	
+
+	shoot.Gun.delayMultiplier = 0.3;
+	shoot.Gun.semiAuto = false;
+	shoot.Gun.stopFiring = false;
 }
 
 void SP2::Update(double dt)
 {
 	if (Application::IsKeyPressed('1')) //enable back face culling
-		glEnable(GL_CULL_FACE);
+		//	glEnable(GL_CULL_FACE);
+	{
+		shoot.Gun.delayMultiplier = 0.5;
+		shoot.Gun.semiAuto = false;
+	}
 	if (Application::IsKeyPressed('2')) //disable back face cullings
-		glDisable(GL_CULL_FACE);
+		//glDisable(GL_CULL_FACE);
+	{
+		shoot.Gun.semiAuto = true;
+		shoot.Gun.delayMultiplier = 0.4;
+		cout << "Semi Auto mode" << endl;
+	}
 	if (Application::IsKeyPressed('3'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
 	if (Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+	
+	//Gun.stopFiring = false;
+//	Gun.shotOne = false;
 	time += dt;
 	camera.Update(dt);
+
 	//Movement(dt);
 	Vector3 bulletSpeed = (0.1, 0.1, 0.1);
 	//bullet = camera.view;
+	CharacMovement(dt);	
 
-	CharacMovement(dt);
+
+		
+			//Gun.shotTwo = false;
+		//shoot.bulletHitDetection(mobs, dt, camera);
+		//object = shoot.Shootable(dt, camera, meshList, mobs);
+			
+
+	shoot.bulletHitDetection(mobs, dt, camera);		
 	shoot.ShootingBullets(camera, dt, time, meshList);
-	shoot.bulletHitDetection(mobs, dt, camera);
+	object = shoot.Shootable(dt, camera, meshList,mobs);
+	//Gun.stopFiring = true;
+	
 }
 
 Mesh* SP2::Interaction(double dt)
@@ -1433,12 +1467,12 @@ void SP2::Render()
 	//Enemy Rendering
 	for (int i = 0; i < mobs.size(); i++)
 	{
-		if (mobs[i].health > 0)
+		if (mobs[i].enemyMesh->health  > 0)
 		{
 			modelStack.PushMatrix();
 			//modelStack.Scale(10, 10, 10);
-			modelStack.Translate(mobs[i].EnemyMesh->position.x, mobs[i].EnemyMesh->position.y, mobs[i].EnemyMesh->position.z);
-			RenderMesh(mobs[i].EnemyMesh, false);
+			modelStack.Translate(mobs[i].enemyMesh->position.x, mobs[i].enemyMesh->position.y, mobs[i].enemyMesh->position.z);
+			RenderMesh(mobs[i].enemyMesh, false);
 			modelStack.PopMatrix();
 		}
 
@@ -1932,6 +1966,29 @@ void SP2::Render()
 
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	//////////////////////////////////
+	//			Enemy Health        //
+	/////////////////////////////////
+	if (object )
+	{
+	//	cout << healthDisplay.health<<endl;
+		if (object->ifShootable == true)
+		{
+			std::ostringstream enemyHp;
+			enemyHp << std::setprecision(3) << object->health;
+			RenderTextOnScreen(meshList[GEO_TEXT], "Enemy HP: ", Color(0, 1, 0), 2, 25, 10);
+			RenderTextOnScreen(meshList[GEO_TEXT], enemyHp.str(), Color(1, 1, 1), 2, 37, 10);
+			//		std::ostringstream enemyHp;
+		}
+	}
+	
+	//////////////////////////////////
+	//			JetFuel             //
+	/////////////////////////////////
+	if (jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 2, 3);
+	}
 	if (jetPack.getFuel() > 15)
 	{
 		modelStack.PushMatrix();
@@ -1968,22 +2025,30 @@ void SP2::Render()
 		RenderOBJonScreen(meshList[GEO_FUEL5], 4, 7, 45, 4.8);
 		modelStack.PopMatrix();
 	}
-	if ( shoot.object && shoot.objectDied==false)
-	{
-		std::ostringstream enemyHp;
-	//	enemyHp << std::setprecision(3) <<	 shoot.object->health;
-		RenderTextOnScreen(meshList[GEO_ENEMYHEALTHDISPLAY], "Enemy HP: ", Color(0, 1, 0), 2, 25, 10);
-	RenderTextOnScreen(meshList[GEO_ENEMYHEALTHDISPLAY],enemyHp.str(), Color(1, 1, 1), 2, 37, 10);
-	}
-	if (jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 2, 3);
-	}
-	RenderTextOnScreen(meshList[GEO_JETPACKUI], jetfuelDisplay, Color(0, 1, 0), 2, 2, 2);
-	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeDisplay, Color(0, 1, 0), 2, 2, 12);
+	RenderTextOnScreen(meshList[GEO_TEXT],"Jet Fuel: ", Color(0, 1, 0), 2, 2, 2);
+
+	//////////////////////////////////
+	//			Time               //
+	/////////////////////////////////
+
+	RenderTextOnScreen(meshList[GEO_TEXT],"Time: ", Color(0, 1, 0), 2, 2, 12);
 	std::ostringstream timeString;
 	timeString << std::setprecision(3) << time;
-	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeString.str(), Color(0, 1, 0), 2, 8, 12);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 12);
+
+
+	//////////////////////////////////
+	//			Gun                //
+	/////////////////////////////////
+	RenderTextOnScreen(meshList[GEO_TEXT], "Gun Mode: ", Color(0, 1, 0), 2, 2, 8);
+	if (shoot.Gun.semiAuto==false)
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], "Automatic Mode", Color(0, 1, 0), 2, 12 , 8);
+	}
+	else if (shoot.Gun.semiAuto == true)
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], " Semi Auto Mode", Color(0, 1, 0), 2, 12, 8);
+	}
 }
 
 void SP2::Exit()

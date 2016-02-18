@@ -13,6 +13,7 @@
 #include <map>
 #include <Vector>
 #include "FlyingClass.h"
+#include "Gun.h"
 using std::vector;
 using std::string;
 class SP2 : public Scene
@@ -231,6 +232,7 @@ public:
 	float delay = 0;
 	string jetfuelDisplay = "Jet Fuel: ";
 	Flying jetPack;
+	Mesh* object;
 };
 
 #endif

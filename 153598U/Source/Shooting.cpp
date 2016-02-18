@@ -7,24 +7,45 @@
 Shooting::Shooting()
 {
 	objectDied = false;
-	shot = false;
+	//shot = false;
 }
 Shooting::~Shooting()
 {
 
 }
 
-void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshList)
+void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshList )
 {
-	
-	if (Application::IsKeyPressed(VK_LBUTTON) && time > delay)
+	if (Application::IsKeyPressed(VK_LBUTTON) && Gun.semiAuto == false)
 	{
-		TestBullet temp;
-		temp.Position = camera.position;
-		temp.start = temp.Position;
-		temp.trajectory = camera.view.Normalized();
-		bullets.push_back(temp);
-		delay = time + 0.1;
+		if (Gun.semiAuto == false && time > delay)
+		{
+			TestBullet temp;
+			temp.Position = camera.position;
+			temp.start = temp.Position;
+			temp.trajectory = camera.view.Normalized();
+			bullets.push_back(temp);
+			delay = time + Gun.delayMultiplier;
+
+		}
+	}
+	if (Application::IsKeyPressed(VK_LBUTTON) && Gun.semiAuto == true && Gun.stopFiring == false && time>delay)
+	{
+		if (Gun.semiAuto == true && Gun.stopFiring == false)
+		{
+			cout << " Works" << endl;
+			TestBullet temp;
+			temp.Position = camera.position;
+			temp.start = temp.Position;
+			temp.trajectory = camera.view.Normalized();
+			bullets.push_back(temp);
+			delay = time + Gun.delayMultiplier;
+			Gun.stopFiring = true;
+		}
+	}
+	else if (!Application::IsKeyPressed(VK_LBUTTON))
+	{
+		Gun.stopFiring = false;
 	}
 	if (bullets.size() > 0)
 	{
@@ -39,32 +60,43 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 
 void Shooting::bulletHitDetection(vector<enemy> &mobs, double dt, Camera5 camera)
 {
-	// check if bullet position is
-	// in any mesh ( check position with mesh min and max value )
-	// if in any mesh, check if mesh is shootable
-	// if mesh is shootable
-	// minus health from mesh
-	// erase bullet from vector
-	// else if its not in object
-	// check if vector length is above range
-	// if above range, erase bullet from vector
-// 	object = Shootable(dt, camera, meshList); 
+	
 	if (bullets.size() > 0)
 	{
 		for (int a = 0; a < bullets.size(); a++)
 		{
 			for (int i = 0; i < mobs.size(); i++)
 			{
-				if (mobs[i].EnemyMesh->min != nullptr || mobs[i].EnemyMesh->max != nullptr){
+				if (mobs[i].enemyMesh->min != nullptr || mobs[i].enemyMesh->max != nullptr){
 
-					int offset = 0.5;
-					if ((bullets[a].Position.x >mobs[i].EnemyMesh->min->x + mobs[i].EnemyMesh->position.x - offset && bullets[a].Position.x < mobs[i].EnemyMesh->max->x + mobs[i].EnemyMesh->position.x + offset) &&
-						(bullets[a].Position.y >mobs[i].EnemyMesh->min->y + mobs[i].EnemyMesh->position.y - offset&& bullets[a].Position.y < mobs[i].EnemyMesh->max->y + mobs[i].EnemyMesh->position.y + offset) &&
-						(bullets[a].Position.z >mobs[i].EnemyMesh->min->z + mobs[i].EnemyMesh->position.z - offset&& bullets[a].Position.z < mobs[i].EnemyMesh->max->z + mobs[i].EnemyMesh->position.z + offset)
+					int offset = 1;
+					if ((bullets[a].Position.x >mobs[i].enemyMesh->min->x + mobs[i].enemyMesh->position.x - offset && bullets[a].Position.x < mobs[i].enemyMesh->max->x + mobs[i].enemyMesh->position.x + offset) &&
+						(bullets[a].Position.y >mobs[i].enemyMesh->min->y + mobs[i].enemyMesh->position.y - offset&& bullets[a].Position.y < mobs[i].enemyMesh->max->y + mobs[i].enemyMesh->position.y + offset) &&
+						(bullets[a].Position.z >mobs[i].enemyMesh->min->z + mobs[i].enemyMesh->position.z - offset&& bullets[a].Position.z < mobs[i].enemyMesh->max->z + mobs[i].enemyMesh->position.z + offset)
 						)
 					{
-						mobs[i].health -= 10;
+						if (damage.headShot==true)
+						{
+							damage.damageMultiplier = 2.5;
+						}
+						else if (damage.normalShot == true)
+						{
+							damage.damageMultiplier = 1;
+						}
+						else if (damage.legShot == true)
+						{
+							damage.damageMultiplier = 0.5;
+						}
+						mobs[i].enemyMesh->health -= 10*damage.damageMultiplier;
+						if (mobs[i].enemyMesh->health <= 0)
+						{
+							 mobs[i].enemyMesh->ifShootable = false;
+							mobs[i].enemyMesh->health = 0;
+							
+						}
+
 						bullets.erase(bullets.begin() + a);
+						//return mobs[i].enemyMesh;
 						break;
 					}
 					else
@@ -72,6 +104,7 @@ void Shooting::bulletHitDetection(vector<enemy> &mobs, double dt, Camera5 camera
 						if (Vector3(bullets[a].Position - bullets[a].start).Length() >= 500)
 						{
 							bullets.erase(bullets.begin() + a);
+							//return nullptr;
 							break;
 						}
 					}
@@ -84,10 +117,37 @@ void Shooting::bulletHitDetection(vector<enemy> &mobs, double dt, Camera5 camera
 
 
 }
+Mesh* Shooting::Shootable(double dt, Camera5 camera, Mesh** meshList, vector<enemy> &mobs)
+{
+	float range = 20;
+	float offset = 0.5;
 
-//MESH*
-//HEALTH
-//ENEMY
-//STRUCT
-//VEECTOR OF ENEMY STRUCT, ALL MOBS
-//PUSH IN A CUBE
+	for (Vector3 temp = camera.view.Normalized(); temp.Length() <= range; temp += camera.view.Normalized())
+	{
+		
+		for (int i = 0; i < mobs.size(); i++)
+		{
+			if (mobs[i].enemyMesh->min != nullptr || mobs[i].enemyMesh->max != nullptr)
+		{
+				if ((temp.x + camera.position.x <= mobs[i].enemyMesh->max->x + mobs[i].enemyMesh->position.x + offset && temp.x + camera.position.x >= mobs[i].enemyMesh->min->x + mobs[i].enemyMesh->position.x - offset) //Check min and max for x
+					&& (temp.y + camera.position.y <= mobs[i].enemyMesh->max->y + mobs[i].enemyMesh->position.y + offset && temp.y + camera.position.y >= mobs[i].enemyMesh->min->y + mobs[i].enemyMesh->position.y - offset) //Check min and max for y
+					&& (temp.z + camera.position.z <= mobs[i].enemyMesh->max->z + mobs[i].enemyMesh->position.z + offset && temp.z + camera.position.z >= mobs[i].enemyMesh->min->z + mobs[i].enemyMesh->position.z - offset)) //Check min and max for z
+				{		
+					if (mobs[i].enemyMesh->ifShootable == false)
+					{
+						return nullptr;
+						break;
+					}
+					else
+					{
+						mobs[i].enemyMesh->ifShootable = true;
+						return mobs[i].enemyMesh;
+						break;
+					}
+				}
+			}
+		}
+	}
+	return nullptr;
+}
+
