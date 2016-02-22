@@ -566,9 +566,11 @@ void SP2::Init()
 	//meshList[GEO_ENEMYHEALTH]->textureID = LoadTGA("Image//calibri.tga");
 	//meshList[GEO_ENEMYHEALTHDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
 	//meshList[GEO_ENEMYHEALTHDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
+	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text",16,16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
 
+	meshList[GEO_FLASH] = MeshBuilder::GenerateQuad("flash",Color(0,0,0));
+	meshList[GEO_FLASH]->textureID = LoadTGA("Image//flash.tga");
 	//UI
 	meshList[GEO_HELMET] = MeshBuilder::GenerateQuad("UI", Color(0,0,0));
 	meshList[GEO_HELMET]->textureID = LoadTGA("Image//helmetFinal.tga");
@@ -577,16 +579,18 @@ void SP2::Init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	enemy temp;
 //	temp.health = 100;
-	meshList[GEO_ENEMY] = MeshBuilder::GenerateOBJ("apple", "OBJ//customer.obj");
+	meshList[GEO_ENEMY] = MeshBuilder::GenerateOBJ("apple", "OBJ//Rifle.obj");
+	meshList[GEO_ENEMY]->textureID = LoadTGA("Image//Rifle .tga");
 	////////////////////////////
 	//        Head          //
 	//////////////////////////
-	//for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
-	//{ 
-	//temp.enemyMesh = meshList[i]; 
-	//	mobs.push_back(temp); 
-	//}
-	//temp.enemyMesh->position = Vector3(0, 5, -496);
+	/*temp.enemyMesh = meshList[GEO_ENEMY];
+	for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
+	{ 
+	temp.enemyMesh = meshList[i]; 
+		mobs.push_back(temp); 
+	}
+	temp.enemyMesh->position = Vector3(0, 5, -496);*/
 	
 
 	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
@@ -594,6 +598,11 @@ void SP2::Init()
 	shoot.Gun.semiAuto = false;
 	shoot.Gun.stopFiring = false;
 	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
+	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("Rifle", "OBJ//Rifle.obj");
+//	meshList[GEO_THICK2]->position.Set(0, 3, -50);
+	meshList[GEO_RIFLE]->textureID = LoadTGA("Image//Rifle.tga");
+
+	//meshList[GEO_THICK2]->interactable = true;
 }
 
 void SP2::Update(double dt)
@@ -619,12 +628,12 @@ void SP2::Update(double dt)
 	//Gun.stopFiring = false;
 //	Gun.shotOne = false;
 	time += dt;
+	CharacMovement(dt);
 	camera.Update(dt);
 
 	//Movement(dt);
 	Vector3 bulletSpeed = (0.1, 0.1, 0.1);
 	//bullet = camera.view;
-	CharacMovement(dt);	
 
 
 		
@@ -1100,6 +1109,12 @@ void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float 
 	{
 		modelStack.Translate(0, 0.1, 0);
 		modelStack.Rotate(-90, 0, 1, 0);
+	}
+	if (mesh == meshList[GEO_RIFLE])
+	{
+		modelStack.Rotate(-85, 1,0,0);
+		modelStack.Rotate(195 , 0, 1,0);
+
 	}
 	////modelStack.Translate(camera.position.x + camera.view.x, camera.position.y + camera.view.y, camera.position.z + camera.view.z);
 	//modelStack.Translate(camera.view.x, camera.view.y + camera.position.y, camera.view.z);
@@ -1804,8 +1819,14 @@ void SP2::Render()
 	modelStack.PushMatrix();
 	RenderOBJonScreen(meshList[GEO_UIBG], 25, 19, 72, 3.5);
 	modelStack.PopMatrix();
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_FLASH], false);
+	modelStack.PopMatrix();
+
+	
+
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//Player's Health
 	modelStack.PushMatrix();
 	RenderOBJonScreen(meshList[GEO_PLAYERHEALTH], 30*scaleHealth, 1, 40, 55);
@@ -1815,10 +1836,10 @@ void SP2::Render()
 	modelStack.PushMatrix();
 	RenderOBJonScreen(meshList[GEO_HELMET], 80, 60, 40 , 30);
 	modelStack.PopMatrix();
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-
-
+	
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_RIFLE],0.8,0.8,70,20);
+	modelStack.PopMatrix();
 }
 
 void SP2::Exit()
