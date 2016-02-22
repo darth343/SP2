@@ -134,7 +134,7 @@ void SP2::Init()
 	meshList[GEO_GROUND] = MeshBuilder::GenerateGround("ground", Color(0.2, 0.2, 0.2));
 	meshList[GEO_GROUND]->textureID = LoadTGA("Image//sand.tga");
 
-	meshList[GEO_SHIPFLOOR] = MeshBuilder::GenerateOBJ("Floor", "OBJ//shipfloor.obj");
+	meshList[GEO_SHIPFLOOR] = MeshBuilder::GenerateOBJ("Floor", "OBJ//ShipFloor.obj");
 	meshList[GEO_SHIPFLOOR]->textureID = LoadTGA("Image//ShipFloor.tga");
 	meshList[GEO_SHIPFLOOR]->position.Set(0, -1, 0);
 	meshList[GEO_SHIPFLOOR]->interactable = true;
@@ -577,23 +577,36 @@ void SP2::Init()
 	// Enable blendings
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	enemy temp;
+	meshList[GEO_ALIEN_HEAD] = MeshBuilder::GenerateOBJ("Alien Head", "OBJ//Head.obj");
+	meshList[GEO_ALIEN_HEAD]->textureID = LoadTGA("Image//alienUV.tga");
+	meshList[GEO_ALIEN_HEAD]->position = Vector3(0, 0, -480);
+	meshList[GEO_ALIEN_BODY] = MeshBuilder::GenerateOBJ("Alien Body", "OBJ//Body.obj");
+	meshList[GEO_ALIEN_BODY]->textureID = LoadTGA("Image//alienUV.tga");
+	meshList[GEO_ALIEN_BODY]->position = Vector3(0, 0, -480);
+	meshList[GEO_ALIEN_HANDR] = MeshBuilder::GenerateOBJ("Alien Right Hand", "OBJ//RightHand.obj");
+	meshList[GEO_ALIEN_HANDR]->textureID = LoadTGA("Image//alienUV.tga");
+	meshList[GEO_ALIEN_HANDR]->position = Vector3(0, 0, -480);
+	meshList[GEO_ALIEN_HANDL] = MeshBuilder::GenerateOBJ("Alien Left Hand", "OBJ//LeftHand.obj");
+	meshList[GEO_ALIEN_HANDL]->textureID = LoadTGA("Image//alienUV.tga");
+	meshList[GEO_ALIEN_HANDL]->position = Vector3(0, 0, -480);
+	meshList[GEO_ALIEN_LEGR] = MeshBuilder::GenerateOBJ("Alien Right Leg", "OBJ//RightLeg.obj");
+	meshList[GEO_ALIEN_LEGR]->textureID = LoadTGA("Image//alienUV.tga");
+	meshList[GEO_ALIEN_LEGR]->position = Vector3(0, 0, -480);
+	meshList[GEO_ALIEN_LEGL] = MeshBuilder::GenerateOBJ("Alien Left Leg", "OBJ//LeftLeg.obj");
+	meshList[GEO_ALIEN_LEGL]->textureID = LoadTGA("Image//alienUV.tga");
+	meshList[GEO_ALIEN_LEGL]->position = Vector3(0, 0, -480);
+
+	alien.m_Head = meshList[GEO_ALIEN_HEAD];
+	alien.m_Body = meshList[GEO_ALIEN_BODY];
+	alien.m_HandL = meshList[GEO_ALIEN_HANDL];
+	alien.m_HandR = meshList[GEO_ALIEN_HANDR];
+	alien.m_LegL = meshList[GEO_ALIEN_LEGL];
+	alien.m_LegR = meshList[GEO_ALIEN_LEGR];
+	alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
+	alien.transparency = 1;
 //	temp.health = 100;
 	meshList[GEO_ENEMY] = MeshBuilder::GenerateOBJ("apple", "OBJ//Rifle.obj");
 	meshList[GEO_ENEMY]->textureID = LoadTGA("Image//Rifle .tga");
-	////////////////////////////
-	//        Head          //
-	//////////////////////////
-	/*temp.enemyMesh = meshList[GEO_ENEMY];
-	for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
-	{ 
-	temp.enemyMesh = meshList[i]; 
-		mobs.push_back(temp); 
-	}
-	temp.enemyMesh->position = Vector3(0, 5, -496);*/
-	
-
-	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
 	shoot.Gun.delayMultiplier = 0.3;
 	shoot.Gun.semiAuto = false;
 	shoot.Gun.stopFiring = false;
@@ -601,8 +614,6 @@ void SP2::Init()
 	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("Rifle", "OBJ//Rifle.obj");
 //	meshList[GEO_THICK2]->position.Set(0, 3, -50);
 	meshList[GEO_RIFLE]->textureID = LoadTGA("Image//Rifle.tga");
-
-	//meshList[GEO_THICK2]->interactable = true;
 }
 
 void SP2::Update(double dt)
@@ -628,22 +639,15 @@ void SP2::Update(double dt)
 	//Gun.stopFiring = false;
 //	Gun.shotOne = false;
 	time += dt;
+	fps = 1 / dt;
 	CharacMovement(dt);
 	camera.Update(dt);
-
 	//Movement(dt);
 	Vector3 bulletSpeed = (0.1, 0.1, 0.1);
 	//bullet = camera.view;
-
-
-		
-			//Gun.shotTwo = false;
-		//shoot.bulletHitDetection(mobs, dt, camera);
-		//object = shoot.Shootable(dt, camera, meshList, mobs);
-			
-
-	shoot.bulletHitDetection(mobs, dt, camera);		
 	shoot.ShootingBullets(camera, dt, time, meshList);
+	shoot.bulletHitDetection(mobs, dt, camera);
+	alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
 	object = shoot.Shootable(dt, camera, meshList,mobs);
 	//Gun.stopFiring = true;
 
@@ -656,7 +660,7 @@ void SP2::Update(double dt)
 	{
 		scaleHealth -= dt;
 	}
-	
+
 }
 
 Mesh* SP2::Interaction(double dt)
@@ -943,7 +947,7 @@ void SP2::CharacMovement(double dt)
 				camera.position.z += camera.right.Normalized().z * dt * speed;
 		}
 	}
-	jetPack.Fly(dt,camera,meshList);
+	jetPack.Fly(dt,camera,meshList, GEO_LEFTWALL1, GEO_TEXT);
 }
 void SP2::RenderMesh(Mesh * mesh, bool enableLight)
 {
@@ -1207,41 +1211,53 @@ void SP2::Render()
 
 	//Skybox
 	RenderSkybox(camera.position);
+	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
+	modelStack.PushMatrix();
+	modelStack.Translate(alien.m_Head->position.x, alien.m_Head->position.y, alien.m_Head->position.z);
+	modelStack.Rotate(alien.getAngle(), 0, 1, 0);
+	RenderMesh(alien.m_Head, true);
+	modelStack.PopMatrix();
 
-	/*if (object)
-	{
-		object->light = false;
-	}
-	else
-	{
-		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-		{
-			meshList[i]->light = true;
-		}
-	}*/
+	modelStack.PushMatrix();
+	modelStack.Translate(alien.m_Body->position.x, alien.m_Body->position.y, alien.m_Body->position.z);
+	modelStack.Rotate(alien.getAngle(), 0, 1, 0);
+	RenderMesh(alien.m_Body, true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(alien.m_HandL->position.x, alien.m_HandL->position.y, alien.m_HandL->position.z);
+	modelStack.Rotate(alien.getAngle(), 0, 1, 0);
+	RenderMesh(alien.m_HandL, true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(alien.m_HandR->position.x, alien.m_HandR->position.y, alien.m_HandR->position.z);
+	modelStack.Rotate(alien.getAngle(), 0, 1, 0);
+	RenderMesh(alien.m_HandR, true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(alien.m_LegL->position.x, alien.m_LegL->position.y, alien.m_LegL->position.z);
+	modelStack.Rotate(alien.getAngle(), 0, 1, 0);
+	RenderMesh(alien.m_LegL, true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(alien.m_LegR->position.x, alien.m_LegR->position.y, alien.m_LegR->position.z);
+	modelStack.Rotate(alien.getAngle(), 0, 1, 0);
+	RenderMesh(alien.m_LegR, true);
+	modelStack.PopMatrix();
+	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
+
 	//Enemy Rendering
-	//for (int i = 0; i < mobs.size(); i++)
-	//{
-	//	if (mobs[i].enemyMesh->health  > 0)
-	//	{
-	//		modelStack.PushMatrix();
-	//		//modelStack.Scale(10, 10, 10);
-	//		modelStack.Translate(mobs[i].enemyMesh->position.x, mobs[i].enemyMesh->position.y, mobs[i].enemyMesh->position.z);
-	//		RenderMesh(mobs[i].enemyMesh, false);
-	//		modelStack.PopMatrix();
-	//	}
-
-	//}
-
-		for (int a = 0; a <shoot.bullets.size(); a++)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(shoot.bullets[a].Position.x, shoot.bullets[a].Position.y, shoot.bullets[a].Position.z);
-			modelStack.Scale(0.5, 0.5,0.5);
-			RenderMesh(meshList[GEO_BULLET], true);
-			modelStack.PopMatrix();
-		}
-
+	for (int a = 0; a <shoot.bullets.size(); a++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(shoot.bullets[a].Position.x, shoot.bullets[a].Position.y, shoot.bullets[a].Position.z);
+		modelStack.Scale(0.5, 0.5,0.5);
+		RenderMesh(meshList[GEO_BULLET], true);
+		modelStack.PopMatrix();
+	}
 	
 	//Arun's Wall
 
@@ -1810,6 +1826,9 @@ void SP2::Render()
 		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11); 
 		modelStack.PopMatrix();
 	}
+	timeString.str("");
+	timeString << "FPS: " << fps;
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 11);
 	//RenderTextOnScreen(meshList[GEO_TEXT], "Jet Fuel: ", Color(1, 1, 1), 2, 0, 11);
 	//RenderTextOnScreen(meshList[GEO_TEXT], timeDisplay, Color(0, 1, 0), 2, 2, 12);
 	//timeString << std::setprecision(3) << time;

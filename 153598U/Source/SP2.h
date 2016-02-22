@@ -10,9 +10,10 @@
 #include "timer.h"
 #include "Shooting.h"
 #include "Enemy.h"
-#include <map>
+#include "Pathfinder.h"
 #include <Vector>
 #include "FlyingClass.h"
+#include "AI.h"
 #include "Gun.h"
 using std::vector;
 using std::string;
@@ -44,11 +45,14 @@ public:
 		GEO_ENEMYHEALTH,
 		GEO_ENEMYHEALTHDISPLAY,
 		GEO_BULLET,
+		GEO_ALIEN_HEAD,
+		GEO_ALIEN_HANDR,
+		GEO_ALIEN_HANDL,
+		GEO_ALIEN_BODY,
+		GEO_ALIEN_LEGR,
+		GEO_ALIEN_LEGL,
 		GEO_HELMET,
 		GEO_MODEL1,
-		//GEO_SP2_MODELBLOCK,
-		//GEO_SP2_MODELWALLTHIN,
-		//GEO_SP2_MODELWALLTHICK,
 		GEO_STARTLINE,
 
 		//Walls
@@ -159,11 +163,13 @@ public:
 		GEO_THICK1,
 		GEO_THICK2,
 		//Wall(Thick)End
-
+		GEO_TEXT,
 		GEO_RIFLE,
 		GEO_ENEMY,
 		GEO_FLASH,
-		GEO_TEXT,
+		GEO_PATH_F,
+		GEO_PATH_V,
+		GEO_PATH_O,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -240,6 +246,7 @@ public:
 	bool objectDied = false;//when object is dead
 	bool takeDamage = false;
 	Flying jetPack;
+	AI alien;
 	Mesh* object;
 };
 

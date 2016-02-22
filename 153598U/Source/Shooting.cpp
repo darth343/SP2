@@ -30,7 +30,7 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 
 		}
 	}
-	if (Application::IsKeyPressed(VK_LBUTTON) && Gun.semiAuto == true && Gun.stopFiring == false && time>delay)
+	if (Application::IsKeyPressed(VK_LBUTTON) && Gun.semiAuto == true && Gun.stopFiring == false/* && time>delay*/)
 	{
 		if (Gun.semiAuto == true && Gun.stopFiring == false)
 		{
@@ -40,7 +40,7 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 			temp.start = temp.Position;
 			temp.trajectory = camera.view.Normalized();
 			bullets.push_back(temp);
-			delay = time + Gun.delayMultiplier;
+			//delay = time + Gun.delayMultiplier;
 			Gun.stopFiring = true;
 		}
 	}

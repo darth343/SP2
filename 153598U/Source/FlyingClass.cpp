@@ -13,17 +13,17 @@ Flying::~Flying()
 {
 }
 
-void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList)
+void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList, int start, int end)
 {
 	float fuelrate = 0.8;
 	float rechargeRate = 0.4;
-	float offset = 2;
+	float offset = 0;
 	if (Application::IsKeyPressed(VK_SPACE) && fuel > 0 && activated == true)
 	{
 		if (camera.position.y + camera.position.Normalized().y * dt * speed + 1 < 498 && camera.position.y + camera.position.Normalized().y * dt * speed - 1 > -498)
 		{
 			bool move = false;
-			for (int i = SP2::GEO_LEFTWALL1; i < SP2::GEO_TEXT; i++)
+			for (int i = start; i < end; i++)
 			{
 				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
@@ -32,7 +32,7 @@ void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList)
 						camera.position.x < meshList[i]->min->x + meshList[i]->position.x ||
 						camera.position.x > meshList[i]->max->x + meshList[i]->position.x ||
 						camera.position.z < meshList[i]->min->z + meshList[i]->position.z ||
-						camera.position.z > meshList[i]->max->z + meshList[i]->position.z
+						camera.position.z > meshList[i]->max->z + meshList[i]->position.z 
 						)
 					{
 
@@ -64,7 +64,7 @@ void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList)
 	else
 	{
 		bool fall = false;
-		for (int i = SP2::GEO_LEFTWALL1; i < SP2::GEO_TEXT; i++)
+		for (int i = start; i < end; i++)
 		{
 			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 			{

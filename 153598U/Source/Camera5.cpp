@@ -55,8 +55,8 @@ void Camera5::Update(double dt)
 		sin(Math::DegreeToRadian(vertRot)),
 
 		cos(Math::DegreeToRadian(vertRot)) * cos(Math::DegreeToRadian(horiRot))
-		);
 
+		);
 	target = position + view;
 	// Right vector
 	right = Vector3(

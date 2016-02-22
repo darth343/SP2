@@ -15,7 +15,7 @@
 #include <stdlib.h>
 
 #include "SP2.h"
-#include "Shooting.h"
+#include "PathTest.h"
 using std::cout;
 using std::endl;
 
