@@ -158,7 +158,9 @@ public:
 		GEO_THICK2,
 		//Wall(Thick)End
 
+		GEO_RIFLE,
 		GEO_ENEMY,
+		GEO_FLASH,
 		GEO_TEXT,
 		NUM_GEOMETRY,
 	};

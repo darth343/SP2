@@ -8,7 +8,7 @@ public:
 	enemy() {};
 	~enemy() {};
 	float health;
-	Mesh* EnemyMesh;
+	Mesh* enemyMesh;
 };
 
 #endif
