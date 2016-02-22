@@ -39,6 +39,8 @@ public:
 		GEO_FUEL5,
 		GEO_JETPACKUI,
 		GEO_UIBG,
+		GEO_GUNMODE,
+		GEO_PLAYERHEALTH,
 		GEO_ENEMYHEALTH,
 		GEO_ENEMYHEALTHDISPLAY,
 		GEO_BULLET,
@@ -223,6 +225,7 @@ public:
 	float gravity = 10;
 	float rotateAngle;
 	float fps;
+	float scaleHealth = 1;
 	MS modelStack, viewStack, projectionStack;
 	Light light[4];
 	//Mesh * object;
@@ -233,6 +236,7 @@ public:
 	float delay = 0;
 	bool shot=false ; // when object get shot
 	bool objectDied = false;//when object is dead
+	bool takeDamage = false;
 	Flying jetPack;
 	Mesh* object;
 };

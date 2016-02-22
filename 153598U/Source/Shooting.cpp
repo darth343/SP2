@@ -1,4 +1,5 @@
 #include "Shooting.h"
+#include "Enemy.h"
 #include "Application.h"
 
 //#include "SP2.h"
