@@ -8,20 +8,19 @@
 #include "MatrixStack.h"
 #include "Light.h"
 #include "timer.h"
-#include <map>
+#include "Shooting.h"
+#include "Enemy.h"
+#include "Pathfinder.h"
 #include <Vector>
+#include "FlyingClass.h"
+#include "AI.h"
+
 using std::vector;
 using std::string;
 class SP2 : public Scene
 {
-	struct TestBullet
-	{
-		Vector3 Position;
-		Vector3 start;
-		Vector3 trajectory;
-		Mesh * object;
-	};
-	enum GEOMETRY_TYPE
+public:
+	static enum GEOMETRY_TYPE
 	{
 		GEO_AXES,
 		GEO_FRONT,
@@ -31,6 +30,7 @@ class SP2 : public Scene
 		GEO_BOTTOM,
 		GEO_BACK,
 		GEO_GROUND,
+		GEO_SHIPFLOOR,
 		GEO_TIMEDISPLAY,
 		GEO_TIME,
 		GEO_FUEL1,
@@ -42,10 +42,13 @@ class SP2 : public Scene
 		GEO_ENEMYHEALTH,
 		GEO_ENEMYHEALTHDISPLAY,
 		GEO_BULLET,
+		GEO_ALIEN_HEAD,
+		GEO_ALIEN_HANDR,
+		GEO_ALIEN_HANDL,
+		GEO_ALIEN_BODY,
+		GEO_ALIEN_LEGR,
+		GEO_ALIEN_LEGL,
 		GEO_MODEL1,
-		//GEO_SP2_MODELBLOCK,
-		//GEO_SP2_MODELWALLTHIN,
-		//GEO_SP2_MODELWALLTHICK,
 		GEO_STARTLINE,
 
 		//Walls
@@ -120,12 +123,21 @@ class SP2 : public Scene
 		GEO_BLOCK8,
 		GEO_BLOCK9,
 		GEO_BLOCK10,
+		GEO_BLOCK11,
+		GEO_BLOCK12,
+		GEO_BLOCK13,
+		GEO_BLOCK14,
+		GEO_BLOCK17,
+		GEO_BLOCK18,
 		//BlocksEnd
 
 		//Wall(Thin)
 		GEO_THIN1,
 		GEO_THIN2,
 		GEO_THIN3,
+		GEO_THIN4,
+		GEO_THIN5,
+		GEO_THIN6,
 		//Wall(Thin)End
 
 		//Wall(Thin)2
@@ -138,13 +150,21 @@ class SP2 : public Scene
 		GEO_THINz7,
 		GEO_THINz8,
 		GEO_THINz9,
+		GEO_THINz10,
+		GEO_THINz11,
+		GEO_THINz12,
 		//Wall(Thin)2End
 
 		//Wall(Thick)
 		GEO_THICK1,
 		GEO_THICK2,
 		//Wall(Thick)End
+
+		GEO_ENEMY,
 		GEO_TEXT,
+		GEO_PATH_F,
+		GEO_PATH_V,
+		GEO_PATH_O,
 
 		NUM_GEOMETRY,
 	};
@@ -184,15 +204,15 @@ class SP2 : public Scene
 
 		U_TOTAL,
 	};
-public:
 	SP2();
 	~SP2();
-
 	virtual void Init();
 	virtual void Update(double dt);
 	virtual void Render();
 	virtual void Exit();
-private:
+	//Mesh* Shootable(double dt);
+	Mesh* meshList[NUM_GEOMETRY];
+	Shooting shoot;
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	void RenderSkybox(Vector3 position);
 	void RenderText(Mesh* mesh, std::string text, Color color);
@@ -201,34 +221,26 @@ private:
 	void Movement(double dt);
 	void CharacMovement(double dt);
 	Mesh* Interaction(double dt);
-	Mesh* Shooting(double dt);
 
-	unsigned m_vertexArrayID;
-	Mesh*  meshList[NUM_GEOMETRY];
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
-	int amtBullet=0;
-	TestBullet temp;
-	TestBullet tempMag;
-	vector<TestBullet> bullets;
+	unsigned m_vertexArrayID;
+	
 	float gravity = 10;
 	float rotateAngle;
 	float fps;
-	Camera5 camera;
 	MS modelStack, viewStack, projectionStack;
 	Light light[4];
-	Mesh * object;
-	float trans = 0;
-	int healthPoints=100;
-	vector<int> Health;
-	vector<int> objectIDAll;
+	//Mesh * object;
+	vector<enemy> mobs;
+	Camera5 camera;
 	string timeDisplay="Time : ";
 	float time = 0;
 	float delay = 0;
-	int fuel = 100;
 	string jetfuelDisplay = "Jet Fuel: ";
-	bool shot=false ; // when object get shot
-	bool objectDied = false;//when object is dead
+	Flying jetPack;
+	AI alien;
+	vector<AI> allMobs;
 };
 
 #endif

@@ -49,8 +49,6 @@ void resize_callback(GLFWwindow* window, int w, int h)
 
 void cursorPositionCallback(GLFWwindow * window, double xpos, double ypos)
 {
-	//cout << xpos << " " << ypos << endl;
-	//Application::pass(xpos, ypos);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
