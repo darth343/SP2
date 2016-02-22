@@ -108,7 +108,7 @@ void SP2::Init()
 	rotateAngle = 0;
 
 	//Initialize camera settings
-	camera.Init(Vector3(0, 5, -490), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(0, 5, -497), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
@@ -134,19 +134,23 @@ void SP2::Init()
 	meshList[GEO_GROUND] = MeshBuilder::GenerateGround("ground", Color(0.2, 0.2, 0.2));
 	meshList[GEO_GROUND]->textureID = LoadTGA("Image//sand.tga");
 
-	meshList[GEO_SHIPFLOOR] = MeshBuilder::GenerateOBJ("Floor", "OBJ//counter.obj");
-	//meshList[GEO_SHIPFLOOR]->textureID = LoadTGA("Image//ship.tga");
+	meshList[GEO_SHIPFLOOR] = MeshBuilder::GenerateOBJ("Floor", "OBJ//ShipFloor.obj");
+	meshList[GEO_SHIPFLOOR]->textureID = LoadTGA("Image//ShipFloor.tga");
 	meshList[GEO_SHIPFLOOR]->position.Set(0, -1, 0);
 	meshList[GEO_SHIPFLOOR]->interactable = true;
 
 	//Arun's Wall
 	//meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("Model 1", "OBJ//wall.obj");
-	meshList[GEO_FUEL1] = MeshBuilder::GenerateQuad("fuel1", Color(0.8, 0, 0));
-	meshList[GEO_FUEL2] = MeshBuilder::GenerateQuad("fuel2", Color(1, 0, 0));
-	meshList[GEO_FUEL3] = MeshBuilder::GenerateQuad("fuel3", Color(0, 0.8, 0));
-	meshList[GEO_FUEL4] = MeshBuilder::GenerateQuad("fuel4", Color(0, 1, 0));
-	meshList[GEO_FUEL5] = MeshBuilder::GenerateQuad("fuel5", Color(0.2,1, 0.2));
+	meshList[GEO_FUEL1] = MeshBuilder::GenerateQuad("fuel1", Color(0.2, 0.2, 0.2));
+	meshList[GEO_FUEL2] = MeshBuilder::GenerateQuad("fuel2", Color(0.4, 0.4, 0.4));
+	meshList[GEO_FUEL3] = MeshBuilder::GenerateQuad("fuel3", Color(0.6, 0.6, 0.6));
+	meshList[GEO_FUEL4] = MeshBuilder::GenerateQuad("fuel4", Color(0.8, 0.8, 0.8));
+	meshList[GEO_FUEL5] = MeshBuilder::GenerateQuad("fuel5", Color(1, 1, 1));
 	meshList[GEO_JETPACKUI] = MeshBuilder::GenerateQuad("Jetpack UI", Color(1, 2, 1));
+
+	//UI Background
+	meshList[GEO_UIBG] = MeshBuilder::GenerateQuad("UI Background Panal", Color(0, 0.28, 0.58));
+
 
 	////GROUND
 	meshList[GEO_GROUND] = MeshBuilder::GenerateGround("ground", Color(0.2, 0.2, 0.2));
@@ -548,28 +552,27 @@ void SP2::Init()
 	meshList[GEO_THICK2]->interactable = true;
 
 	//TEXT
-	meshList[GEO_TIMEDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TIMEDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_JETPACKUI] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_JETPACKUI]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_TIME] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TIME]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_ENEMYHEALTH] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_ENEMYHEALTH]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_ENEMYHEALTHDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_ENEMYHEALTHDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_TIMEDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_TIMEDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
+	//meshList[GEO_JETPACKUI] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_JETPACKUI]->textureID = LoadTGA("Image//calibri.tga");
+	//meshList[GEO_TIME] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_TIME]->textureID = LoadTGA("Image//calibri.tga");
+	//meshList[GEO_ENEMYHEALTH] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_ENEMYHEALTH]->textureID = LoadTGA("Image//calibri.tga");
+	//meshList[GEO_ENEMYHEALTHDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
+	//meshList[GEO_ENEMYHEALTHDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text",16,16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
+
+	meshList[GEO_FLASH] = MeshBuilder::GenerateQuad("flash",Color(0,0,0));
+	meshList[GEO_FLASH]->textureID = LoadTGA("Image//flash.tga");
+	//UI
+	meshList[GEO_HELMET] = MeshBuilder::GenerateQuad("UI", Color(0,0,0));
+	meshList[GEO_HELMET]->textureID = LoadTGA("Image//HelmetUI.tga");
 	// Enable blendings
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	enemy temp;
-	temp.health = 100;
-	meshList[GEO_ENEMY] = MeshBuilder::GenerateOBJ("apple", "OBJ//customer.obj");
-	temp.EnemyMesh = meshList[GEO_ENEMY];
-	temp.EnemyMesh->position = Vector3(0, 5, -496);
-	mobs.push_back(temp);
-	
 	meshList[GEO_ALIEN_HEAD] = MeshBuilder::GenerateOBJ("Alien Head", "OBJ//Head.obj");
 	meshList[GEO_ALIEN_HEAD]->textureID = LoadTGA("Image//alienUV.tga");
 	meshList[GEO_ALIEN_HEAD]->position = Vector3(0, 0, -480);
@@ -597,29 +600,51 @@ void SP2::Init()
 	alien.m_LegR = meshList[GEO_ALIEN_LEGR];
 	alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
 	alien.transparency = 1;
+//	temp.health = 100;
+	meshList[GEO_ENEMY] = MeshBuilder::GenerateOBJ("apple", "OBJ//Rifle.obj");
+	meshList[GEO_ENEMY]->textureID = LoadTGA("Image//Rifle .tga");
+	shoot.Gun.delayMultiplier = 0.3;
+	shoot.Gun.semiAuto = false;
+	shoot.Gun.stopFiring = false;
+	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
+	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("Rifle", "OBJ//Rifle.obj");
+//	meshList[GEO_THICK2]->position.Set(0, 3, -50);
+	meshList[GEO_RIFLE]->textureID = LoadTGA("Image//Rifle.tga");
 }
 
 void SP2::Update(double dt)
 {
 	if (Application::IsKeyPressed('1')) //enable back face culling
-		glEnable(GL_CULL_FACE);
+		//	glEnable(GL_CULL_FACE);
+	{
+		shoot.Gun.delayMultiplier = 0.5;
+		shoot.Gun.semiAuto = false;
+	}
 	if (Application::IsKeyPressed('2')) //disable back face cullings
-		glDisable(GL_CULL_FACE);
+		//glDisable(GL_CULL_FACE);
+	{
+		shoot.Gun.semiAuto = true;
+		shoot.Gun.delayMultiplier = 0.4;
+		cout << "Semi Auto mode" << endl;
+	}
 	if (Application::IsKeyPressed('3'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
 	if (Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+	
+	//Gun.stopFiring = false;
+//	Gun.shotOne = false;
 	time += dt;
 	fps = 1 / dt;
+	CharacMovement(dt);
+	camera.Update(dt);
 	//Movement(dt);
 	Vector3 bulletSpeed = (0.1, 0.1, 0.1);
 	//bullet = camera.view;
-
-	CharacMovement(dt);
-	camera.Update(dt);
 	shoot.ShootingBullets(camera, dt, time, meshList);
 	shoot.bulletHitDetection(mobs, dt, camera);
 	alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
+	object = shoot.Shootable(dt, camera, meshList,mobs);
 }
 
 Mesh* SP2::Interaction(double dt)
@@ -1355,8 +1380,22 @@ void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float 
 	modelStack.LoadIdentity(); //Reset modelStack
 	//modelStack.PushMatrix();
 	modelStack.Translate(x, y, 0);
+	if (mesh == meshList[GEO_UIBG])
+	{
+		modelStack.Rotate(180, 0, 0, 1);
+	}
+	modelStack.Scale(sizex, sizey, 1);
 	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Scale(sizex, sizey,1);
+	if (mesh == meshList[GEO_HELMET])
+	{
+		modelStack.Rotate(-90, 0, 1, 0);
+	}
+	if (mesh == meshList[GEO_RIFLE])
+	{
+		modelStack.Rotate(-85, 1,0,0);
+		modelStack.Rotate(195 , 0, 1,0);
+
+	}
 	////modelStack.Translate(camera.position.x + camera.view.x, camera.position.y + camera.view.y, camera.position.z + camera.view.z);
 	//modelStack.Translate(camera.view.x, camera.view.y + camera.position.y, camera.view.z);
 	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
@@ -1448,21 +1487,7 @@ void SP2::Render()
 
 	//Skybox
 	RenderSkybox(camera.position);
-
-	/*if (object)
-	{
-		object->light = false;
-	}
-	else
-	{
-		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-		{
-			meshList[i]->light = true;
-		}
-	}*/
-
 	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
-
 	modelStack.PushMatrix();
 	modelStack.Translate(alien.m_Head->position.x, alien.m_Head->position.y, alien.m_Head->position.z);
 	modelStack.Rotate(alien.getAngle(), 0, 1, 0);
@@ -1988,61 +2013,154 @@ void SP2::Render()
 
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	//////////////////////////////////
+	//			Enemy Health        //
+	/////////////////////////////////
+	if (object )
+	{
+	//	cout << healthDisplay.health<<endl;
+		if (object->ifShootable == true)
+		{
+			std::ostringstream enemyHp;
+			enemyHp << std::setprecision(3) << object->health;
+			RenderTextOnScreen(meshList[GEO_TEXT], "Enemy HP: ", Color(0, 1, 0), 2, 25, 10);
+			RenderTextOnScreen(meshList[GEO_TEXT], enemyHp.str(), Color(1, 1, 1), 2, 37, 10);
+			//		std::ostringstream enemyHp;
+		}
+	}
+	
+	//////////////////////////////////
+	//			JetFuel             //
+	/////////////////////////////////
+	if (jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 2, 3);
+	}
 	if (jetPack.getFuel() > 15)
 	{
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL1], 4, 7, 25, 4.8);
+		RenderOBJonScreen(meshList[GEO_FUEL1], 4, 1, 3, 21);
 		modelStack.PopMatrix();
 	}
 	
 	if (jetPack.getFuel() > 40)
 	{
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL2], 4, 7, 30, 4.8);
+		RenderOBJonScreen(meshList[GEO_FUEL2], 4, 1, 8, 21);
 		modelStack.PopMatrix();
 	}
 	
 	if (jetPack.getFuel() > 60)
 	{
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL3], 4, 7, 35, 4.8);
+		RenderOBJonScreen(meshList[GEO_FUEL3], 4, 1, 13, 21);
 		modelStack.PopMatrix();
 	}
 	
 	if (jetPack.getFuel() >80)
 	{
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL4], 4, 7, 40, 4.8);
+		RenderOBJonScreen(meshList[GEO_FUEL4], 4, 1, 18, 21);
 		modelStack.PopMatrix();
 		
 	}
 		
 	
-	if (jetPack.getFuel() == 100)
+	if (jetPack.getFuel() > 95)
 	{
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL5], 4, 7, 45, 4.8);
+		RenderOBJonScreen(meshList[GEO_FUEL5], 4, 1, 23, 21);
 		modelStack.PopMatrix();
 	}
-	if ( shoot.object && shoot.objectDied==false)
-	{
-		std::ostringstream enemyHp;
-	//	enemyHp << std::setprecision(3) <<	 shoot.object->health;
-		RenderTextOnScreen(meshList[GEO_ENEMYHEALTHDISPLAY], "Enemy HP: ", Color(0, 1, 0), 2, 25, 10);
-	RenderTextOnScreen(meshList[GEO_ENEMYHEALTHDISPLAY],enemyHp.str(), Color(1, 1, 1), 2, 37, 10);
-	}
-	if (jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 2, 3);
-	}
-	RenderTextOnScreen(meshList[GEO_JETPACKUI], jetfuelDisplay, Color(0, 1, 0), 2, 2, 2);
-	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeDisplay, Color(0, 1, 0), 2, 2, 12);
+	RenderTextOnScreen(meshList[GEO_TEXT],"Jet Fuel: ", Color(0, 1, 0), 2, 2, 2);
+
+	//////////////////////////////////
+	//			Time               //
+	/////////////////////////////////
+
+	RenderTextOnScreen(meshList[GEO_TEXT],"Time: ", Color(0, 1, 0), 2, 2, 12);
 	std::ostringstream timeString;
 	timeString << std::setprecision(3) << time;
-	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeString.str(), Color(0, 1, 0), 2, 8, 12);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 12);
+
+
+	//////////////////////////////////
+	//			Gun                //
+	/////////////////////////////////
+	RenderTextOnScreen(meshList[GEO_TEXT], "Gun Mode: ", Color(0, 1, 0), 2, 2, 8);
+	if (shoot.Gun.semiAuto==false)
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], "Automatic Mode", Color(0, 1, 0), 2, 12 , 8);
+	}
+	else if (shoot.Gun.semiAuto == true)
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], " Semi Auto Mode", Color(0, 1, 0), 2, 12, 8);
+	}
 	timeString.str("");
 	timeString << "FPS: " << fps;
-	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeString.str(), Color(0, 1, 0), 2, 8, 11);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 11);
+	//RenderTextOnScreen(meshList[GEO_TEXT], "Jet Fuel: ", Color(1, 1, 1), 2, 0, 11);
+	//RenderTextOnScreen(meshList[GEO_TEXT], timeDisplay, Color(0, 1, 0), 2, 2, 12);
+	//timeString << std::setprecision(3) << time;
+	//RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 12);
+	//UI Background Panal
+	glBlendFunc(1, 1);
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_UIBG], 40, 10, 10, 20);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_FLASH], false);
+	//modelStack.Translate(0, -5, 498);
+	modelStack.PopMatrix();
+
+	//RenderOBJonScreen(meshList[GEO_FLASH], 4, 1, 18, 21);
+//	RenderTextOnScreen(meshList[GEO_FLASH], " ", Color(1, 1, 1), 2, 0, 11);
+
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.PushMatrix();
+	/*modelStack.Translate(0,5,-496);
+	modelStack.Scale(0.01, 0.01, 0.01);*/
+	//RenderOBJonScreen(meshList[GEO_RIFLE], 4, 1, 23, 21);
+	//Vector3 temp = camera.target + (camera.view * 100);
+	//////	temp.x = camera.position.x + camera.view.x- 3;
+	//////temp.y = camera.position.y + camera.view.y;
+	//////temp.z = camera.position.z + camera.view.z;
+	//////modelStack.Translate(temp.x,temp.y,temp.z);
+	//////temp.Dot()
+	//Vector3 Length;
+	//Length.x = camera.target.x - camera.position.x;
+	//Length.z = camera.target.z - camera.position.z;
+	/*modelStack.Translate(temp.x+5, temp.y, temp.z);
+	modelStack.Rotate(camera.horiRot, 0, 1, 0);
+	modelStack.Rotate(-camera.vertRot, 1, 0, 0);*/
+
+	//modelStack.Translate(camera.target.x - 3, camera.target.y, camera.target.z);
+
+	//RenderMesh(meshList[GEO_RIFLE], false);
+
+	//modelStack.Rotate(15,0,1,0);
+	
+
+	//characterPos.z	 cos(Math::DegreeToRadian(rotateChar));
+	//characterPos.x += sin(Math::DegreeToRadian(rotateChar));
+	//cos(Math::DegreeToRadian(vertRot)) * sin(Math::DegreeToRadian(horiRot)),
+
+	//	sin(Math::DegreeToRadian(vertRot)),
+
+	//	cos(Math::DegreeToRadian(vertRot)) * cos(Math::DegreeToRadian(horiRot)
+	/*Vector3 rotateTemp;
+	rotateTemp.x = cos(Math::DegreeToRadian(camera.vertRot))* sin(Math::DegreeToRadian(camera.horiRot));
+	rotateTemp.y = sin(Math::DegreeToRadian(camera.vertRot));
+	rotateTemp.z = cos(Math::DegreeToRadian(camera.vertRot)) * cos(Math::DegreeToRadian(camera.horiRot));
+	modelStack.Rotate(camera.horiRot, 0, rotateTemp.y, rotateTemp.z);
+	modelStack.Rotate(camera.vertRot, rotateTemp.x, rotateTemp.y, rotateTemp.z);*/
+	//modelStack.Rotate(camera.horiRot, rotateTemp.x, rotateTemp.y, rotateTemp.z);
+	//modelStack.Rotate(90, 1, 0, 0);
+	//modelStack.Scale(0.1, 0.1, 0.1);
+	RenderOBJonScreen(meshList[GEO_RIFLE],0.8,0.8,70,20);
+	modelStack.PopMatrix();
+	//RenderOBJonScreen(meshList[GEO_HELMET], 80, 60, 40 , 30);
 }
 
 void SP2::Exit()

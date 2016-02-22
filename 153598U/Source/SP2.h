@@ -14,7 +14,7 @@
 #include <Vector>
 #include "FlyingClass.h"
 #include "AI.h"
-
+#include "Gun.h"
 using std::vector;
 using std::string;
 class SP2 : public Scene
@@ -39,6 +39,7 @@ public:
 		GEO_FUEL4,
 		GEO_FUEL5,
 		GEO_JETPACKUI,
+		GEO_UIBG,
 		GEO_ENEMYHEALTH,
 		GEO_ENEMYHEALTHDISPLAY,
 		GEO_BULLET,
@@ -48,6 +49,7 @@ public:
 		GEO_ALIEN_BODY,
 		GEO_ALIEN_LEGR,
 		GEO_ALIEN_LEGL,
+		GEO_HELMET,
 		GEO_MODEL1,
 		GEO_STARTLINE,
 
@@ -159,13 +161,13 @@ public:
 		GEO_THICK1,
 		GEO_THICK2,
 		//Wall(Thick)End
-
-		GEO_ENEMY,
 		GEO_TEXT,
+		GEO_RIFLE,
+		GEO_ENEMY,
+		GEO_FLASH,
 		GEO_PATH_F,
 		GEO_PATH_V,
 		GEO_PATH_O,
-
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -237,10 +239,11 @@ public:
 	string timeDisplay="Time : ";
 	float time = 0;
 	float delay = 0;
-	string jetfuelDisplay = "Jet Fuel: ";
+	bool shot=false ; // when object get shot
+	bool objectDied = false;//when object is dead
 	Flying jetPack;
 	AI alien;
-	vector<AI> allMobs;
+	Mesh* object;
 };
 
 #endif
