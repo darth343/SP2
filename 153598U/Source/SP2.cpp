@@ -577,39 +577,47 @@ void SP2::Init()
 	// Enable blendings
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	meshList[GEO_ALIEN_HEAD] = MeshBuilder::GenerateOBJ("Alien Head", "OBJ//Head.obj");
-	meshList[GEO_ALIEN_HEAD]->textureID = LoadTGA("Image//alienUV.tga");
-	meshList[GEO_ALIEN_HEAD]->position = Vector3(0, 0, -480);
-	meshList[GEO_ALIEN_BODY] = MeshBuilder::GenerateOBJ("Alien Body", "OBJ//Body.obj");
-	meshList[GEO_ALIEN_BODY]->textureID = LoadTGA("Image//alienUV.tga");
-	meshList[GEO_ALIEN_BODY]->position = Vector3(0, 0, -480);
-	meshList[GEO_ALIEN_HANDR] = MeshBuilder::GenerateOBJ("Alien Right Hand", "OBJ//RightHand.obj");
-	meshList[GEO_ALIEN_HANDR]->textureID = LoadTGA("Image//alienUV.tga");
-	meshList[GEO_ALIEN_HANDR]->position = Vector3(0, 0, -480);
-	meshList[GEO_ALIEN_HANDL] = MeshBuilder::GenerateOBJ("Alien Left Hand", "OBJ//LeftHand.obj");
-	meshList[GEO_ALIEN_HANDL]->textureID = LoadTGA("Image//alienUV.tga");
-	meshList[GEO_ALIEN_HANDL]->position = Vector3(0, 0, -480);
-	meshList[GEO_ALIEN_LEGR] = MeshBuilder::GenerateOBJ("Alien Right Leg", "OBJ//RightLeg.obj");
-	meshList[GEO_ALIEN_LEGR]->textureID = LoadTGA("Image//alienUV.tga");
-	meshList[GEO_ALIEN_LEGR]->position = Vector3(0, 0, -480);
-	meshList[GEO_ALIEN_LEGL] = MeshBuilder::GenerateOBJ("Alien Left Leg", "OBJ//LeftLeg.obj");
-	meshList[GEO_ALIEN_LEGL]->textureID = LoadTGA("Image//alienUV.tga");
-	meshList[GEO_ALIEN_LEGL]->position = Vector3(0, 0, -480);
+	//meshList[GEO_ALIEN_HEAD] = MeshBuilder::GenerateOBJ("Alien Head", "OBJ//Head.obj");
+	//meshList[GEO_ALIEN_HEAD]->textureID = LoadTGA("Image//alienUV.tga");
+	//meshList[GEO_ALIEN_HEAD]->position = Vector3(0, 0, -480);
+	//meshList[GEO_ALIEN_BODY] = MeshBuilder::GenerateOBJ("Alien Body", "OBJ//Body.obj");
+	//meshList[GEO_ALIEN_BODY]->textureID = LoadTGA("Image//alienUV.tga");
+	//meshList[GEO_ALIEN_BODY]->position = Vector3(0, 0, -480);
+	//meshList[GEO_ALIEN_HANDR] = MeshBuilder::GenerateOBJ("Alien Right Hand", "OBJ//RightHand.obj");
+	//meshList[GEO_ALIEN_HANDR]->textureID = LoadTGA("Image//alienUV.tga");
+	//meshList[GEO_ALIEN_HANDR]->position = Vector3(0, 0, -480);
+	//meshList[GEO_ALIEN_HANDL] = MeshBuilder::GenerateOBJ("Alien Left Hand", "OBJ//LeftHand.obj");
+	//meshList[GEO_ALIEN_HANDL]->textureID = LoadTGA("Image//alienUV.tga");
+	//meshList[GEO_ALIEN_HANDL]->position = Vector3(0, 0, -480);
+	//meshList[GEO_ALIEN_LEGR] = MeshBuilder::GenerateOBJ("Alien Right Leg", "OBJ//RightLeg.obj");
+	//meshList[GEO_ALIEN_LEGR]->textureID = LoadTGA("Image//alienUV.tga");
+	//meshList[GEO_ALIEN_LEGR]->position = Vector3(0, 0, -480);
+	//meshList[GEO_ALIEN_LEGL] = MeshBuilder::GenerateOBJ("Alien Left Leg", "OBJ//LeftLeg.obj");
+	//meshList[GEO_ALIEN_LEGL]->textureID = LoadTGA("Image//alienUV.tga");
+	//meshList[GEO_ALIEN_LEGL]->position = Vector3(0, 0, -480);
 
-	alien.m_Head = meshList[GEO_ALIEN_HEAD];
-	alien.m_Body = meshList[GEO_ALIEN_BODY];
-	alien.m_HandL = meshList[GEO_ALIEN_HANDL];
-	alien.m_HandR = meshList[GEO_ALIEN_HANDR];
-	alien.m_LegL = meshList[GEO_ALIEN_LEGL];
-	alien.m_LegR = meshList[GEO_ALIEN_LEGR];
-	alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
-	alien.transparency = 1;
+	//alien.m_Head = meshList[GEO_ALIEN_HEAD];
+	//alien.m_Body = meshList[GEO_ALIEN_BODY];
+	//alien.m_HandL = meshList[GEO_ALIEN_HANDL];
+	//alien.m_HandR = meshList[GEO_ALIEN_HANDR];
+	//alien.m_LegL = meshList[GEO_ALIEN_LEGL];
+	//alien.m_LegR = meshList[GEO_ALIEN_LEGR];
+	//alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
+	//alien.transparency = 1;
 //	temp.health = 100;
 	meshList[GEO_ENEMY] = MeshBuilder::GenerateOBJ("apple", "OBJ//Rifle.obj");
 	meshList[GEO_ENEMY]->textureID = LoadTGA("Image//Rifle .tga");
-	shoot.Gun.delayMultiplier = 0.3;
-	shoot.Gun.semiAuto = false;
-	shoot.Gun.stopFiring = false;
+
+	meshList[GEO_PISTOL] = MeshBuilder::GenerateOBJ("apple", "OBJ//Pistol.obj");
+	meshList[GEO_PISTOL]->textureID = LoadTGA("Image//Pistol.tga");
+
+	meshList[GEO_STORE] = MeshBuilder::GenerateOBJ("apple", "OBJ//Store.obj");
+	meshList[GEO_STORE]->textureID = LoadTGA("Image//Store.tga");
+	meshList[GEO_STORE]->position = (0, -5, -480);
+	player.inv.Rifle.delayMultiplier = 0.3;
+	player.inv.Rifle.semiAuto = false;
+	player.inv.Rifle.stopFiring = false;
+	player.inv.GunSelected = &player.inv.Rifle;
 	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
 	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("Rifle", "OBJ//Rifle.obj");
 //	meshList[GEO_THICK2]->position.Set(0, 3, -50);
@@ -618,38 +626,83 @@ void SP2::Init()
 
 void SP2::Update(double dt)
 {
-	if (Application::IsKeyPressed('1')) //enable back face culling
+	//if (Application::IsKeyPressed('1')) //enable back face culling
+	//	//	glEnable(GL_CULL_FACE);
+	//{
+	//	player.inv.GunSelected->delayMultiplier = 0.5;
+	//	player.inv.GunSelected->semiAuto = false;
+	//}
+	//if (Application::IsKeyPressed('2')) //disable back face cullings
+	//	//glDisable(GL_CULL_FACE);
+	//{
+	//	player.inv.GunSelected->semiAuto = true;
+	//	player.inv.GunSelected->delayMultiplier = 0.4;
+	//	cout << "Semi Auto mode" << endl;
+	//}
+	//if (Application::IsKeyPressed('3'))
+	//	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
+	object = shop.ShopInteraction(dt, camera, meshList);
+	if (Application::IsKeyPressed('X') && shop.openShop == false && player.inv.ownRifle == true && player.inv.GunSelected->semiAuto == true && time>delay) //enable back Automatic fire
 		//	glEnable(GL_CULL_FACE);
 	{
-		shoot.Gun.delayMultiplier = 0.5;
-		shoot.Gun.semiAuto = false;
+		player.inv.GunSelected->delayMultiplier = 0.5;
+		player.inv.GunSelected->semiAuto = false;
+		delay = time + 0.5;
 	}
-	if (Application::IsKeyPressed('2')) //disable back face cullings
+	else  if (Application::IsKeyPressed('X') && shop.openShop == false && player.inv.ownRifle == true && player.inv.GunSelected->semiAuto == false && time>delay) //disable back face cullinzgs
 		//glDisable(GL_CULL_FACE);
 	{
-		shoot.Gun.semiAuto = true;
-		shoot.Gun.delayMultiplier = 0.4;
+		player.inv.GunSelected->semiAuto = true;
+		player.inv.GunSelected->delayMultiplier = 0.4;
 		cout << "Semi Auto mode" << endl;
+		delay = time + 0.5;
 	}
-	if (Application::IsKeyPressed('3'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
+	if (Application::IsKeyPressed('E') && shop.openShop == false && time >delay&& object == meshList[GEO_STORE])
+	{
+		shop.openShop = true;
+		cout << "shop is open bois";
+		delay = time + 0.5;
+	}
+	else if (Application::IsKeyPressed('E') && shop.openShop == true && time>delay&& object == meshList[GEO_STORE])
+	{
+		shop.openShop = false;
+		cout << "shop is close bois";
+		delay = time + 0.5;
+	}
+	if (shop.openShop == true && object==meshList[GEO_STORE])
+	{
+		shop.shopping(player);
+	}
+	if (Application::IsKeyPressed('1') && shop.openShop == false && time > delay)
+	{
+		player.inv.GunSelected = &player.inv.Rifle;
+		std::cout << "Rifle Equipped" << std::endl;
+		delay = time + 0.5;
+	}
+	if (Application::IsKeyPressed('2') && shop.openShop == false && time > delay)
+	{
+		player.inv.GunSelected = &player.inv.SMG;
+		std::cout << "SMG Equipped" << std::endl;
+		delay = time + 0.5;
+	}
+	if (Application::IsKeyPressed('3') && shop.openShop == false && time > delay)
+	{
+		player.inv.GunSelected = &player.inv.Pistol;
+		std::cout << "Pistol Equipped" << std::endl;
+		delay = time + 0.5;
+	}
 	if (Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
 	
-	//Gun.stopFiring = false;
-//	Gun.shotOne = false;
 	time += dt;
 	fps = 1 / dt;
 	CharacMovement(dt);
 	camera.Update(dt);
-	//Movement(dt);
 	Vector3 bulletSpeed = (0.1, 0.1, 0.1);
-	//bullet = camera.view;
-	shoot.ShootingBullets(camera, dt, time, meshList);
+	shoot.ShootingBullets(camera, dt, time, meshList,player);
 	shoot.bulletHitDetection(mobs, dt, camera);
-	alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
+	//alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
 	object = shoot.Shootable(dt, camera, meshList,mobs);
-	//Gun.stopFiring = true;
 
 	//Player Take Damage
 	if (Application::IsKeyPressed('Z') && takeDamage == false)
@@ -671,7 +724,6 @@ Mesh* SP2::Interaction(double dt)
 	for (Vector3 temp = camera.view.Normalized(); temp.Length() <= range ; temp += camera.view.Normalized())
 	{
 		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-
 		{
 			if (meshList[i]->min != nullptr || meshList[i]->max != nullptr)
 			{
@@ -1120,6 +1172,12 @@ void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float 
 		modelStack.Rotate(195 , 0, 1,0);
 
 	}
+	if (mesh == meshList[GEO_PISTOL])
+	{
+		modelStack.Scale(2, 2, 2);
+		modelStack.Rotate(-85, 1, 0, 0);
+		modelStack.Rotate(105, 0, 1, 0);
+	}
 	////modelStack.Translate(camera.position.x + camera.view.x, camera.position.y + camera.view.y, camera.position.z + camera.view.z);
 	//modelStack.Translate(camera.view.x, camera.view.y + camera.position.y, camera.view.z);
 	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
@@ -1211,7 +1269,7 @@ void SP2::Render()
 
 	//Skybox
 	RenderSkybox(camera.position);
-	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
+	/*glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
 	modelStack.PushMatrix();
 	modelStack.Translate(alien.m_Head->position.x, alien.m_Head->position.y, alien.m_Head->position.z);
 	modelStack.Rotate(alien.getAngle(), 0, 1, 0);
@@ -1247,7 +1305,7 @@ void SP2::Render()
 	modelStack.Rotate(alien.getAngle(), 0, 1, 0);
 	RenderMesh(alien.m_LegR, true);
 	modelStack.PopMatrix();
-	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
+	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);*/
 
 	//Enemy Rendering
 	for (int a = 0; a <shoot.bullets.size(); a++)
@@ -1811,7 +1869,7 @@ void SP2::Render()
 	//			Gun                //
 	/////////////////////////////////
 	//RenderTextOnScreen(meshList[GEO_TEXT], "Gun Mode: ", Color(0, 1, 0), 2, 30, 6);
-	if (shoot.Gun.semiAuto==false)
+	if (player.inv.GunSelected->semiAuto==false)
 	{
 		//RenderTextOnScreen(meshList[GEO_TEXT], "|||", Color(0, 1, 0), 3, 21 , 3);
 		modelStack.PushMatrix();
@@ -1820,7 +1878,7 @@ void SP2::Render()
 		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 65, 11);
 		modelStack.PopMatrix();
 	}
-	else if (shoot.Gun.semiAuto == true)
+	else if (player.inv.GunSelected->semiAuto == true)
 	{
 		modelStack.PushMatrix();						   
 		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11); 
@@ -1834,13 +1892,14 @@ void SP2::Render()
 	//timeString << std::setprecision(3) << time;
 	//RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 12);
 	//UI Background Panal
-	glBlendFunc(1, 1);
+	/*glBlendFunc(1, 1);
 	modelStack.PushMatrix();
 	RenderOBJonScreen(meshList[GEO_UIBG], 25, 19, 72, 3.5);
-	modelStack.PopMatrix();
+	modelStack.PopMatrix();*/
 
 	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_FLASH], false);
+	modelStack.Translate(meshList[GEO_STORE]->position.x, meshList[GEO_STORE]->position.y, meshList[GEO_STORE]->position.z);
+	RenderMesh(meshList[GEO_STORE], false);
 	modelStack.PopMatrix();
 
 	
@@ -1850,15 +1909,23 @@ void SP2::Render()
 	modelStack.PushMatrix();
 	RenderOBJonScreen(meshList[GEO_PLAYERHEALTH], 30*scaleHealth, 1, 40, 55);
 	modelStack.PopMatrix();
-
-	//glBlendFunc(1, 1);
+if (player.inv.GunSelected == &player.inv.Rifle)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_RIFLE], 0.8, 0.8, 70, 20);
+		modelStack.PopMatrix();
+	}
+else if (player.inv.GunSelected = &player.inv.Pistol)
+{
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_PISTOL], 0.8, 0.8, 70, 17);
+	modelStack.PopMatrix();
+}
+//	glBlendFunc(1, 1);
 	modelStack.PushMatrix();
 	RenderOBJonScreen(meshList[GEO_HELMET], 80, 60, 40 , 30);
 	modelStack.PopMatrix();
 	
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_RIFLE],0.8,0.8,70,20);
-	modelStack.PopMatrix();
 }
 
 void SP2::Exit()

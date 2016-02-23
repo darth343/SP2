@@ -15,38 +15,50 @@ Shooting::~Shooting()
 
 }
 
-void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshList )
+void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshList,Player &player )
 {
-	if (Application::IsKeyPressed(VK_LBUTTON) && Gun.semiAuto == false)
+	if (Application::IsKeyPressed(VK_LBUTTON) && player.inv.GunSelected->semiAuto == false)
 	{
-		if (Gun.semiAuto == false && time > delay)
+		if (player.inv.GunSelected->semiAuto == false && time > delay)
 		{
+			if (player.inv.GunSelected->ammo > 0)
+			{
 			TestBullet temp;
 			temp.Position = camera.position;
 			temp.start = temp.Position;
 			temp.trajectory = camera.view.Normalized();
 			bullets.push_back(temp);
-			delay = time + Gun.delayMultiplier;
+			delay = time + player.inv.GunSelected->delayMultiplier;
+				player.inv.GunSelected->ammo--;
+				std::cout << player.inv.GunSelected->ammo << std::endl;
+			}
 
 		}
 	}
-	if (Application::IsKeyPressed(VK_LBUTTON) && Gun.semiAuto == true && Gun.stopFiring == false/* && time>delay*/)
+	if (Application::IsKeyPressed(VK_LBUTTON) && player.inv.GunSelected->semiAuto == true && player.inv.GunSelected->stopFiring == false/* && time>delay*/)
 	{
-		if (Gun.semiAuto == true && Gun.stopFiring == false)
+		if (player.inv.GunSelected->semiAuto == true && player.inv.GunSelected->stopFiring == false)
 		{
+			if (player.inv.GunSelected->ammo > 0)
+			{
 			cout << " Works" << endl;
 			TestBullet temp;
 			temp.Position = camera.position;
 			temp.start = temp.Position;
 			temp.trajectory = camera.view.Normalized();
 			bullets.push_back(temp);
-			//delay = time + Gun.delayMultiplier;
-			Gun.stopFiring = true;
+			delay = time + player.inv.GunSelected->delayMultiplier;
+			player.inv.GunSelected->ammo -= 1;
+				std::cout << player.inv.GunSelected->ammo << std::endl;
+			player.inv.GunSelected->stopFiring = true;
+			
+			
+			}
 		}
 	}
 	else if (!Application::IsKeyPressed(VK_LBUTTON))
 	{
-		Gun.stopFiring = false;
+	player.inv.GunSelected->stopFiring = false;
 	}
 	if (bullets.size() > 0)
 	{

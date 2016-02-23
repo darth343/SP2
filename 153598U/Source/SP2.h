@@ -15,6 +15,8 @@
 #include "FlyingClass.h"
 #include "AI.h"
 #include "Gun.h"
+#include "Shop.h"
+#include "Player.h"
 using std::vector;
 using std::string;
 class SP2 : public Scene
@@ -170,6 +172,8 @@ public:
 		GEO_PATH_F,
 		GEO_PATH_V,
 		GEO_PATH_O,
+		GEO_STORE,
+		GEO_PISTOL,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -214,7 +218,7 @@ public:
 	virtual void Update(double dt);
 	virtual void Render();
 	virtual void Exit();
-	//Mesh* Shootable(double dt);
+
 	Mesh* meshList[NUM_GEOMETRY];
 	Shooting shoot;
 	void RenderMesh(Mesh *mesh, bool enableLight);
@@ -236,7 +240,6 @@ public:
 	float scaleHealth = 1;
 	MS modelStack, viewStack, projectionStack;
 	Light light[4];
-	//Mesh * object;
 	vector<enemy> mobs;
 	Camera5 camera;
 	string timeDisplay="Time : ";
@@ -248,6 +251,9 @@ public:
 	Flying jetPack;
 	AI alien;
 	Mesh* object;
+	//Inventory inv;
+	Shop shop;
+	Player player;
 };
 
 #endif
