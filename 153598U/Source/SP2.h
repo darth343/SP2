@@ -218,6 +218,7 @@ public:
 	Mesh* meshList[NUM_GEOMETRY];
 	Shooting shoot;
 	void RenderMesh(Mesh *mesh, bool enableLight);
+	void RenderMesh(Mesh *mesh, bool enableLight, MS ms, MS vs, MS ps);
 	void RenderSkybox(Vector3 position);
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
@@ -226,6 +227,7 @@ public:
 	void CharacMovement(double dt);
 	Mesh* Interaction(double dt);
 
+	private:
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
 	unsigned m_vertexArrayID;
@@ -248,6 +250,7 @@ public:
 	Flying jetPack;
 	AI alien;
 	Mesh* object;
+	Vector3 pivot;
 };
 
 #endif
