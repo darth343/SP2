@@ -34,7 +34,6 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 	{
 		if (Gun.semiAuto == true && Gun.stopFiring == false)
 		{
-			cout << " Works" << endl;
 			TestBullet temp;
 			temp.Position = camera.position;
 			temp.start = temp.Position;
