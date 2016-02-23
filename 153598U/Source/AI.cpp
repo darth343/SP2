@@ -1,5 +1,6 @@
 #include "AI.h"
-
+#include "SP2.h"
+#include "GL\glew.h"
 AI::AI()
 {
 }
@@ -10,7 +11,7 @@ AI::~AI()
 
 void AI::move(Vector3 currentPos, Vector3 targetPos, Camera5 camera,  Mesh ** meshList, int modelStart, int modelEnd, double time)
 {
-	if (m_path.getPath().size() > 0 && fmod(time, 0.1) < 0.025)
+	if (m_path.getPath().size() > 0 && fmod(time, 0.1) < 0.04)
 	{
 		count++;
 		Vector3 temp = m_path.NextPathPos(m_Body);
@@ -36,7 +37,7 @@ void AI::move(Vector3 currentPos, Vector3 targetPos, Camera5 camera,  Mesh ** me
 		move = temp - m_LegR->position;
 		m_LegR->position += move;
 	}
-	if (m_path.getPath().size() <= 1 && Vector3(camera.position - m_Body->position).Length() < 30)
+	if (m_path.getPath().size() <= 1 && Vector3(camera.position - m_Body->position).Length() < 40)
 	{
 		count = 0;
 		if (camera.position != prevPos)
@@ -47,16 +48,17 @@ void AI::move(Vector3 currentPos, Vector3 targetPos, Camera5 camera,  Mesh ** me
 			prevPos = camera.position;
 		}
 	}
-	if (Vector3(camera.position - m_Body->position).Length() > 30)
+	if (Vector3(camera.position - m_Body->position).Length() > 40)
 	{
 		transparency = 1;
 	}
-	else if (Vector3(camera.position - m_Body->position).Length() < 30)
+	else if (Vector3(camera.position - m_Body->position).Length() < 40)
 	{
-		transparency = (Vector3(camera.position - m_Body->position).Length()) / 30;
-		if (Vector3(camera.position - m_Body->position).Length() < 20)
-			transparency = fmod((20 / Vector3(camera.position - m_Body->position).Length()), 1);
+		transparency = (Vector3(camera.position - m_Body->position).Length()) / 40;
+		if (Vector3(camera.position - m_Body->position).Length() < 30)
+			transparency = fmod((30 / Vector3(camera.position - m_Body->position).Length()), 1);
 	}
+	std::cout << Vector3(camera.position - m_Body->position).Length() << std::endl;
 }
 
 float AI::getAngle()
