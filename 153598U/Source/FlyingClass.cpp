@@ -17,7 +17,7 @@ void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList, int start, int end
 {
 	float fuelrate = 0.8;
 	float rechargeRate = 0.4;
-	float offset = 0;
+	float offset = 2;
 	if (Application::IsKeyPressed(VK_SPACE) && fuel > 0 && activated == true)
 	{
 		if (camera.position.y + camera.position.Normalized().y * dt * speed + 1 < 498 && camera.position.y + camera.position.Normalized().y * dt * speed - 1 > -498)

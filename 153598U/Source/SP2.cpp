@@ -647,7 +647,7 @@ void SP2::Update(double dt)
 	//bullet = camera.view;
 	shoot.ShootingBullets(camera, dt, time, meshList);
 	shoot.bulletHitDetection(mobs, dt, camera);
-	alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
+	//alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
 	object = shoot.Shootable(dt, camera, meshList,mobs);
 	//Gun.stopFiring = true;
 
@@ -660,7 +660,25 @@ void SP2::Update(double dt)
 	{
 		scaleHealth -= dt;
 	}
+	
+	if (Application::IsKeyPressed(VK_NUMPAD8))
+	{
+		pivot.y += dt;
+	}
+	if (Application::IsKeyPressed(VK_NUMPAD5))
+	{
+		pivot.y -= dt;
+	}
+	if (Application::IsKeyPressed(VK_NUMPAD4))
+	{
+		pivot.x += dt;
+	}
+	if (Application::IsKeyPressed(VK_NUMPAD6))
+	{
+		pivot.x -= dt;
+	}
 
+	cout << pivot << endl;
 }
 
 Mesh* SP2::Interaction(double dt)
@@ -990,6 +1008,49 @@ void SP2::RenderMesh(Mesh * mesh, bool enableLight)
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
+
+void SP2::RenderMesh(Mesh * mesh, bool enableLight, MS ms, MS vs, MS ps)
+{
+	Mtx44 MVP, modelView, modelView_inverse_transpose;
+	MVP = ps.Top() * vs.Top() * ms.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+	modelView = vs.Top() * ms.Top();
+	glUniformMatrix4fv(m_parameters[U_MODELVIEW], 1, GL_FALSE, &modelView.a[0]);
+
+	if (enableLight)
+	{
+		glUniform1i(m_parameters[U_LIGHTENABLED], 1);
+		modelView_inverse_transpose = modelView.GetInverse().GetTranspose();
+		glUniformMatrix4fv(m_parameters[U_MODELVIEW_INVERSE_TRANSPOSE], 1, GL_FALSE, &modelView_inverse_transpose.a[0]);
+		//load material
+		glUniform3fv(m_parameters[U_MATERIAL_AMBIENT], 1, &mesh->material.kAmbient.r);
+		glUniform3fv(m_parameters[U_MATERIAL_DIFFUSE], 1, &mesh->material.kDiffuse.r);
+		glUniform3fv(m_parameters[U_MATERIAL_SPECULAR], 1, &mesh->material.kSpecular.r);
+		glUniform1f(m_parameters[U_MATERIAL_SHININESS], mesh->material.kShininess);
+	}
+	else
+	{
+		glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+	}
+
+	if (mesh->textureID > 0)
+	{
+		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+		glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+	}
+	else
+	{
+		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 0);
+	}
+	mesh->Render(); //this line should only be called once 
+	if (mesh->textureID > 0)
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+}
+
 void SP2::RenderSkybox(Vector3 position)
 {
 	float SkyScale = 1000.f;
@@ -1091,7 +1152,7 @@ void SP2::RenderText(Mesh* mesh, std::string text, Color color)
 void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float y)
 {
 	Mtx44 ortho;
-	ortho.SetToOrtho(0, 80, 0, 60, -100, 100); //size of screen UI
+	ortho.SetToOrtho(0, 80, 0, 60, -500, 500); //size of screen UI
 	//Mtx44 projection;
 	//ortho.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
 
@@ -1109,16 +1170,16 @@ void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float 
 	}
 	modelStack.Scale(sizex, sizey, 1);
 	modelStack.Rotate(90, 1, 0, 0);
+	if (mesh == meshList[GEO_RIFLE])
+	{
+		modelStack.Rotate(-85, 1, 0, 0);
+		modelStack.Rotate(195, 0, 1, 0);
+		modelStack.Translate(-10, -10, 60);
+	}
 	if (mesh == meshList[GEO_HELMET])
 	{
 		modelStack.Translate(0, 0.1, 0);
 		modelStack.Rotate(-90, 0, 1, 0);
-	}
-	if (mesh == meshList[GEO_RIFLE])
-	{
-		modelStack.Rotate(-85, 1,0,0);
-		modelStack.Rotate(195 , 0, 1,0);
-
 	}
 	////modelStack.Translate(camera.position.x + camera.view.x, camera.position.y + camera.view.y, camera.position.z + camera.view.z);
 	//modelStack.Translate(camera.view.x, camera.view.y + camera.position.y, camera.view.z);
@@ -1211,43 +1272,6 @@ void SP2::Render()
 
 	//Skybox
 	RenderSkybox(camera.position);
-	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
-	modelStack.PushMatrix();
-	modelStack.Translate(alien.m_Head->position.x, alien.m_Head->position.y, alien.m_Head->position.z);
-	modelStack.Rotate(alien.getAngle(), 0, 1, 0);
-	RenderMesh(alien.m_Head, true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(alien.m_Body->position.x, alien.m_Body->position.y, alien.m_Body->position.z);
-	modelStack.Rotate(alien.getAngle(), 0, 1, 0);
-	RenderMesh(alien.m_Body, true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(alien.m_HandL->position.x, alien.m_HandL->position.y, alien.m_HandL->position.z);
-	modelStack.Rotate(alien.getAngle(), 0, 1, 0);
-	RenderMesh(alien.m_HandL, true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(alien.m_HandR->position.x, alien.m_HandR->position.y, alien.m_HandR->position.z);
-	modelStack.Rotate(alien.getAngle(), 0, 1, 0);
-	RenderMesh(alien.m_HandR, true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(alien.m_LegL->position.x, alien.m_LegL->position.y, alien.m_LegL->position.z);
-	modelStack.Rotate(alien.getAngle(), 0, 1, 0);
-	RenderMesh(alien.m_LegL, true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(alien.m_LegR->position.x, alien.m_LegR->position.y, alien.m_LegR->position.z);
-	modelStack.Rotate(alien.getAngle(), 0, 1, 0);
-	RenderMesh(alien.m_LegR, true);
-	modelStack.PopMatrix();
-	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
 
 	//Enemy Rendering
 	for (int a = 0; a <shoot.bullets.size(); a++)
@@ -1834,6 +1858,10 @@ void SP2::Render()
 	//timeString << std::setprecision(3) << time;
 	//RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 12);
 	//UI Background Panal
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_RIFLE], 0.8, 0.8, 70, 20);
+	modelStack.PopMatrix();
+
 	glBlendFunc(1, 1);
 	modelStack.PushMatrix();
 	RenderOBJonScreen(meshList[GEO_UIBG], 25, 19, 72, 3.5);
@@ -1850,14 +1878,9 @@ void SP2::Render()
 	modelStack.PushMatrix();
 	RenderOBJonScreen(meshList[GEO_PLAYERHEALTH], 30*scaleHealth, 1, 40, 55);
 	modelStack.PopMatrix();
-
 	//glBlendFunc(1, 1);
 	modelStack.PushMatrix();
 	RenderOBJonScreen(meshList[GEO_HELMET], 80, 60, 40 , 30);
-	modelStack.PopMatrix();
-	
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_RIFLE],0.8,0.8,70,20);
 	modelStack.PopMatrix();
 }
 
