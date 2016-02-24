@@ -23,25 +23,33 @@ void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList)
 		if (camera.position.y + camera.position.Normalized().y * dt * speed + 1 < 498 && camera.position.y + camera.position.Normalized().y * dt * speed - 1 > -498)
 		{
 			bool move = false;
-			for (int i = SP2::GEO_LEFTWALL1; i < SP2::GEO_TEXT; i++)
+			for (int i = SP2::GEO_LONGWALL; i < SP2::GEO_TEXT; i++)
 			{
 				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
-					if (camera.position.y + camera.position.Normalized().y * dt * speed < meshList[i]->min->y ||
-						camera.position.y + camera.position.Normalized().y * dt * speed > meshList[i]->max->y ||
+					if (//camera.position.y + camera.position.Normalized().y * dt * speed < meshList[i]->min->y ||
+						//camera.position.y + camera.position.Normalized().y * dt * speed > meshList[i]->max->y ||
 						camera.position.x < meshList[i]->min->x + meshList[i]->position.x ||
 						camera.position.x > meshList[i]->max->x + meshList[i]->position.x ||
 						camera.position.z < meshList[i]->min->z + meshList[i]->position.z ||
 						camera.position.z > meshList[i]->max->z + meshList[i]->position.z
 						)
 					{
-
 						move = true;
 					}
 					else
 					{
-						move = false;
-						break;
+						if (camera.position.y - 6 > meshList[i]->position.y + meshList[i]->max->y ||
+							camera.position.y + 2 < meshList[i]->position.y + meshList[i]->min->y
+							)
+						{
+							move = true;
+						}
+						else
+						{
+							move = false;
+							break;
+						}
 					}
 				}
 				else
@@ -64,7 +72,7 @@ void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList)
 	else
 	{
 		bool fall = false;
-		for (int i = SP2::GEO_LEFTWALL1; i < SP2::GEO_TEXT; i++)
+		for (int i = SP2::GEO_LONGWALL; i < SP2::GEO_TEXT; i++)
 		{
 			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 			{
@@ -74,7 +82,9 @@ void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList)
 					camera.position.z < meshList[i]->position.z + meshList[i]->max->z - offset + 3.8
 					)
 				{
-					if (camera.position.y - 6 - gravity > meshList[i]->position.y + meshList[i]->max->y)
+					if (camera.position.y - 7 - gravity > meshList[i]->position.y + meshList[i]->max->y ||
+						camera.position.y + 2 - gravity < meshList[i]->position.y + meshList[i]->min->y
+						)
 					{
 						fall = true;
 					}
@@ -90,7 +100,7 @@ void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList)
 				}
 			}
 		}
-		if (fall == true && camera.position.y - 5 - gravity > 0)
+		if (fall == true)
 		{
 			gravity += dt;
 			camera.position.y -= gravity * 1.8;
@@ -106,7 +116,6 @@ void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList)
 			{
 				activated = true;
 			}
-			cout << "Increasing fuel rate: " << fuel << endl;
 		}
 	}
 }
