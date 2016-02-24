@@ -8,15 +8,13 @@ class Flying
 public:
 	Flying();
 	~Flying();
-	void Fly(double dt, Camera5 &camera, Mesh ** meshList);
+	void Fly(double dt, Camera5 &camera, Mesh ** meshList, int start, int end);
 	float getFuel() { return fuel; };
 	float getStatus() { return activated; };
-
-private:
-	bool activated;
 	float fuel;
+	bool activated;
+private:
 	float speed;
-	float gravity;
 };
 
 #endif

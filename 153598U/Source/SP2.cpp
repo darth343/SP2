@@ -341,7 +341,7 @@ void SP2::Init()
 	rotateAngle = 0;
 
 	//Initialize camera settings
-	camera.Init(Vector3(17, 100, -235), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(0, 1000, -497), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
@@ -364,108 +364,169 @@ void SP2::Init()
 	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//pink_planet_neg_z.tga");
 	meshList[GEO_BULLET] = MeshBuilder::GenerateCube("bullet", Color(1, 1, 1));
 
+
 	//Generate All Required Meshes
 	Scenario2Init();
 	Scenario3Init();
+	
+	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text",16,16);
+	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
+
+	meshList[GEO_FLASH] = MeshBuilder::GenerateQuad("flash",Color(0,0,0));
+	meshList[GEO_FLASH]->textureID = LoadTGA("Image//flash.tga");
+
+	//UI
+	meshList[GEO_HELMET] = MeshBuilder::GenerateQuad("UI", Color(0,0,0));
+	meshList[GEO_HELMET]->textureID = LoadTGA("Image//helmetFinal.tga");
+
+	//Crosshair
+	meshList[GEO_CROSSHAIR] = MeshBuilder::GenerateQuad("Crosshair", Color(0, 0, 0));
+	meshList[GEO_CROSSHAIR]->textureID = LoadTGA("Image//crosshair.tga");
 
 	// Enable blendings
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//meshList[GEO_ALIEN_HEAD] = MeshBuilder::GenerateOBJ("Alien Head", "OBJ//Head.obj");
+	//meshList[GEO_ALIEN_HEAD]->textureID = LoadTGA("Image//alienUV.tga");
+	//meshList[GEO_ALIEN_HEAD]->position = Vector3(0, 0, -480);
+	//meshList[GEO_ALIEN_BODY] = MeshBuilder::GenerateOBJ("Alien Body", "OBJ//Body.obj");
+	//meshList[GEO_ALIEN_BODY]->textureID = LoadTGA("Image//alienUV.tga");
+	//meshList[GEO_ALIEN_BODY]->position = Vector3(0, 0, -480);
+	//meshList[GEO_ALIEN_HANDR] = MeshBuilder::GenerateOBJ("Alien Right Hand", "OBJ//RightHand.obj");
+	//meshList[GEO_ALIEN_HANDR]->textureID = LoadTGA("Image//alienUV.tga");
+	//meshList[GEO_ALIEN_HANDR]->position = Vector3(0, 0, -480);
+	//meshList[GEO_ALIEN_HANDL] = MeshBuilder::GenerateOBJ("Alien Left Hand", "OBJ//LeftHand.obj");
+	//meshList[GEO_ALIEN_HANDL]->textureID = LoadTGA("Image//alienUV.tga");
+	//meshList[GEO_ALIEN_HANDL]->position = Vector3(0, 0, -480);
+	//meshList[GEO_ALIEN_LEGR] = MeshBuilder::GenerateOBJ("Alien Right Leg", "OBJ//RightLeg.obj");
+	//meshList[GEO_ALIEN_LEGR]->textureID = LoadTGA("Image//alienUV.tga");
+	//meshList[GEO_ALIEN_LEGR]->position = Vector3(0, 0, -480);
+	//meshList[GEO_ALIEN_LEGL] = MeshBuilder::GenerateOBJ("Alien Left Leg", "OBJ//LeftLeg.obj");
+	//meshList[GEO_ALIEN_LEGL]->textureID = LoadTGA("Image//alienUV.tga");
+	//meshList[GEO_ALIEN_LEGL]->position = Vector3(0, 0, -480);
 
+	//alien.m_Head = meshList[GEO_ALIEN_HEAD];
+	//alien.m_Body = meshList[GEO_ALIEN_BODY];
+	//alien.m_HandL = meshList[GEO_ALIEN_HANDL];
+	//alien.m_HandR = meshList[GEO_ALIEN_HANDR];
+	//alien.m_LegL = meshList[GEO_ALIEN_LEGL];
+	//alien.m_LegR = meshList[GEO_ALIEN_LEGR];
+	//alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
+	//alien.transparency = 1;
+//	temp.health = 100;
+	meshList[GEO_ENEMY] = MeshBuilder::GenerateOBJ("apple", "OBJ//Rifle.obj");
+	meshList[GEO_ENEMY]->textureID = LoadTGA("Image//Rifle .tga");
+
+	meshList[GEO_PISTOL] = MeshBuilder::GenerateOBJ("apple", "OBJ//Pistol.obj");
+	meshList[GEO_PISTOL]->textureID = LoadTGA("Image//Pistol.tga");
+	meshList[GEO_SMG] = MeshBuilder::GenerateOBJ("apple", "OBJ//SMG.obj");
+	meshList[GEO_SMG]->textureID = LoadTGA("Image//SMG.tga");
+	meshList[GEO_STORE] = MeshBuilder::GenerateOBJ("apple", "OBJ//Store.obj");
+	meshList[GEO_STORE]->textureID = LoadTGA("Image//Store.tga");
+	meshList[GEO_STORE]->position = (0, -5, -480);
+	player.inv.Rifle.delayMultiplier = 0.3;
+	player.inv.Rifle.semiAuto = false;
+	player.inv.Rifle.stopFiring = false;
+	player.inv.GunSelected = &player.inv.Rifle;
+	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
+	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("Rifle", "OBJ//Rifle.obj");
+//	meshList[GEO_THICK2]->position.Set(0, 3, -50);
+	meshList[GEO_RIFLE]->textureID = LoadTGA("Image//Rifle.tga");
 }
 
 void SP2::Update(double dt)
 {
-	if (Application::IsKeyPressed('1')) //enable back face culling
-		glEnable(GL_CULL_FACE);
-	if (Application::IsKeyPressed('2')) //disable back face cullings
-		glDisable(GL_CULL_FACE);
-	if (Application::IsKeyPressed('3'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
+	
+	object = shop.ShopInteraction(dt, camera, meshList);
+	if (Application::IsKeyPressed('X') && shop.openShop == false && player.inv.ownRifle == true && player.inv.GunSelected->semiAuto == true && time>delay) //enable back Automatic fire
+		//	glEnable(GL_CULL_FACE);
+	{
+		player.inv.GunSelected->delayMultiplier = 0.5;
+		player.inv.GunSelected->semiAuto = false;
+		delay = time + 0.5;
+	}
+	else  if (Application::IsKeyPressed('X') && shop.openShop == false && player.inv.ownRifle == true && player.inv.GunSelected->semiAuto == false && time>delay) //disable back face cullinzgs
+		//glDisable(GL_CULL_FACE);
+	{
+		player.inv.GunSelected->semiAuto = true;
+		player.inv.GunSelected->delayMultiplier = 0.4;
+		cout << "Semi Auto mode" << endl;
+		delay = time + 0.5;
+	}
+	if (Application::IsKeyPressed('E') && shop.openShop == false && time >delay&& object == meshList[GEO_STORE])
+	{
+		shop.openShop = true;
+		cout << "shop is open bois";
+		delay = time + 0.5;
+	}
+	else if (Application::IsKeyPressed('E') && shop.openShop == true && time>delay&& object == meshList[GEO_STORE])
+	{
+		shop.openShop = false;
+		cout << "shop is close bois";
+		delay = time + 0.5;
+	}
+	if (shop.openShop == true && object==meshList[GEO_STORE])
+	{
+		shop.shopping(player);
+	}
+	if (Application::IsKeyPressed('1') && shop.openShop == false && time > delay)
+	{
+		player.inv.GunSelected = &player.inv.Rifle;
+		std::cout << "Rifle Equipped" << std::endl;
+		delay = time + 0.5;
+	}
+	if (Application::IsKeyPressed('2') && shop.openShop == false && time > delay)
+	{
+		player.inv.GunSelected = &player.inv.SMG;
+		std::cout << "SMG Equipped" << std::endl;
+		delay = time + 0.5;
+	}
+	if (Application::IsKeyPressed('3') && shop.openShop == false && time > delay)
+	{
+		player.inv.GunSelected = &player.inv.Pistol;
+		std::cout << "Pistol Equipped" << std::endl;
+		delay = time + 0.5;
+	}
 	if (Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+	
 	time += dt;
-	CharacMovement(dt);
-	camera.Update(dt);
 	fps = 1 / dt;
-	//Movement(dt);
+	move.MovementCharac(dt, camera, meshList, GEO_LEFTWALL1, GEO_TEXT);
+	camera.Update(dt);
 	Vector3 bulletSpeed = (0.1, 0.1, 0.1);
-	//bullet = camera.view;
-	if (Application::IsKeyPressed(VK_LBUTTON) && time > delay)
+	shoot.ShootingBullets(camera, dt, time, meshList,player);
+	shoot.bulletHitDetection(mobs, dt, camera);
+	//alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
+	object = shoot.Shootable(dt, camera, meshList,mobs);
+
+	//Player Take Damage
+	if (Application::IsKeyPressed('Z') && takeDamage == false)
 	{
-		temp.Position = camera.position;
-		temp.start = temp.Position;
-		temp.trajectory = camera.view.Normalized();
-		temp.object = Shooting(dt);
-		bullets.push_back(temp);
-		delay = time + 0.1;
+		takeDamage = true;
 	}
-	float bulletspeed = 0.5;
-	for (amtBullet = 0; amtBullet < bullets.size(); amtBullet++)
+	if (takeDamage == true && scaleHealth > 0)
 	{
-		
-		bullets[amtBullet].Position.x += bullets[amtBullet].trajectory.Normalized().x * bulletspeed;
-		bullets[amtBullet].Position.y += bullets[amtBullet].trajectory.Normalized().y * bulletspeed;
-		bullets[amtBullet].Position.z += bullets[amtBullet].trajectory.Normalized().z * bulletspeed;
-		if (bullets[amtBullet].object)
-		{
-			int offset = 10;
-			if ((bullets[amtBullet].Position.x > bullets[amtBullet].object->min->x - offset && bullets[amtBullet].Position.x < bullets[amtBullet].object->max->x + offset) &&
-				(bullets[amtBullet].Position.y > bullets[amtBullet].object->min->y - offset&& bullets[amtBullet].Position.x < bullets[amtBullet].object->max->y + offset) &&
-				(bullets[amtBullet].Position.z > bullets[amtBullet].object->min->z - offset&& bullets[amtBullet].Position.x < bullets[amtBullet].object->max->z + offset)
-				)
-			{
-				bullets[amtBullet].object->health -= 10;
-				if (bullets[amtBullet].object->health <= 0)
-				{
-					objectDied = true;
-					bullets[amtBullet].object->health = 0;
-				}
-				bullets.erase(bullets.begin() + amtBullet);
-			}
-		}
-		else
-		{
-			if (Vector3(bullets[amtBullet].Position - bullets[amtBullet].start).Length() >= 100)
-			{
-				bullets.erase(bullets.begin() + amtBullet);
-			}
-		}
+		scaleHealth -= dt;
 	}
-	object = Interaction(dt);
+	if (Application::IsKeyPressed(VK_NUMPAD8))
+	{
+		pivot.y += dt;
+	}
+	if (Application::IsKeyPressed(VK_NUMPAD5))
+	{
+		pivot.y -= dt;
+	}
+	if (Application::IsKeyPressed(VK_NUMPAD4))
+	{
+		pivot.x += dt;
+	}
+	if (Application::IsKeyPressed(VK_NUMPAD6))
+	{
+		pivot.x -= dt;
+	}
 }
 
-Mesh* SP2::Shooting(double dt)
-{
-	float range = 1000;
-	float offset = 0.5;
-
-	for (Vector3 temp = camera.view*0.001; temp.Length() <= range; temp += camera.view.Normalized())
-	{
-		for (int i = GEO_MODEL1; i < GEO_TEXT; i++)
-		{
-			if (meshList[i]->min != nullptr || meshList[i]->max != nullptr)
-			{
-				if ((temp.x + camera.position.x <= meshList[i]->max->x + meshList[i]->position.x + offset && temp.x + camera.position.x >= meshList[i]->min->x + meshList[i]->position.x - offset)
-					&& (temp.y + camera.position.y <= meshList[i]->max->y + meshList[i]->position.y + offset && temp.y + camera.position.y >= meshList[i]->min->y + meshList[i]->position.y - offset)
-					&& (temp.z + camera.position.z <= meshList[i]->max->z + meshList[i]->position.z + offset && temp.z + camera.position.z >= meshList[i]->min->z + meshList[i]->position.z - offset))
-				{
-					if (meshList[i]->shootable == false)
-					{
-						return nullptr;
-						break;
-					}
-					else
-					{
-						return meshList[i];
-						break;
-					}
-				}
-			}
-		}
-	}
-	return nullptr;
-}// bad shooting*/ // mesh shooting
 Mesh* SP2::Interaction(double dt)
 {
 	float range = 20;
@@ -499,559 +560,55 @@ Mesh* SP2::Interaction(double dt)
 	return nullptr;
 }
 
-void SP2::Movement(double dt)
-{
-	//int speed = 50;
-
-	//float offset = 2;
-	//int cameraX = -1;
-	//int grav = 1;
-	//
-	/////////////////////////////////////////////////////////////////////////////
-	////					JETPACK												//
-	////																	    //
-	///////////////////////////////////////////////////////////////////////////
-	//fuel += 0.5;
-	//if (Application::IsKeyPressed(VK_SPACE) && Application::IsKeyPressed(VK_LCONTROL) &&fuel>0)
-	//{
-
-	//		camera.position.Set(camera.position.x, camera.position.y + dt * 8, camera.position.z);
-	//		fuel -= 0.08;
-	//		//std::cout << fuel;
-	//}
-
-	//else
-	//{
-	//	if (fuel <100)
-	//	{
-	//	fuel =fuel+1;
-	//	std::cout << fuel << endl;
-	//		if (fuel >=100)
-	//		{
-	//		fuel = 100;
-	//		}
-	//	}
-	//	if (camera.position.y >= 5)
-	//	{
-	//		camera.position.Set(camera.position.x, camera.position.y + dt *(-9-(grav*10)), camera.position.z);
-	//		grav++;
-	//	}
-	//	
-	//	
-	//}
-	//
-	/////////////////////////////////////////////////////////////////////////////
-	////					CAMERA												//
-	////																	    //
-	///////////////////////////////////////////////////////////////////////////
-	//if (Application::IsKeyPressed('W'))
-	//{
-	//	if (camera.position.x + camera.view.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.view.Normalized().x * dt * speed - 1 > -498)
-	//	{
-	//		bool move = false;
-	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-	//		{
-	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-	//			{
-	//				if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
-	//					camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
-	//					camera.position.x + camera.view.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
-	//					camera.position.x + camera.view.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
-	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-	//					camera.position.y - 5 + offset  >= meshList[i]->max->y + meshList[i]->position.y + offset)
-	//				{
-	//					move = true;
-	//				}
-	//				else
-	//				{
-	//					move = false;
-	//					break;
-	//				}
-	//			}
-	//			else
-	//			{
-	//				move = true;
-	//			}
-	//		}
-	//		if (move)
-	//			camera.position.x += camera.view.Normalized().x * dt * speed;
-	//	}
-
-	//	if (camera.position.z + camera.view.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.view.Normalized().z * dt * speed - 1 > -498)
-	//	{
-	//		bool move = false;
-	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-	//		{
-	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-	//			{
-	//				if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
-	//					camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
-	//					camera.position.z + camera.view.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
-	//					camera.position.z + camera.view.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
-	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-	//					camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
-	//					move = true;
-	//				else
-	//				{
-	//					move = false;
-	//					break;
-	//				}
-	//			}
-	//			else
-	//			{
-	//				move = true;
-	//			}
-	//		}
-	//		if (move)
-	//			camera.position.z += camera.view.Normalized().z * dt * speed;
-	//	}
-	//}
-	//if (Application::IsKeyPressed('S'))
-	//{
-	//	if (camera.position.x - camera.view.Normalized().x * dt * speed + 1 < 498 && camera.position.x - camera.view.Normalized().x * dt * speed - 1 > -498)
-	//	{
-	//		bool move = false;
-
-
-	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-	//		{
-	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-	//			{
-	//				if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
-	//					camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
-	//					camera.position.x - camera.view.Normalized().x * dt * speed * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
-	//					camera.position.x - camera.view.Normalized().x * dt * speed * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
-	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-	//					camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
-	//					move = true;
-	//				else
-	//				{
-	//					move = false;
-	//					break;
-	//				}
-	//			}
-	//			else
-	//			{
-	//				move = true;
-	//			}
-	//		}
-	//		if (move)
-	//			camera.position.x -= camera.view.Normalized().x * dt * speed;
-	//	}
-	//	
-	//	if (camera.position.z - camera.view.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.view.Normalized().z * dt * speed - 1 > -498)
-	//	{
-	//		bool move = false;
-
-
-	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-	//		{
-	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-	//			{
-	//				if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
-	//					camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
-	//					camera.position.z - camera.view.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
-	//					camera.position.z - camera.view.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
-	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-	//					camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
-	//					move = true;
-	//				else
-	//				{
-	//					move = false;
-	//					break;
-	//				}
-	//			}
-	//			else
-	//			{
-	//				move = true;
-	//			}
-	//		}
-	//		if (move)
-	//			camera.position.z -= camera.view.Normalized().z * dt * speed;
-	//	}
-	//}
-	//if (Application::IsKeyPressed('A'))
-	//{
-	//	if (camera.position.x - camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x - camera.right.Normalized().x * dt * speed - 1 > -498)
-	//	{
-	//		bool move = false;
-	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-	//		{
-	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-	//			{
-	//				if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
-	//					camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
-	//					camera.position.x - camera.right.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
-	//					camera.position.x - camera.right.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
-	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-	//					camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
-	//					move = true;
-	//				else
-	//				{
-	//					move = false;
-	//					break;
-	//				}
-	//			}
-	//			else
-	//			{
-	//				move = true;
-	//			}
-	//		}
-	//		if (move)
-	//			camera.position.x -= camera.right.Normalized().x * dt * speed;
-	//	}
-	//	
-	//	if (camera.position.z - camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.right.Normalized().z * dt * speed - 1 > -498)
-	//	{
-	//		bool move = false;
-	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-	//		{
-	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-	//			{
-	//				if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
-	//					camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
-	//					camera.position.z - camera.right.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
-	//					camera.position.z - camera.right.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
-	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-	//					camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
-	//					move = true;
-	//				else
-	//				{
-	//					move = false;
-	//					break;
-	//				}
-	//			}
-	//			else
-	//			{
-	//				move = true;
-	//			}
-	//		}
-	//		if (move)
-	//			camera.position.z -= camera.right.Normalized().z * dt * speed;
-	//	}
-	//}
-	//if (Application::IsKeyPressed('D'))
-	//{
-	//	if (camera.position.x + camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.right.Normalized().x * dt * speed - 1 > -498)
-	//	{
-	//		bool move = false;
-	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-	//		{
-	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-	//			{
-	//				if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
-	//					camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
-	//					camera.position.x + camera.right.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
-	//					camera.position.x + camera.right.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
-	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-	//					camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
-	//					move = true;
-	//				else
-	//				{
-	//					move = false;
-	//					break;
-	//				}
-	//			}
-	//			else
-	//			{
-	//				move = true;
-	//			}
-	//		}
-	//		if (move)
-	//			camera.position.x += camera.right.Normalized().x * dt * speed;
-	//	}
-	//	
-	//	if (camera.position.z + camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.right.Normalized().z * dt * speed - 1 > -498)
-	//	{
-	//		bool move = false;
-	//		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-	//		{
-	//			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-	//			{
-	//				if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
-	//					camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
-	//					camera.position.z + camera.right.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
-	//					camera.position.z + camera.right.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
-	//					0 < meshList[i]->min->y + meshList[i]->position.y - offset ||
-	//					camera.position.y - 5 > meshList[i]->max->y + meshList[i]->position.y + offset)
-	//					move = true;
-	//				else
-	//				{
-	//					move = false;
-	//					break;
-	//				}
-	//			}
-	//			else
-	//			{
-	//				move = true;
-	//			}
-	//		}
-	//		if (move)
-	//			camera.position.z += camera.right.Normalized().z * dt * speed;
-	//	}
-	//}
-}
-
-void SP2::CharacMovement(double dt)
-{
-	int speed = 50;
-	float offset = 2;
-	int cameraX = -1;
-	if (Application::IsKeyPressed('W'))
-	{
-		if (camera.position.x + camera.view.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.view.Normalized().x * dt * speed - 1 > -498)
-		{
-
-			bool move = false;
-			for (int i = GEO_LONGWALL; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||  //Check min and max for z axis. If bigger than min, smaller than max, walk = false 
-						camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset || //Check max for z axis. If bigger than min, smaller than max, walk = false 
-						camera.position.x + camera.view.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset || //Check min for x axis. If bigger than min, smaller than max, walk = false 
-						camera.position.x + camera.view.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset || //Check max for x axis. If bigger than min, smaller than max, walk = false 
-						camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 + offset >= meshList[i]->max->y + meshList[i]->position.y + offset)
-					{
-						move = true;
-					}
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.x += camera.view.Normalized().x * dt * speed;
-		}
-
-		if (camera.position.z + camera.view.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.view.Normalized().z * dt * speed - 1 > -498)
-		{
-			bool move = false;
-			for (int i = GEO_LONGWALL; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						camera.position.z + camera.view.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.z + camera.view.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
-						camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
-						move = true;
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.z += camera.view.Normalized().z * dt * speed;
-		}
-	}
-	if (Application::IsKeyPressed('S'))
-	{
-		if (camera.position.x - camera.view.Normalized().x * dt * speed + 1 < 498 && camera.position.x - camera.view.Normalized().x * dt * speed - 1 > -498)
-		{
-			bool move = false;
-
-
-			for (int i = GEO_LONGWALL; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
-						camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.x - camera.view.Normalized().x * dt * speed * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x - camera.view.Normalized().x * dt * speed * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
-						move = true;
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.x -= camera.view.Normalized().x * dt * speed;
-		}
-
-		if (camera.position.z - camera.view.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.view.Normalized().z * dt * speed - 1 > -498)
-		{
-			bool move = false;
-
-
-			for (int i = GEO_LONGWALL; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						camera.position.z - camera.view.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.z - camera.view.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
-						camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 + offset> meshList[i]->max->y + meshList[i]->position.y + offset)
-						move = true;
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.z -= camera.view.Normalized().z * dt * speed;
-		}
-	}
-	if (Application::IsKeyPressed('A'))
-	{
-		if (camera.position.x - camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x - camera.right.Normalized().x * dt * speed - 1 > -498)
-		{
-			bool move = false;
-			for (int i = GEO_LONGWALL; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
-						camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.x - camera.right.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x - camera.right.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
-						move = true;
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.x -= camera.right.Normalized().x * dt * speed;
-		}
-
-		if (camera.position.z - camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.right.Normalized().z * dt * speed - 1 > -498)
-		{
-			bool move = false;
-			for (int i = GEO_LONGWALL; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						camera.position.z - camera.right.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.z - camera.right.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
-						camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 + offset> meshList[i]->max->y + meshList[i]->position.y + offset)
-						move = true;
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.z -= camera.right.Normalized().z * dt * speed;
-		}
-	}
-	if (Application::IsKeyPressed('D'))
-	{
-		if (camera.position.x + camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.right.Normalized().x * dt * speed - 1 > -498)
-		{
-			bool move = false;
-			for (int i = GEO_LONGWALL; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
-						camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.x + camera.right.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x + camera.right.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
-						move = true;
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.x += camera.right.Normalized().x * dt * speed;
-		}
-
-		if (camera.position.z + camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.right.Normalized().z * dt * speed - 1 > -498)
-		{
-			bool move = false;
-			for (int i = GEO_LONGWALL; i < GEO_TEXT; i++)
-			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						camera.position.z + camera.right.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.z + camera.right.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
-						camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
-						move = true;
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
-				{
-					move = true;
-				}
-			}
-			if (move)
-				camera.position.z += camera.right.Normalized().z * dt * speed;
-		}
-	}
-	jetPack.Fly(dt,camera,meshList);
-}
 void SP2::RenderMesh(Mesh * mesh, bool enableLight)
 {
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
 	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
 	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 	modelView = viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MODELVIEW], 1, GL_FALSE, &modelView.a[0]);
+
+	if (enableLight)
+	{
+		glUniform1i(m_parameters[U_LIGHTENABLED], 1);
+		modelView_inverse_transpose = modelView.GetInverse().GetTranspose();
+		glUniformMatrix4fv(m_parameters[U_MODELVIEW_INVERSE_TRANSPOSE], 1, GL_FALSE, &modelView_inverse_transpose.a[0]);
+		//load material
+		glUniform3fv(m_parameters[U_MATERIAL_AMBIENT], 1, &mesh->material.kAmbient.r);
+		glUniform3fv(m_parameters[U_MATERIAL_DIFFUSE], 1, &mesh->material.kDiffuse.r);
+		glUniform3fv(m_parameters[U_MATERIAL_SPECULAR], 1, &mesh->material.kSpecular.r);
+		glUniform1f(m_parameters[U_MATERIAL_SHININESS], mesh->material.kShininess);
+	}
+	else
+	{
+		glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+	}
+
+	if (mesh->textureID > 0)
+	{
+		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+		glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+	}
+	else
+	{
+		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 0);
+
+	}
+	mesh->Render(); //this line should only be called once 
+	if (mesh->textureID > 0)
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+}
+
+void SP2::RenderMesh(Mesh * mesh, bool enableLight, MS ms, MS vs, MS ps)
+{
+	Mtx44 MVP, modelView, modelView_inverse_transpose;
+	MVP = ps.Top() * vs.Top() * ms.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+	modelView = vs.Top() * ms.Top();
 	glUniformMatrix4fv(m_parameters[U_MODELVIEW], 1, GL_FALSE, &modelView.a[0]);
 
 	if (enableLight)
@@ -1087,16 +644,14 @@ void SP2::RenderMesh(Mesh * mesh, bool enableLight)
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
+
 void SP2::RenderSkybox(Vector3 position)
 {
 	float SkyScale = 1000.f;
 	float offset = 1;
 
-
-	//rotateAngle++;
 	modelStack.PushMatrix();
 	modelStack.Translate(position.x, position.y, position.z);
-	//modelStack.Rotate(rotateAngle/5, 1, 0, 0);
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, -SkyScale / 2 + offset);
@@ -1131,11 +686,10 @@ void SP2::RenderSkybox(Vector3 position)
 	modelStack.Translate(-SkyScale / 2 + offset, 0, 0);
 	modelStack.Rotate(-90, 0, 0, 1);
 	modelStack.Scale(SkyScale, SkyScale, SkyScale);
-	RenderMesh(meshList[GEO_LEFT], false);
+	RenderMesh(meshList[GEO_TOP], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Translate(-1, 1, 1);
 	modelStack.Rotate(90, 0, 1, 0);
 
 	modelStack.PushMatrix();
@@ -1143,7 +697,7 @@ void SP2::RenderSkybox(Vector3 position)
 	modelStack.Rotate(180, 1, 0, 0);
 	modelStack.Rotate(90, 0, 1, 0);
 	modelStack.Scale(SkyScale, SkyScale, SkyScale);
-	RenderMesh(meshList[GEO_TOP], false);
+	RenderMesh(meshList[GEO_LEFT], false);
 	modelStack.PopMatrix();
 
 	modelStack.PopMatrix();
@@ -1188,7 +742,7 @@ void SP2::RenderText(Mesh* mesh, std::string text, Color color)
 void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float y)
 {
 	Mtx44 ortho;
-	ortho.SetToOrtho(0, 80, 0, 60, -100, 100); //size of screen UI
+	ortho.SetToOrtho(0, 80, 0, 60, -500, 500); //size of screen UI
 	//Mtx44 projection;
 	//ortho.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
 
@@ -1200,8 +754,39 @@ void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float 
 	modelStack.LoadIdentity(); //Reset modelStack
 	//modelStack.PushMatrix();
 	modelStack.Translate(x, y, 0);
+	if (mesh == meshList[GEO_UIBG])
+	{
+		modelStack.Rotate(180, 0, 0, 1);
+	}
+	modelStack.Scale(sizex, sizey, 1);
 	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Scale(sizex, sizey,1);
+	if (mesh == meshList[GEO_RIFLE])
+	{
+		modelStack.Rotate(-85, 1, 0, 0);
+		modelStack.Rotate(195, 0, 1, 0);
+		modelStack.Translate(-10, -10, 60);
+	}
+	if (mesh == meshList[GEO_PISTOL])
+	{
+		modelStack.Scale(2, 2, 2);
+		modelStack.Rotate(-85, 1, 0, 0);
+		modelStack.Rotate(105, 0, 1, 0);
+		modelStack.Translate(10, -5,0);
+	}
+	if (mesh == meshList[GEO_SMG])
+	{
+		modelStack.Scale(9, 9, 9);
+		modelStack.Rotate(-85, 1, 0, 0);
+		modelStack.Rotate(195, 0, 1, 0);
+		modelStack.Translate(-2, -5.5,10);
+	}
+	if (mesh == meshList[GEO_HELMET])
+	{
+		modelStack.Translate(0, 0.1, 0);
+		modelStack.Rotate(-90, 0, 1, 0);
+	}
+	
+	
 	////modelStack.Translate(camera.position.x + camera.view.x, camera.position.y + camera.view.y, camera.position.z + camera.view.z);
 	//modelStack.Translate(camera.view.x, camera.view.y + camera.position.y, camera.view.z);
 	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
@@ -1346,13 +931,6 @@ void SP2::Scenario2Render()
 
 void SP2::Scenario3Render()
 {
-	
-
-	////Arun's Wall Left
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_LEFTWALL1]->position.x, meshList[GEO_LEFTWALL1]->position.y, meshList[GEO_LEFTWALL1]->position.z);
-	//RenderMesh(meshList[GEO_LEFTWALL1], true);
-	//modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_LONGWALL]->position.x, meshList[GEO_LONGWALL]->position.y, meshList[GEO_LONGWALL]->position.z);
@@ -1572,64 +1150,141 @@ void SP2::Render()
 
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	if (jetPack.getFuel() > 15)
+	//////////////////////////////////
+	//			Enemy Health        //
+	/////////////////////////////////
+	if (object )
+	{
+	//	cout << healthDisplay.health<<endl;
+		if (object->ifShootable == true)
+		{
+			std::ostringstream enemyHp;
+			enemyHp << std::setprecision(3) << object->health;
+			RenderTextOnScreen(meshList[GEO_TEXT], "Enemy HP: ", Color(0, 1, 0), 2, 25, 10);
+			RenderTextOnScreen(meshList[GEO_TEXT], enemyHp.str(), Color(1, 1, 1), 2, 37, 10);
+			//		std::ostringstream enemyHp;
+		}
+	}
+	
+	//////////////////////////////////
+	//			JetFuel             //
+	/////////////////////////////////
+	if (move.jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 2, 7);
+	}
+	if (move.jetPack.getFuel() > 15)
 	{
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL1], 4, 7, 25, 4.8);
+		RenderOBJonScreen(meshList[GEO_FUEL1], 30, 1, 6, 4);
 		modelStack.PopMatrix();
 	}
 	
-	if (jetPack.getFuel() > 40)
+	if (move.jetPack.getFuel() > 40)
 	{
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL2], 4, 7, 30, 4.8);
+		RenderOBJonScreen(meshList[GEO_FUEL2], 25, 1, 8.5, 6);
 		modelStack.PopMatrix();
 	}
 	
-	if (jetPack.getFuel() > 60)
+	if (move.jetPack.getFuel() > 60)
 	{
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL3], 4, 7, 35, 4.8);
+		RenderOBJonScreen(meshList[GEO_FUEL3], 20, 1, 11, 8);
 		modelStack.PopMatrix();
 	}
 	
-	if (jetPack.getFuel() >80)
+	if (move.jetPack.getFuel() >80)
 	{
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL4], 4, 7, 40, 4.8);
+		RenderOBJonScreen(meshList[GEO_FUEL4], 15, 1, 13.5, 10);
 		modelStack.PopMatrix();
-		
 	}
-		
+
+	if (move.jetPack.getFuel() > 95)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_FUEL5], 20, 1, 11, 12);
+		modelStack.PopMatrix();
+	}
+
+
+	//////////////////////////////////
+	//			Time               //
+	/////////////////////////////////
 	
-	if (jetPack.getFuel() > 95)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL5], 4, 7, 45, 4.8);
-		modelStack.PopMatrix();
-	}
-	if (object &&objectDied==false)
-	{
-		std::ostringstream enemyHp;
-	//	enemyHp << std::setprecision(3) << bullets[0t].object->health;
-		RenderTextOnScreen(meshList[GEO_ENEMYHEALTHDISPLAY], "Enemy HP: ", Color(0, 1, 0), 2, 25, 10);
-	RenderTextOnScreen(meshList[GEO_ENEMYHEALTHDISPLAY],enemyHp.str(), Color(1, 1, 1), 2, 37, 10);
-	}
-	if (jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 2, 3);
-	}
-	RenderTextOnScreen(meshList[GEO_JETPACKUI], jetfuelDisplay, Color(0, 1, 0), 2, 2, 2);
-	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeDisplay, Color(0, 1, 0), 2, 2, 12);
+	RenderTextOnScreen(meshList[GEO_TEXT],"Time: ", Color(1, 0, 0), 2, 2, 25);
 	std::ostringstream timeString;
 	timeString << std::setprecision(3) << time;
-	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeString.str(), Color(0, 1, 0), 2, 8, 12);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 3, 24);
 
+
+	//////////////////////////////////
+	//			Gun                //
+	/////////////////////////////////
+	//RenderTextOnScreen(meshList[GEO_TEXT], "Gun Mode: ", Color(0, 1, 0), 2, 30, 6);
+	if (player.inv.GunSelected->semiAuto==false)
+	{
+		//RenderTextOnScreen(meshList[GEO_TEXT], "|||", Color(0, 1, 0), 3, 21 , 3);
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11);
+		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 63, 11);
+		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 65, 11);
+		modelStack.PopMatrix();
+	}
+	else if (player.inv.GunSelected->semiAuto == true)
+	{
+		modelStack.PushMatrix();						   
+		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11); 
+		modelStack.PopMatrix();
+	}
 	timeString.str("");
-	timeString << fps;
-	RenderTextOnScreen(meshList[GEO_TIMEDISPLAY], timeString.str(), Color(0, 1, 0), 2, 8, 13);
+	timeString << "FPS: " << fps;
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 11);
+	
+	//UI Background Panal
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_UIBG], 25, 19, 72, 3.5);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_STORE]->position.x, meshList[GEO_STORE]->position.y, meshList[GEO_STORE]->position.z);
+	RenderMesh(meshList[GEO_STORE], false);
+	modelStack.PopMatrix();
+
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//Player's Health
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_PLAYERHEALTH], 30*scaleHealth, 1, 40, 55);
+	modelStack.PopMatrix();
+
+	//Crosshair
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_CROSSHAIR], 10, 10, 40, 30);
+	modelStack.PopMatrix();
 
 
+if (player.inv.GunSelected == &player.inv.Rifle)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_RIFLE], 0.8, 0.8, 70, 20);
+		modelStack.PopMatrix();
+	}
+else if (player.inv.GunSelected == &player.inv.SMG)
+{
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_SMG], 0.8, 0.8, 70, 20);
+	modelStack.PopMatrix();
+}
+else if (player.inv.GunSelected = &player.inv.Pistol)
+{
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_PISTOL], 0.8, 0.8, 70, 17);
+	modelStack.PopMatrix();
+}
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_HELMET], 80, 60, 40 , 30);
+	modelStack.PopMatrix();
 }
 
 void SP2::Exit()

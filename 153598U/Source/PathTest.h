@@ -1,26 +1,18 @@
-#ifndef SP2_H
-#define SP2_H
+#ifndef PATH_TEST_H
+#define PATH_TEST_H
 
 #include "Scene.h"
-#include "Camera4.h"
 #include "Camera5.h"
 #include "Mesh.h"
 #include "MatrixStack.h"
 #include "Light.h"
-#include "timer.h"
-#include "Shooting.h"
 #include "Enemy.h"
 #include "Pathfinder.h"
-#include "Movement.h"
-#include <Vector>
 #include "FlyingClass.h"
-#include "AI.h"
-#include "Gun.h"
-#include "Shop.h"
-#include "Player.h"
+#include "Vector3.h"
 using std::vector;
 using std::string;
-class SP2 : public Scene
+class Test : public Scene
 {
 public:
 	static enum GEOMETRY_TYPE
@@ -32,102 +24,24 @@ public:
 		GEO_TOP,
 		GEO_BOTTOM,
 		GEO_BACK,
-		GEO_TIMEDISPLAY,
-		GEO_TIME,
 		GEO_FUEL1,
 		GEO_FUEL2,
 		GEO_FUEL3,
 		GEO_FUEL4,
 		GEO_FUEL5,
-		GEO_JETPACKUI,
-		GEO_UIBG,
-		GEO_GUNMODE,
-		GEO_PLAYERHEALTH,
-		GEO_ENEMYHEALTH,
-		GEO_ENEMYHEALTHDISPLAY,
-		GEO_BULLET,
+		GEO_BLOCK,
 		GEO_ALIEN_HEAD,
 		GEO_ALIEN_HANDR,
 		GEO_ALIEN_HANDL,
 		GEO_ALIEN_BODY,
 		GEO_ALIEN_LEGR,
 		GEO_ALIEN_LEGL,
-		GEO_HELMET,
-		GEO_CROSSHAIR,
 		GEO_MODEL1,
-
-		//Turrets
-		GEO_TURRET1,
-		//TurretsEnd
-
-		//Walls
-		GEO_LONGWALL,
-		GEO_FLOOR1,
-		GEO_FLOOR2,
-		GEO_CRATES1,
-		GEO_CRATES2,
-		GEO_CRATES3,
-		GEO_BALANCE1,
-		GEO_BALANCE2,
-		GEO_BALANCE3,
-		GEO_FLOOR3,
-		GEO_WALLRUN1,
-		GEO_WALLRUN2,
-		GEO_WALLRUN3,
-		GEO_WALLRUN4,
-		GEO_WALLRUN5,
-		GEO_WALLRUN6,
-		GEO_FLOOR4,
-		GEO_TALLWALL1,
-		GEO_TALLWALL2,
-		GEO_TALLWALL3,
-		GEO_TALLCRATE,
-		GEO_FLOOR5,
-		GEO_FLOOR6,
-		GEO_FLOOR7,
-		GEO_FLOOR8,
-		GEO_WALLWALL1,
-		GEO_WALLWALL2,
-	
-
-		
-
-		
-
-		
-
-		
-		GEO_GROUND,
-
-		//Arena
-		GEO_ARENAWALLFRONT,
-		GEO_ARENAWALLBACK,
-		GEO_ARENAWALLLEFT,
-		GEO_ARENAWALLRIGHT,
-		GEO_BARREL1,
-		GEO_BARREL2,
-		GEO_BARREL3,
-		GEO_BARREL4,
-		GEO_CRATE1,
-		GEO_CRATE2,
-		GEO_CRATE3,
-		GEO_CRATE4,
-		GEO_SQPYRA1,
-		GEO_SQPYRA2,
-		GEO_RDPYRA1,
-		GEO_RDPYRA2,
-		//ArenaEnd
-
 		GEO_TEXT,
-		GEO_RIFLE,
-		GEO_ENEMY,
-		GEO_FLASH,
 		GEO_PATH_F,
 		GEO_PATH_V,
 		GEO_PATH_O,
-		GEO_STORE,
-		GEO_PISTOL,
-		GEO_SMG,
+
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -166,54 +80,41 @@ public:
 
 		U_TOTAL,
 	};
-	SP2();
-	~SP2();
-	void Scenario3Init();
-	void Scenario2Init();
-	void Scenario3Render();
-	void Scenario2Render();
+	Test();
+	~Test();
 	virtual void Init();
 	virtual void Update(double dt);
 	virtual void Render();
 	virtual void Exit();
-
+	//Mesh* Shootable(double dt);
 	Mesh* meshList[NUM_GEOMETRY];
-	Shooting shoot;
+	PathFinding path;
 	void RenderMesh(Mesh *mesh, bool enableLight);
-	void RenderMesh(Mesh *mesh, bool enableLight, MS ms, MS vs, MS ps);
 	void RenderSkybox(Vector3 position);
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderOBJonScreen(Mesh* mesh, float sizex, float sizey, float x, float y);
-	Mesh* Interaction(double dt);
-
-	private:
+	void CharacMovement(double dt);
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
 	unsigned m_vertexArrayID;
-	
+
 	float gravity = 10;
 	float rotateAngle;
 	float fps;
-	float scaleHealth = 1;
+	float trans;
 	MS modelStack, viewStack, projectionStack;
 	Light light[4];
-
-	Movement move;
-
-	vector<enemy> mobs;
 	Camera5 camera;
-	string timeDisplay="Time : ";
+	string timeDisplay = "Time : ";
 	float time = 0;
 	float delay = 0;
-	bool shot=false ; // when object get shot
-	bool objectDied = false;//when object is dead
-	bool takeDamage = false;
-	AI alien;
-	Mesh* object;
-	Shop shop;
-	Player player;
-	Vector3 pivot;
+	string jetfuelDisplay = "Jet Fuel: ";
+	Flying jetPack;
+	Vector3 temp1;
+	float angle;
+	float prevAngle;
+	bool animate = false;
 };
 
 #endif

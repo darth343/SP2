@@ -45,6 +45,8 @@ public:
 	bool interactable;
 	bool shootable;
 	float health=100;
+	bool lookAtShop;
+	bool ifShootable;
 };
 
 #endif

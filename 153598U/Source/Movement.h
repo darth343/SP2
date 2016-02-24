@@ -1,21 +1,19 @@
 #ifndef MOVEMENT_H
 #define MOVEMENT_H
-
-#include "Scene.h"
-#include "Camera4.h"
 #include "Camera5.h"
-#include "SP2.h"
 #include "Mesh.h"
-#include "MatrixStack.h"
-#include "Light.h"
-#include "timer.h"
-#include <Vector>
-using std::vector;
-using std::string;
-
-struct Movement
+#include "FlyingClass.h"
+class Movement
 {
-	//void MovementCharac(double dt);
+public:
+	Movement(){};
+	~Movement(){};
+	Flying jetPack;
+	void MovementCharac(double dt, Camera5 &camera, Mesh ** meshList, int Start, int End);
+	void Gravity(double dt, Camera5 &camera, Mesh ** meshList, int Start, int End);
+private:
+	float gravity = 10;
+	Vector3 prevPos;
 };
 
 #endif
