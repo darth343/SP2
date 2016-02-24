@@ -24,13 +24,33 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 			if (player.inv.GunSelected->ammo > 0)
 			{
 			TestBullet temp;
-			temp.Position = camera.position;
-			temp.start = temp.Position;
-			temp.trajectory = camera.view.Normalized();
+			//Vector3 tempRight = camera.right+camera.position;// Right Vector
+			//Vector3   tempCameraPosition=(Vector3(camera.view+camera.position).Normalized() * 20)-tempRight;
+			//temp.Position = camera.position;
+			
+			temp.Position = camera.right + camera.position;
+			if (player.inv.GunSelected == &player.inv.Rifle)
+			{
+				temp.Position.y -= 0.4;
+				temp.Position.x +=0.3;
+			}
+			else if (player.inv.GunSelected==&player.inv.Pistol)
+			{
+				temp.Position.y -= 0.5;
+				temp.Position.x -= 0.2;
+			}
+			else if (player.inv.GunSelected == &player.inv.SMG)
+			{
+				temp.Position.y -= 0.6;
+				temp.Position.x += 0.1;
+			}
+			temp.start = camera.right+camera.position;
+			cout << temp.start << endl;
+			temp.trajectory = Vector3(Vector3(camera.view * 500) - camera.right);
 			bullets.push_back(temp);
 			delay = time + player.inv.GunSelected->delayMultiplier;
-				player.inv.GunSelected->ammo--;
-				std::cout << player.inv.GunSelected->ammo << std::endl;
+			player.inv.GunSelected->ammo--;
+			std::cout << player.inv.GunSelected->ammo << std::endl;
 			}
 
 		}
@@ -41,7 +61,7 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 		{
 			if (player.inv.GunSelected->ammo > 0)
 			{
-			cout << " Works" << endl;
+			//cout << " Works" << endl;
 			TestBullet temp;
 			temp.Position = camera.position;
 			temp.start = temp.Position;

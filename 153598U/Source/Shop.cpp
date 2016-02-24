@@ -31,7 +31,7 @@ Mesh* Shop::ShopInteraction(double dt, Camera5 camera, Mesh** meshList)
 		/*for (int i = SP2::GEO_STORE;  i < SP2::GEO_TEXT; i++)
 		{*/
 			if (meshList[SP2::GEO_STORE]->min != nullptr || meshList[SP2::GEO_STORE]->max != nullptr)
-			{	std::cout << "TEST" << std::endl;
+			{	//std::cout << "TEST" << std::endl;
 				if ((temp.x + camera.position.x <= meshList[SP2::GEO_STORE]->max->x + meshList[SP2::GEO_STORE]->position.x + offset && temp.x + camera.position.x >= meshList[SP2::GEO_STORE]->min->x + meshList[SP2::GEO_STORE]->position.x - offset) //Check min and max for x
 					&& (temp.y + camera.position.y <= meshList[SP2::GEO_STORE]->max->y + meshList[SP2::GEO_STORE]->position.y + offset && temp.y + camera.position.y >= meshList[SP2::GEO_STORE]->min->y + meshList[SP2::GEO_STORE]->position.y - offset) //Check min and max for y
 					&& (temp.z + camera.position.z <= meshList[SP2::GEO_STORE]->max->z + meshList[SP2::GEO_STORE]->position.z + offset && temp.z + camera.position.z >= meshList[SP2::GEO_STORE]->min->z + meshList[SP2::GEO_STORE]->position.z - offset)) //Check min and max for z

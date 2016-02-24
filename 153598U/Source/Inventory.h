@@ -15,6 +15,8 @@ public:
 		Rifle.ammo = 10;
 		SMG.ammo = 10;
 		Pistol.ammo = 41;
+		SMG.delayMultiplier = 0.1;
+		Pistol.delayMultiplier = 0.7;
 	};
 	~Inventory(){};
 	

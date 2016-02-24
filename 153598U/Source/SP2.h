@@ -174,6 +174,7 @@ public:
 		GEO_PATH_O,
 		GEO_STORE,
 		GEO_PISTOL,
+		GEO_SMG,
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE

@@ -610,7 +610,8 @@ void SP2::Init()
 
 	meshList[GEO_PISTOL] = MeshBuilder::GenerateOBJ("apple", "OBJ//Pistol.obj");
 	meshList[GEO_PISTOL]->textureID = LoadTGA("Image//Pistol.tga");
-
+	meshList[GEO_SMG] = MeshBuilder::GenerateOBJ("apple", "OBJ//SMG.obj");
+	meshList[GEO_SMG]->textureID = LoadTGA("Image//SMG.tga");
 	meshList[GEO_STORE] = MeshBuilder::GenerateOBJ("apple", "OBJ//Store.obj");
 	meshList[GEO_STORE]->textureID = LoadTGA("Image//Store.tga");
 	meshList[GEO_STORE]->position = (0, -5, -480);
@@ -1226,23 +1227,27 @@ void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float 
 		modelStack.Rotate(195, 0, 1, 0);
 		modelStack.Translate(-10, -10, 60);
 	}
-	if (mesh == meshList[GEO_HELMET])
-	{
-		modelStack.Translate(0, 0.1, 0);
-		modelStack.Rotate(-90, 0, 1, 0);
-	}
-	if (mesh == meshList[GEO_RIFLE])
-	{
-		modelStack.Rotate(-85, 1,0,0);
-		modelStack.Rotate(195 , 0, 1,0);
-
-	}
 	if (mesh == meshList[GEO_PISTOL])
 	{
 		modelStack.Scale(2, 2, 2);
 		modelStack.Rotate(-85, 1, 0, 0);
 		modelStack.Rotate(105, 0, 1, 0);
+		modelStack.Translate(10, -5,0);
 	}
+	if (mesh == meshList[GEO_SMG])
+	{
+		modelStack.Scale(9, 9, 9);
+		modelStack.Rotate(-85, 1, 0, 0);
+		modelStack.Rotate(195, 0, 1, 0);
+		modelStack.Translate(-2, -5.5,10);
+	}
+	if (mesh == meshList[GEO_HELMET])
+	{
+		modelStack.Translate(0, 0.1, 0);
+		modelStack.Rotate(-90, 0, 1, 0);
+	}
+	
+	
 	////modelStack.Translate(camera.position.x + camera.view.x, camera.position.y + camera.view.y, camera.position.z + camera.view.z);
 	//modelStack.Translate(camera.view.x, camera.view.y + camera.position.y, camera.view.z);
 	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
@@ -1922,7 +1927,7 @@ void SP2::Render()
 	//UI Background Panal
 	modelStack.PushMatrix();
 	RenderOBJonScreen(meshList[GEO_UIBG], 25, 19, 72, 3.5);
-	modelStack.PopMatrix();*/
+	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_STORE]->position.x, meshList[GEO_STORE]->position.y, meshList[GEO_STORE]->position.z);
@@ -1943,6 +1948,12 @@ if (player.inv.GunSelected == &player.inv.Rifle)
 		RenderOBJonScreen(meshList[GEO_RIFLE], 0.8, 0.8, 70, 20);
 		modelStack.PopMatrix();
 	}
+else if (player.inv.GunSelected == &player.inv.SMG)
+{
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_SMG], 0.8, 0.8, 70, 20);
+	modelStack.PopMatrix();
+}
 else if (player.inv.GunSelected = &player.inv.Pistol)
 {
 	modelStack.PushMatrix();
