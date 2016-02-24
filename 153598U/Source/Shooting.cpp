@@ -49,8 +49,10 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 			temp.trajectory = Vector3(Vector3(camera.view * 500) - camera.right);
 			bullets.push_back(temp);
 			delay = time + player.inv.GunSelected->delayMultiplier;
+
 			player.inv.GunSelected->ammo--;
 			std::cout << player.inv.GunSelected->ammo << std::endl;
+
 			}
 
 		}
@@ -59,9 +61,10 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 	{
 		if (player.inv.GunSelected->semiAuto == true && player.inv.GunSelected->stopFiring == false)
 		{
+
 			if (player.inv.GunSelected->ammo > 0)
 			{
-			//cout << " Works" << endl;
+
 			TestBullet temp;
 			temp.Position = camera.position;
 			temp.start = temp.Position;

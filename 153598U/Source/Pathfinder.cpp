@@ -109,8 +109,8 @@ void PathFinding::PathOpened(int x, int z, float newCost, Node * parent, Mesh **
 			)
 		{
 			return;
-	}
 		}
+	}
 	int id = z * Node::WORLD_SIZE + x;
 	for (int i = 0; i < m_visitedList.size(); i++)
 	{

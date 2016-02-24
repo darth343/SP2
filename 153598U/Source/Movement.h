@@ -1,9 +1,19 @@
 #ifndef MOVEMENT_H
 #define MOVEMENT_H
-
-struct Movement
+#include "Camera5.h"
+#include "Mesh.h"
+#include "FlyingClass.h"
+class Movement
 {
-	//void MovementCharac(double dt);
+public:
+	Movement(){};
+	~Movement(){};
+	Flying jetPack;
+	void MovementCharac(double dt, Camera5 &camera, Mesh ** meshList, int Start, int End);
+	void Gravity(double dt, Camera5 &camera, Mesh ** meshList, int Start, int End);
+private:
+	float gravity = 10;
+	Vector3 prevPos;
 };
 
 #endif

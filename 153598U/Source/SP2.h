@@ -11,6 +11,7 @@
 #include "Shooting.h"
 #include "Enemy.h"
 #include "Pathfinder.h"
+#include "Movement.h"
 #include <Vector>
 #include "FlyingClass.h"
 #include "AI.h"
@@ -31,8 +32,6 @@ public:
 		GEO_TOP,
 		GEO_BOTTOM,
 		GEO_BACK,
-		GEO_GROUND,
-		GEO_SHIPFLOOR,
 		GEO_TIMEDISPLAY,
 		GEO_TIME,
 		GEO_FUEL1,
@@ -54,6 +53,7 @@ public:
 		GEO_ALIEN_LEGR,
 		GEO_ALIEN_LEGL,
 		GEO_HELMET,
+		GEO_CROSSHAIR,
 		GEO_MODEL1,
 		GEO_STARTLINE,
 
@@ -165,6 +165,9 @@ public:
 		GEO_THICK1,
 		GEO_THICK2,
 		//Wall(Thick)End
+
+		//Ground
+		GEO_SHIPFLOOR,
 		GEO_TEXT,
 		GEO_RIFLE,
 		GEO_ENEMY,
@@ -228,8 +231,6 @@ public:
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderOBJonScreen(Mesh* mesh, float sizex, float sizey, float x, float y);
-	void Movement(double dt);
-	void CharacMovement(double dt);
 	Mesh* Interaction(double dt);
 
 	private:
@@ -243,6 +244,9 @@ public:
 	float scaleHealth = 1;
 	MS modelStack, viewStack, projectionStack;
 	Light light[4];
+
+	Movement move;
+
 	vector<enemy> mobs;
 	Camera5 camera;
 	string timeDisplay="Time : ";
@@ -251,7 +255,6 @@ public:
 	bool shot=false ; // when object get shot
 	bool objectDied = false;//when object is dead
 	bool takeDamage = false;
-	Flying jetPack;
 	AI alien;
 	Mesh* object;
 	Shop shop;
