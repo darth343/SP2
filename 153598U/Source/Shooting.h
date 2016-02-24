@@ -36,6 +36,8 @@ public:
 	TestBullet tempMag;
 	float delay = 0;
 	Mesh * object;
+	bool GunFiring;
+	bool JetFiring;
 	//Gun Gun;
 	Damage damage;
 	Player player;

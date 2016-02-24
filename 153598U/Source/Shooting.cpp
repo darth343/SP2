@@ -44,13 +44,28 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 				temp.Position.y -= 0.6;
 				temp.Position.x += 0.1;
 			}
-			temp.start = camera.right+camera.position;
-			cout << temp.start << endl;
-			temp.trajectory = Vector3(Vector3(camera.view * 500) - camera.right);
+			
+			temp.Position = camera.right+camera.position;
+			temp.Position -= Vector3 (5,0.5,0);
+			cout <<"temp start1: " << temp.start << endl;
+			//temp.trajectory = Vector3(Vector3(camera.view * 10) - camera.right);
 			bullets.push_back(temp);
+			cout << "push Once" << endl;
+			//temp.start = -(camera.right) + camera.position;
+			//temp.trajectory = Vector3(Vector3(camera.view * 10) + camera.right);
+			TestBullet otherBullet;
+			otherBullet.start = Vector3 (6, -0.5, 0);
+			//otherBullet.trajectory = (-3, 0, 0);
+			cout << "Other Bullet: " << otherBullet.start<< endl;
+			temp.Position.x = camera.right.x +camera.position.x +otherBullet.start.x;
+			temp.Position.y = camera.right.y + camera.position.y + otherBullet.start.y;
+			temp.Position.z = camera.right.z + camera.position.z + otherBullet.start.z;
+			cout << " temp start 2: " << temp.start << endl;
+			bullets.push_back(temp);
+			cout << "push back twice" << endl;
+			cout << "Bullet Size: " << bullets.size() << endl;
 			delay = time + player.inv.GunSelected->delayMultiplier;
-
-			player.inv.GunSelected->ammo--;
+			player.inv.GunSelected->ammo-=2;
 			std::cout << player.inv.GunSelected->ammo << std::endl;
 
 			}
@@ -83,13 +98,33 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 	{
 	player.inv.GunSelected->stopFiring = false;
 	}
-	if (bullets.size() > 0)
+	//if (bullets.size() > 0 )//&& GunFiring==true)
+	//{
+	//	for (int i = 0; i < bullets.size(); i++)
+	//	{
+	//		bullets[i].Position.x += bullets[i].trajectory.Normalized().x * bulletspeed;
+	//		bullets[i].Position.y += bullets[i].trajectory.Normalized().y * bulletspeed;
+	//		bullets[i].Position.z += bullets[i].trajectory.Normalized().z * bulletspeed;
+	//	}
+	//}
+	/*else*/ if (bullets.size() > 0)// && JetFiring == true)
 	{
 		for (int i = 0; i < bullets.size(); i++)
 		{
+			if 
+			((i+1) % 2 == 0)
+			{
+				bullets[i].trajectory = Vector3(Vector3(camera.view * 500) + camera.right);
+				//cout << "works" << endl;
+			}
+			else
+			{
+				bullets[i].trajectory = Vector3(Vector3(camera.view * 500) - camera.right);
+			}
 			bullets[i].Position.x += bullets[i].trajectory.Normalized().x * bulletspeed;
 			bullets[i].Position.y += bullets[i].trajectory.Normalized().y * bulletspeed;
 			bullets[i].Position.z += bullets[i].trajectory.Normalized().z * bulletspeed;
+			
 		}
 	}
 }
@@ -137,7 +172,7 @@ void Shooting::bulletHitDetection(vector<enemy> &mobs, double dt, Camera5 camera
 					}
 					else
 					{
-						if (Vector3(bullets[a].Position - bullets[a].start).Length() >= 500)
+						if (Vector3(bullets[a].Position - bullets[a].start).Length() >= 1)
 						{
 							bullets.erase(bullets.begin() + a);
 							//return nullptr;

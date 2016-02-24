@@ -614,11 +614,12 @@ void SP2::Init()
 	meshList[GEO_SMG]->textureID = LoadTGA("Image//SMG.tga");
 	meshList[GEO_STORE] = MeshBuilder::GenerateOBJ("apple", "OBJ//Store.obj");
 	meshList[GEO_STORE]->textureID = LoadTGA("Image//Store.tga");
-	meshList[GEO_STORE]->position = (0, -5, -480);
+	meshList[GEO_STORE]->position = (0,0,0);
 	player.inv.Rifle.delayMultiplier = 0.3;
 	player.inv.Rifle.semiAuto = false;
 	player.inv.Rifle.stopFiring = false;
 	player.inv.GunSelected = &player.inv.Rifle;
+	shoot.GunFiring = true;
 	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
 	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("Rifle", "OBJ//Rifle.obj");
 //	meshList[GEO_THICK2]->position.Set(0, 3, -50);
@@ -628,56 +629,8 @@ void SP2::Init()
 void SP2::Update(double dt)
 {
 	
-	object = shop.ShopInteraction(dt, camera, meshList);
-	if (Application::IsKeyPressed('X') && shop.openShop == false && player.inv.ownRifle == true && player.inv.GunSelected->semiAuto == true && time>delay) //enable back Automatic fire
-		//	glEnable(GL_CULL_FACE);
-	{
-		player.inv.GunSelected->delayMultiplier = 0.5;
-		player.inv.GunSelected->semiAuto = false;
-		delay = time + 0.5;
-	}
-	else  if (Application::IsKeyPressed('X') && shop.openShop == false && player.inv.ownRifle == true && player.inv.GunSelected->semiAuto == false && time>delay) //disable back face cullinzgs
-		//glDisable(GL_CULL_FACE);
-	{
-		player.inv.GunSelected->semiAuto = true;
-		player.inv.GunSelected->delayMultiplier = 0.4;
-		cout << "Semi Auto mode" << endl;
-		delay = time + 0.5;
-	}
-	if (Application::IsKeyPressed('E') && shop.openShop == false && time >delay&& object == meshList[GEO_STORE])
-	{
-		shop.openShop = true;
-		cout << "shop is open bois";
-		delay = time + 0.5;
-	}
-	else if (Application::IsKeyPressed('E') && shop.openShop == true && time>delay&& object == meshList[GEO_STORE])
-	{
-		shop.openShop = false;
-		cout << "shop is close bois";
-		delay = time + 0.5;
-	}
-	if (shop.openShop == true && object==meshList[GEO_STORE])
-	{
-		shop.shopping(player);
-	}
-	if (Application::IsKeyPressed('1') && shop.openShop == false && time > delay)
-	{
-		player.inv.GunSelected = &player.inv.Rifle;
-		std::cout << "Rifle Equipped" << std::endl;
-		delay = time + 0.5;
-	}
-	if (Application::IsKeyPressed('2') && shop.openShop == false && time > delay)
-	{
-		player.inv.GunSelected = &player.inv.SMG;
-		std::cout << "SMG Equipped" << std::endl;
-		delay = time + 0.5;
-	}
-	if (Application::IsKeyPressed('3') && shop.openShop == false && time > delay)
-	{
-		player.inv.GunSelected = &player.inv.Pistol;
-		std::cout << "Pistol Equipped" << std::endl;
-		delay = time + 0.5;
-	}
+	
+	player.currentItems(dt, camera, meshList, player.object);
 	if (Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
 	
@@ -1670,7 +1623,7 @@ void SP2::Render()
 
 	//Crosshair
 	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_CROSSHAIR], 10, 10, 40, 30);
+	RenderOBJonScreen(meshList[GEO_CROSSHAIR], 10, 10, 40.2, 29.8);
 	modelStack.PopMatrix();
 
 
