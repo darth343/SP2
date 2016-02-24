@@ -26,21 +26,29 @@ void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList, int start, int end
 			{
 				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
-					if (camera.position.y + camera.position.Normalized().y * dt * speed < meshList[i]->min->y ||
-						camera.position.y + camera.position.Normalized().y * dt * speed > meshList[i]->max->y ||
+					if (//camera.position.y + camera.position.Normalized().y * dt * speed < meshList[i]->min->y ||
+						//camera.position.y + camera.position.Normalized().y * dt * speed > meshList[i]->max->y ||
 						camera.position.x < meshList[i]->min->x + meshList[i]->position.x ||
 						camera.position.x > meshList[i]->max->x + meshList[i]->position.x ||
 						camera.position.z < meshList[i]->min->z + meshList[i]->position.z ||
 						camera.position.z > meshList[i]->max->z + meshList[i]->position.z 
 						)
 					{
-
 						move = true;
 					}
 					else
 					{
-						move = false;
-						break;
+						if (camera.position.y - 6 > meshList[i]->position.y + meshList[i]->max->y ||
+							camera.position.y + 2 < meshList[i]->position.y + meshList[i]->min->y
+							)
+						{
+							move = true;
+						}
+						else
+						{
+							move = false;
+							break;
+						}
 					}
 				}
 				else
