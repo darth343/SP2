@@ -492,7 +492,7 @@ void SP2::Update(double dt)
 	
 	time += dt;
 	fps = 1 / dt;
-	move.MovementCharac(dt, camera, meshList, GEO_LEFTWALL1, GEO_TEXT);
+	move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
 	camera.Update(dt);
 	Vector3 bulletSpeed = (0.1, 0.1, 0.1);
 	shoot.ShootingBullets(camera, dt, time, meshList,player);
@@ -1128,18 +1128,15 @@ void SP2::Render()
 	}*/
 
 	
-	if (bullets.size() != NULL)
-	{
-		for (int a = 0; a <bullets.size(); a++)
+		for (int a = 0; a <shoot.bullets.size(); a++)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(bullets[a].Position.x, bullets[a].Position.y, bullets[a].Position.z);
+			modelStack.Translate(shoot.bullets[a].Position.x, shoot.bullets[a].Position.y, shoot.bullets[a].Position.z);
 			modelStack.Scale(0.1, 0.1,0.1);
 			RenderMesh(meshList[GEO_BULLET], true);
 			modelStack.PopMatrix();
 		}
 
-	}
 	//Arun's Wall
 	
 	//Render Scenario2
