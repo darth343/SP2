@@ -128,6 +128,7 @@ public:
 		GEO_STORE,
 		GEO_PISTOL,
 		GEO_SMG,
+
 		NUM_GEOMETRY,
 	};
 	enum UNIFORM_TYPE
@@ -210,7 +211,7 @@ public:
 	bool objectDied = false;//when object is dead
 	bool takeDamage = false;
 	AI alien;
-	Mesh* object;
+	Mesh *object;
 	Shop shop;
 	Player player;
 	Vector3 pivot;

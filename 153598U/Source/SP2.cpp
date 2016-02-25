@@ -31,6 +31,8 @@ void SP2::Scenario2Init()
 	meshList[GEO_GROUND]->position.Set(0, -500, 0);
 	meshList[GEO_GROUND]->textureID = LoadTGA("Image//sand.tga");
 
+	meshList[GEO_GUNMODE] = MeshBuilder::GenerateQuad("Gun Mode", Color(0.25, 0.25, 0.25));
+	meshList[GEO_UIBG] = MeshBuilder::GenerateQuad("UI Background Panal", Color(0.37, 0.37, 0.37));
 	//ArenaWalls
 	meshList[GEO_ARENAWALLFRONT] = MeshBuilder::GenerateOBJ("arenawallfront", "OBJ//ArenaWallFrontBack.obj");
 	meshList[GEO_ARENAWALLFRONT]->position.Set(0, -475, 250);
@@ -88,7 +90,7 @@ void SP2::Scenario3Init()
 	meshList[GEO_FUEL3] = MeshBuilder::GenerateQuad("fuel3", Color(0, 0.8, 0));
 	meshList[GEO_FUEL4] = MeshBuilder::GenerateQuad("fuel4", Color(0, 1, 0));
 	meshList[GEO_FUEL5] = MeshBuilder::GenerateQuad("fuel5", Color(0.2, 1, 0.2));
-	meshList[GEO_JETPACKUI] = MeshBuilder::GenerateQuad("Jetpack UI", Color(1, 2, 1));
+	//meshList[GEO_JETPACKUI] = MeshBuilder::GenerateQuad("Jetpack UI", Color(1, 2, 1));
 
 
 	//LongWall
@@ -121,18 +123,18 @@ void SP2::Scenario3Init()
 	meshList[GEO_CRATES3]->position.Set(11, 5, -110);
 	meshList[GEO_CRATES3]->textureID = LoadTGA("Image//Crate.tga");
 
-	//Balancewall1
-	meshList[GEO_BALANCE1] = MeshBuilder::GenerateOBJ("balancewall", "OBJ//BalanceWall.obj");
+	//BalanceWall1
+	meshList[GEO_BALANCE1] = MeshBuilder::GenerateOBJ("BalanceWall", "OBJ//BalanceWall.obj");
 	meshList[GEO_BALANCE1]->position.Set(17, 10, -50);
 	meshList[GEO_BALANCE1]->textureID = LoadTGA("Image//scifiwall.tga");
 
-	//Balancewall2
-	meshList[GEO_BALANCE2] = MeshBuilder::GenerateOBJ("balancewall", "OBJ//BalanceWall.obj");
+	//BalanceWall2
+	meshList[GEO_BALANCE2] = MeshBuilder::GenerateOBJ("BalanceWall", "OBJ//BalanceWall.obj");
 	meshList[GEO_BALANCE2]->position.Set(-17, 10, -80);
 	meshList[GEO_BALANCE2]->textureID = LoadTGA("Image//scifiwall.tga");
 
-	//Balancewall3
-	meshList[GEO_BALANCE3] = MeshBuilder::GenerateOBJ("balancewall", "OBJ//BalanceWall.obj");
+	//BalanceWall3
+	meshList[GEO_BALANCE3] = MeshBuilder::GenerateOBJ("BalanceWall", "OBJ//BalanceWall.obj");
 	meshList[GEO_BALANCE3]->position.Set(-17, 10, -120);
 	meshList[GEO_BALANCE3]->textureID = LoadTGA("Image//scifiwall.tga");
 
@@ -341,7 +343,7 @@ void SP2::Init()
 	rotateAngle = 0;
 
 	//Initialize camera settings
-	camera.Init(Vector3(0, 1000, -497), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(0, 1000, 0), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
@@ -414,8 +416,8 @@ void SP2::Init()
 	//alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
 	//alien.transparency = 1;
 //	temp.health = 100;
-	meshList[GEO_ENEMY] = MeshBuilder::GenerateOBJ("apple", "OBJ//Rifle.obj");
-	meshList[GEO_ENEMY]->textureID = LoadTGA("Image//Rifle .tga");
+	/*meshList[GEO_ENEMY] = MeshBuilder::GenerateOBJ("apple", "OBJ//Rifle.obj");
+	meshList[GEO_ENEMY]->textureID = LoadTGA("Image//Rifle .tga");*/
 
 	meshList[GEO_PISTOL] = MeshBuilder::GenerateOBJ("apple", "OBJ//Pistol.obj");
 	meshList[GEO_PISTOL]->textureID = LoadTGA("Image//Pistol.tga");
@@ -433,6 +435,7 @@ void SP2::Init()
 	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("Rifle", "OBJ//Rifle.obj");
 //	meshList[GEO_THICK2]->position.Set(0, 3, -50);
 	meshList[GEO_RIFLE]->textureID = LoadTGA("Image//Rifle.tga");
+	meshList[GEO_PLAYERHEALTH] = MeshBuilder::GenerateQuad("Player Health", Color(0.71, 0.03, 0.03));
 }
 
 void SP2::Update(double dt)
@@ -452,7 +455,7 @@ void SP2::Update(double dt)
 	shoot.bulletHitDetection(mobs, dt, camera);
 	//alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
 	object = shoot.Shootable(dt, camera, meshList,mobs);
-
+	
 	//Player Take Damage
 	if (Application::IsKeyPressed('Z') && takeDamage == false)
 	{
@@ -536,7 +539,6 @@ void SP2::RenderMesh(Mesh * mesh, bool enableLight)
 	{
 		glUniform1i(m_parameters[U_LIGHTENABLED], 0);
 	}
-
 	if (mesh->textureID > 0)
 	{
 		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
@@ -1085,7 +1087,7 @@ void SP2::Render()
 		{
 			modelStack.PushMatrix();
 			modelStack.Translate(shoot.bullets[a].Position.x, shoot.bullets[a].Position.y, shoot.bullets[a].Position.z);
-			modelStack.Scale(0.1, 0.1,0.1);
+			modelStack.Scale(0.5, 0.5,0.5);
 			RenderMesh(meshList[GEO_BULLET], true);
 			modelStack.PopMatrix();
 		}
@@ -1203,6 +1205,7 @@ void SP2::Render()
 	modelStack.PopMatrix();
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	//Player's Health
 	modelStack.PushMatrix();
 	RenderOBJonScreen(meshList[GEO_PLAYERHEALTH], 30*scaleHealth, 1, 40, 55);
