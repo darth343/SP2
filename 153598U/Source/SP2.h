@@ -18,6 +18,7 @@
 #include "Gun.h"
 #include "Shop.h"
 #include "Player.h"
+
 using std::vector;
 using std::string;
 class SP2 : public Scene
@@ -241,6 +242,7 @@ static enum UNIFORM_TYPE
 	Shooting shoot;
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	static void RenderMesh(Mesh *mesh, bool enableLight, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL]);
+	static void RenderText(Mesh* mesh, std::string text, Color color, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL]);
 	void RenderSkybox(Vector3 position);
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);

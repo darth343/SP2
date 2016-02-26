@@ -30,7 +30,7 @@ private:
 
 	Node * m_start;
 	Node * m_goal;
-
+	float y;
 	int Starter;
 	int Ender;
 };

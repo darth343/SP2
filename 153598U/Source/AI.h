@@ -44,7 +44,7 @@ public:
 	};
 	~AI(){};
 	float getAngle();
-	void renderAlien(bool enableLight, MS modelStack, MS viewStack, MS projectionStack, unsigned int m_parameters[25]);
+	void renderAlien(bool enableLight, MS modelStack, MS viewStack, MS projectionStack, unsigned int m_parameters[25], Mesh ** meshlist);
 	void move(Vector3 targetPos, Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd, double time, double dt);
 	void attack();
 	void animation();
@@ -60,6 +60,7 @@ public:
 	bool animate;
 	Vector3 position;
 	Vector3 temp;
+	Vector3 distance;
 private:
 	float health;
 	Vector3 inBetween;
@@ -71,7 +72,6 @@ private:
 	PathFinding m_path;
 	bool left = true;
 	bool right = false;
-	Vector3 distance;
 	//Animation Variables
 
 		//Hand Movements

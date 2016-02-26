@@ -13,7 +13,7 @@ PathFinding::~PathFinding()
 }
 void PathFinding::FindPath(Vector3 currentPos, Vector3 targetPos, Mesh ** meshList, int modelStart, int modelEnd)
 {
-		for (int i = 0; i < 1000; i++)
+		for (int i = 0; i < 500; i++)
 		{
 			if (!m_initializedStartGoal)
 			{
@@ -41,7 +41,7 @@ void PathFinding::FindPath(Vector3 currentPos, Vector3 targetPos, Mesh ** meshLi
 				Node start;
 				start.m_X = currentPos.x;
 				start.m_Z = currentPos.z;
-
+				y = currentPos.y;
 				Node goal;
 				goal.m_X = targetPos.x;
 				goal.m_Z = targetPos.z;
@@ -106,10 +106,13 @@ void PathFinding::PathOpened(int x, int z, float newCost, Node * parent, Mesh **
 	int offset = 1;
 	for (int i = Starter; i < Ender; i++)
 	{
-		if (x > meshList[i]->position.x + meshList[i]->min->x - offset &&
+		if (
+			x > meshList[i]->position.x + meshList[i]->min->x - offset &&
 			x < meshList[i]->position.x + meshList[i]->max->x + offset &&
 			z > meshList[i]->position.z + meshList[i]->min->z - offset &&
-			z < meshList[i]->position.z + meshList[i]->max->z + offset
+			z < meshList[i]->position.z + meshList[i]->max->z + offset &&
+			y > meshList[i]->position.y + meshList[i]->min->y - offset &&
+			y < meshList[i]->position.y + meshList[i]->max->y + offset
 			)
 		{
 			return;

@@ -19,7 +19,8 @@ void Movement::MovementCharac(double dt, Camera5 &camera, Mesh ** meshList, int 
 						camera.position.x + camera.view.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset || //Check min for x axis. If bigger than min, smaller than max, walk = false 
 						camera.position.x + camera.view.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset || //Check max for x axis. If bigger than min, smaller than max, walk = false 
 						camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - cameraHeight + offset >= meshList[i]->max->y + meshList[i]->position.y + offset)
+						camera.position.y - cameraHeight + offset >= meshList[i]->max->y + meshList[i]->position.y + offset
+						)
 					{
 						move = true;
 					}

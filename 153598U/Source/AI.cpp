@@ -1,12 +1,14 @@
 #include "AI.h"
 #include "SP2.h"
+#include <sstream>
 #include "GL\glew.h"
 void AI::move(Vector3 targetPos, Camera5 camera,  Mesh ** meshList, int modelStart, int modelEnd, double time, double dt)
 {
 	distance = Vector3(camera.position - position);
+
 	if (m_path.getPath().size() > 0)
 	{
-		int speed = 80;
+		int speed = 100;
 		Vector3 move(0, 0, 0);
 		if ((static_cast<int>(position.x) >= temp.x -1 &&
 			static_cast<int>(position.x) <= temp.x +1) &&
@@ -21,6 +23,7 @@ void AI::move(Vector3 targetPos, Camera5 camera,  Mesh ** meshList, int modelSta
 			{
 				animate = true;
 				move = temp - position;
+				move.y = 0;
 				position += move.Normalized() * dt * speed;
 				inBetween = temp - position; // vector in between enemy and next path
 				angleRad = atan(inBetween.z / inBetween.x);
@@ -37,8 +40,7 @@ void AI::move(Vector3 targetPos, Camera5 camera,  Mesh ** meshList, int modelSta
 		if (camera.position != prevPos)
 		{
 			m_path.m_initializedStartGoal = false;
-			m_path.m_found = false;
-			cout << "finding" << endl;
+			m_path.m_found = false;;
 			m_path.FindPath(position, camera.position, meshList, modelStart, modelEnd);
 			prevPos = camera.position;
 		}
@@ -243,8 +245,20 @@ float AI::getAngle()
 	return nextAngle;
 }
 
-void AI::renderAlien(bool enableLight, MS modelStack, MS viewStack, MS projectionStack, unsigned int m_parameters[25])
+void AI::renderAlien(bool enableLight, MS modelStack, MS viewStack, MS projectionStack, unsigned int m_parameters[25], Mesh ** meshlist)
 {
+	std::ostringstream hpDp;
+	hpDp <<"HP: "<< health;
+	modelStack.PushMatrix();
+	modelStack.Translate(position.x - 5, position.y + 10, position.z);
+	//modelStack.Scale(10,10,10);
+	cout << position.x << " "<<  position.y + 10 << " " << position.z << endl;
+	SP2::RenderText(meshlist[100], hpDp.str() , Color(1, 0.5, 0.5), modelStack, viewStack, projectionStack, m_parameters);
+	modelStack.Rotate(180, 0, 1, 0);
+	SP2::RenderText(meshlist[100], hpDp.str(), Color(1, 0.5, 0.5), modelStack, viewStack, projectionStack, m_parameters);
+	modelStack.PopMatrix();
+
+
 	modelStack.PushMatrix();
 	modelStack.Translate(position.x, position.y, position.z);
 	//modelStack.Translate(position.x, m_Head->position.y, m_Head->position.z);

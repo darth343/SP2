@@ -411,10 +411,10 @@ void SP2::Init()
 
 	glUseProgram(m_programID);
 
-	light[0].type = Light::LIGHT_SPOT;
-	light[0].position.Set(7, 7.4, 39);
+	light[0].type = Light::LIGHT_DIRECTIONAL;
+	light[0].position.Set(100, 100, 0);
 	light[0].color.Set(1, 1, 1);
-	light[0].power = 3;
+	light[0].power = 1;
 	light[0].kC = 1.f;
 	light[0].kL = 0.01f;
 	light[0].kQ = 0.001f;
@@ -517,7 +517,8 @@ void SP2::Init()
 		Vector3(-130, -500, 162),
 		Vector3(70, -500, 153)
 	};
-	for (int i = 0; i < 1; i++)
+
+	for (int i = 0; i < 9; i++)
 	{
 		AI temp;
 		temp.m_Head = MeshBuilder::GenerateOBJ("Alien Head", "OBJ//Head.obj");
@@ -535,7 +536,8 @@ void SP2::Init()
 
 		temp.transparency = 1;
 		temp.position = coordinates[i];
-		temp.temp = coordinates[i];
+		cout << temp.position << endl;
+		temp.temp = temp.position;
 		allAliens.push_back(temp);
 	}
 
@@ -577,7 +579,6 @@ void SP2::Update(double dt)
 	{
 		allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt);
 	}
-	//cout << allAliens[0].position << endl;
 	//Player Take Damage
 	if (Application::IsKeyPressed('Z') && takeDamage == false)
 	{
@@ -798,6 +799,33 @@ void SP2::RenderText(Mesh* mesh, std::string text, Color color)
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
 	glEnable(GL_DEPTH_TEST);
+}
+
+void SP2::RenderText(Mesh* mesh, std::string text, Color color, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL])
+{
+	if (!mesh || mesh->textureID <= 0) //Proper error check
+		return;
+
+	//glDisable(GL_DEPTH_TEST);
+	glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
+	glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
+	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+	for (unsigned i = 0; i < text.length(); ++i)
+	{
+		Mtx44 characterSpacing;
+		characterSpacing.SetToTranslation(i * 1.0f, 0, 0); //1.0f is the spacing of each character, you may change this value
+		Mtx44 MVP = ps.Top() * vs.Top() * ms.Top() * characterSpacing;
+		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+
+		mesh->Render((unsigned)text[i] * 6, 6);
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
+	//glEnable(GL_DEPTH_TEST);
 }
 
 void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float y)
@@ -1321,7 +1349,6 @@ void SP2::Render()
 		}
 	}*/
 
-	
 	for (int a = 0; a <shoot.bullets.size(); a++)
 	{
 		modelStack.PushMatrix();
@@ -1331,18 +1358,20 @@ void SP2::Render()
 		modelStack.PopMatrix();
 	}
 
-	for (int i = 0; i < allAliens.size(); i++)
-	{
-		allAliens[i].renderAlien(true, modelStack, viewStack, projectionStack, m_parameters);
-	}
 
 	//Arun's Wall
-	
+
 	//Render Scenario2
 	Scenario2Render();
+	for (int i = 0; i < allAliens.size(); i++)
+	{
+		allAliens[i].renderAlien(true, modelStack, viewStack, projectionStack, m_parameters, meshList);
+	}
 
 	//Render Scenario3
 	Scenario3Render();
+
+
 
 	//////////////////////////////////
 	//			JetFuel             //
@@ -1405,6 +1434,18 @@ void SP2::Render()
 	timeString.str("");
 	timeString << "Z: " << static_cast<int>(camera.position.z);
 	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 8.4);
+
+	timeString.str("");
+	timeString << "X: " << static_cast<int>(allAliens[0].position.x);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 13.4);
+	timeString.str("");
+	timeString << "Y: " << static_cast<int>(allAliens[0].position.y);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 12.4);
+	timeString.str("");
+	timeString << "Z: " << static_cast<int>(allAliens[0].position.z);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 11.4);
+
+
 	//////////////////////////////////
 	//			Gun                //
 	/////////////////////////////////
