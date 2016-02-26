@@ -280,6 +280,7 @@ static enum UNIFORM_TYPE
 	Shop shop;
 	Player player;
 	Vector3 pivot;
+//	Mesh* object;
 
 
 	bool surviveDone=false;

@@ -5,14 +5,14 @@ void Player::currentItems(double dt, Camera5 camera, Mesh** meshList, Mesh* obje
 {
 	time += dt;
 	object = shop.ShopInteraction(dt, camera, meshList);
-	if (Application::IsKeyPressed('X') && shop.openShop == false && inv.ownRifle == true && inv.GunSelected->semiAuto == true && time > delay) //enable back Automatic fire
+	if (Application::IsKeyPressed('X') && shop.openShop == false && inv.GunSelected== &inv.Rifle && inv.GunSelected->semiAuto == true && time > delay) //enable back Automatic fire
 		//	glEnable(GL_CULL_FACE);
 	{
 		inv.GunSelected->delayMultiplier = 0.5;
 		inv.GunSelected->semiAuto = false;
 		delay = time + 0.5;
 	}
-	else  if (Application::IsKeyPressed('X') && shop.openShop == false && inv.ownRifle == true && inv.GunSelected->semiAuto == false && time > delay) //disable back face cullinzgs
+	else  if (Application::IsKeyPressed('X') && shop.openShop == false && inv.GunSelected == &inv.Rifle && inv.GunSelected->semiAuto == false && time > delay) //disable back face cullinzgs
 		//glDisable(GL_CULL_FACE);
 	{
 		inv.GunSelected->semiAuto = true;

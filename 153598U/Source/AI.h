@@ -60,8 +60,9 @@ public:
 	bool animate;
 	Vector3 position;
 	Vector3 temp;
-private:
 	float health;
+private:
+
 	Vector3 inBetween;
 	int count;
 	float angleRad;

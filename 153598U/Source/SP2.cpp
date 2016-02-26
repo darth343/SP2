@@ -628,6 +628,7 @@ Mesh* SP2::Interaction(double dt)
 					else
 					{
 						return meshList[i];
+						//return tempAI[i];
 						break;
 					}
 				}
@@ -944,8 +945,8 @@ void SP2::Scenario2Render()
 	modelStack.Translate(meshList[GEO_ARENAFRONTWALL3]->position.x, meshList[GEO_ARENAFRONTWALL3]->position.y, meshList[GEO_ARENAFRONTWALL3]->position.z);
 	RenderMesh(meshList[GEO_ARENAFRONTWALL3], true);
 
-	modelStack.Translate(meshList[GEO_ARENAFRONTWALL]->position.x, meshList[GEO_ARENAFRONTWALL]->position.y, meshList[GEO_ARENAFRONTWALL]->position.z);
-	RenderMesh(meshList[GEO_ARENAFRONTWALL], true);
+	//modelStack.Translate(meshList[GEO_ARENAFRONTWALL1]->position.x, meshList[GEO_ARENAFRONTWALL]->position.y, meshList[GEO_ARENAFRONTWALL]->position.z);
+	//RenderMesh(meshList[GEO_ARENAFRONTWALL], true);
 
 	modelStack.PopMatrix();
 
@@ -976,7 +977,6 @@ void SP2::Scenario2Render()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-
 	
 	modelStack.Translate(meshList[GEO_LANDINGPAD1]->position.x, meshList[GEO_LANDINGPAD1]->position.y, meshList[GEO_LANDINGPAD1]->position.z);
 	RenderMesh(meshList[GEO_LANDINGPAD1], true);
@@ -985,9 +985,6 @@ void SP2::Scenario2Render()
 	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_LANDINGPAD2]->position.x, meshList[GEO_LANDINGPAD2]->position.y, meshList[GEO_LANDINGPAD2]->position.z);
 	RenderMesh(meshList[GEO_LANDINGPAD2], true);
-
-	modelStack.Translate(meshList[GEO_LANDINGPAD]->position.x, meshList[GEO_LANDINGPAD]->position.y, meshList[GEO_LANDINGPAD]->position.z);
-	RenderMesh(meshList[GEO_LANDINGPAD], true);
 
 	modelStack.PopMatrix();
 
@@ -1018,11 +1015,16 @@ void SP2::Scenario2Render()
 
 	if (surviveDone == true)
 	{
+		meshList[GEO_DOOR]->position = NULL;
+	}
+	else
+	{
 		modelStack.PushMatrix();
 		//	modelStack.Scale(500, 500, 500);
 		modelStack.Translate(meshList[GEO_DOOR]->position.x, meshList[GEO_DOOR]->position.y, meshList[GEO_DOOR]->position.z);
 		RenderMesh(meshList[GEO_DOOR], true);
 		modelStack.PopMatrix();
+		
 	}
 
 	modelStack.PushMatrix();
@@ -1389,6 +1391,12 @@ void SP2::Render()
 	{
 		allAliens[i].renderAlien(true, modelStack, viewStack, projectionStack, m_parameters);
 	}
+	/*if (object)
+	{
+		std::ostringstream enemyHP;
+		enemyHP << std::setprecision(3)<<object.
+		RenderTextOnScreen(meshList[GEO_TEXT],)
+	}*/
 
 	//Arun's Wall
 	
