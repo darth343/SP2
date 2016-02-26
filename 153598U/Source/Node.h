@@ -5,8 +5,8 @@ struct Node
 {
 	static const int WORLD_SIZE = 100;
 public:
-	int m_X;
-	int m_Z;
+	float m_X;
+	float m_Z;
 	int m_id;
 	Node * parent;
 	float G;

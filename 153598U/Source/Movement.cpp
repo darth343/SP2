@@ -1,10 +1,8 @@
 #include "Movement.h"
 #include "Application.h"
-int cameraHeight = 5;
 void Movement::MovementCharac(double dt, Camera5 &camera, Mesh ** meshList, int Start, int End)
 {
 	int speed = 50;
-	float offset = 01;
 	int cameraX = -1;
 
 	if (Application::IsKeyPressed('W'))
@@ -27,7 +25,6 @@ void Movement::MovementCharac(double dt, Camera5 &camera, Mesh ** meshList, int 
 					}
 					else
 					{
-						cout << "X: " << i << endl;
 						move = false;
 						break;
 					}
@@ -57,7 +54,6 @@ void Movement::MovementCharac(double dt, Camera5 &camera, Mesh ** meshList, int 
 						move = true;
 					else
 					{
-						cout << "Z: " << i << endl;
 						move = false;
 						break;
 					}
@@ -262,7 +258,6 @@ void Movement::Gravity(double dt, Camera5 &camera, Mesh ** meshList, int Start, 
 {
 	float fuelrate = 0.8;
 	float rechargeRate = 0.4;
-	float offset = 2;
 	if (!Application::IsKeyPressed(VK_SPACE) || jetPack.activated == false)
 	{
 		bool fall = false;
@@ -270,14 +265,14 @@ void Movement::Gravity(double dt, Camera5 &camera, Mesh ** meshList, int Start, 
 		{
 			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 			{
-				if (camera.position.x  > meshList[i]->position.x + meshList[i]->min->x + offset - 3.8 &&
+				if (camera.position.x > meshList[i]->position.x + meshList[i]->min->x + offset - 3.8 &&
 					camera.position.x < meshList[i]->position.x + meshList[i]->max->x - offset + 3.8 &&
-					camera.position.z > meshList[i]->position.z + meshList[i]->min->z + offset - 3.8 &&
+					camera.position.z > meshList[i]->position.z + meshList[i]->min->z + offset - 3.8  &&
 					camera.position.z < meshList[i]->position.z + meshList[i]->max->z - offset + 3.8
 					)
 				{
-					if (camera.position.y - cameraHeight - (gravity + dt * 1.8) > meshList[i]->position.y + meshList[i]->max->y ||
-						camera.position.y - (gravity + dt * 1.8) < meshList[i]->position.y + meshList[i]->min->y)
+					if (camera.position.y - cameraHeight - (gravity + dt * gravityMultiplier) > meshList[i]->position.y + meshList[i]->max->y ||
+						camera.position.y - (gravity + dt * gravityMultiplier) < meshList[i]->position.y + meshList[i]->min->y)
 					{
 						fall = true;
 					}
@@ -296,7 +291,6 @@ void Movement::Gravity(double dt, Camera5 &camera, Mesh ** meshList, int Start, 
 		if (fall == true)
 		{
 			bool wallrunning = false;
-			gravity += dt * 1.8;
 			for (int i = Start; i < End; i++)
 			{
 				if (
@@ -317,16 +311,19 @@ void Movement::Gravity(double dt, Camera5 &camera, Mesh ** meshList, int Start, 
 					)
 				{
 					wallrunning = true;
+					gravity -= dt/2;
 					break;
 				}
 			}
 			if (wallrunning == false || prevPos == camera.position)
 			{
+				gravity += dt * gravityMultiplier;
 				camera.position.y -= gravity;
 			}
 			else
 			{
-				camera.position.y -= gravity/25;
+				gravity += dt;
+				camera.position.y -= gravity;
 			}
 			prevPos = camera.position;
 		}
@@ -342,5 +339,9 @@ void Movement::Gravity(double dt, Camera5 &camera, Mesh ** meshList, int Start, 
 				jetPack.activated = true;
 			}
 		}
+	}
+	else
+	{
+		gravity = 10 * dt;
 	}
 }

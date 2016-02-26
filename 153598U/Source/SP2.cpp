@@ -501,36 +501,58 @@ void SP2::Init()
 	// Enable blendings
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//meshList[GEO_ALIEN_HEAD] = MeshBuilder::GenerateOBJ("Alien Head", "OBJ//Head.obj");
-	//meshList[GEO_ALIEN_HEAD]->textureID = LoadTGA("Image//alienUV.tga");
-	//meshList[GEO_ALIEN_HEAD]->position = Vector3(0, 0, -480);
-	//meshList[GEO_ALIEN_BODY] = MeshBuilder::GenerateOBJ("Alien Body", "OBJ//Body.obj");
-	//meshList[GEO_ALIEN_BODY]->textureID = LoadTGA("Image//alienUV.tga");
-	//meshList[GEO_ALIEN_BODY]->position = Vector3(0, 0, -480);
-	//meshList[GEO_ALIEN_HANDR] = MeshBuilder::GenerateOBJ("Alien Right Hand", "OBJ//RightHand.obj");
-	//meshList[GEO_ALIEN_HANDR]->textureID = LoadTGA("Image//alienUV.tga");
-	//meshList[GEO_ALIEN_HANDR]->position = Vector3(0, 0, -480);
-	//meshList[GEO_ALIEN_HANDL] = MeshBuilder::GenerateOBJ("Alien Left Hand", "OBJ//LeftHand.obj");
-	//meshList[GEO_ALIEN_HANDL]->textureID = LoadTGA("Image//alienUV.tga");
-	//meshList[GEO_ALIEN_HANDL]->position = Vector3(0, 0, -480);
-	//meshList[GEO_ALIEN_LEGR] = MeshBuilder::GenerateOBJ("Alien Right Leg", "OBJ//RightLeg.obj");
-	//meshList[GEO_ALIEN_LEGR]->textureID = LoadTGA("Image//alienUV.tga");
-	//meshList[GEO_ALIEN_LEGR]->position = Vector3(0, 0, -480);
-	//meshList[GEO_ALIEN_LEGL] = MeshBuilder::GenerateOBJ("Alien Left Leg", "OBJ//LeftLeg.obj");
-	//meshList[GEO_ALIEN_LEGL]->textureID = LoadTGA("Image//alienUV.tga");
-	//meshList[GEO_ALIEN_LEGL]->position = Vector3(0, 0, -480);
+	meshList[GEO_ALIEN_HEAD] = MeshBuilder::GenerateOBJ("Alien Head", "OBJ//Head.obj");
+	meshList[GEO_ALIEN_HEAD]->textureID = LoadTGA("Image//alienUV.tga");
+	meshList[GEO_ALIEN_HEAD]->position = Vector3(0, 0, -480);
+	meshList[GEO_ALIEN_BODY] = MeshBuilder::GenerateOBJ("Alien Body", "OBJ//Body.obj");
+	meshList[GEO_ALIEN_BODY]->textureID = LoadTGA("Image//alienUV.tga");
+	meshList[GEO_ALIEN_BODY]->position = Vector3(0, 0, -480);
+	meshList[GEO_ALIEN_HANDR] = MeshBuilder::GenerateOBJ("Alien Right Hand", "OBJ//RightHand.obj");
+	meshList[GEO_ALIEN_HANDR]->textureID = LoadTGA("Image//alienUV.tga");
+	meshList[GEO_ALIEN_HANDR]->position = Vector3(0, 0, -480);
+	meshList[GEO_ALIEN_HANDL] = MeshBuilder::GenerateOBJ("Alien Left Hand", "OBJ//LeftHand.obj");
+	meshList[GEO_ALIEN_HANDL]->textureID = LoadTGA("Image//alienUV.tga");
+	meshList[GEO_ALIEN_HANDL]->position = Vector3(0, 0, -480);
+	meshList[GEO_ALIEN_LEGR] = MeshBuilder::GenerateOBJ("Alien Right Leg", "OBJ//RightLeg.obj");
+	meshList[GEO_ALIEN_LEGR]->textureID = LoadTGA("Image//alienUV.tga");
+	meshList[GEO_ALIEN_LEGR]->position = Vector3(0, 0, -480);
+	meshList[GEO_ALIEN_LEGL] = MeshBuilder::GenerateOBJ("Alien Left Leg", "OBJ//LeftLeg.obj");
+	meshList[GEO_ALIEN_LEGL]->textureID = LoadTGA("Image//alienUV.tga");
+	meshList[GEO_ALIEN_LEGL]->position = Vector3(0, 0, -480);
 
-	//alien.m_Head = meshList[GEO_ALIEN_HEAD];
-	//alien.m_Body = meshList[GEO_ALIEN_BODY];
-	//alien.m_HandL = meshList[GEO_ALIEN_HANDL];
-	//alien.m_HandR = meshList[GEO_ALIEN_HANDR];
-	//alien.m_LegL = meshList[GEO_ALIEN_LEGL];
-	//alien.m_LegR = meshList[GEO_ALIEN_LEGR];
-	//alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
-	//alien.transparency = 1;
-//	temp.health = 100;
-	/*meshList[GEO_ENEMY] = MeshBuilder::GenerateOBJ("apple", "OBJ//Rifle.obj");
-	meshList[GEO_ENEMY]->textureID = LoadTGA("Image//Rifle .tga");*/
+	Vector3 coordinates[9] = 
+	{
+		Vector3(110, -500, 55),
+		Vector3(59, -500, 55),
+		Vector3(84, -500, 152),
+		Vector3(0, -500, 21),
+		Vector3(12, -500, -160),
+		Vector3(-160, -500, -39),
+		Vector3(-170, -500, 18),
+		Vector3(-130, -500, 162),
+		Vector3(70, -500, 153)
+	};
+	for (int i = 0; i < 1; i++)
+	{
+		AI temp;
+		temp.m_Head = MeshBuilder::GenerateOBJ("Alien Head", "OBJ//Head.obj");
+		temp.m_Head->textureID = LoadTGA("Image//alienUV.tga");
+		temp.m_Body = MeshBuilder::GenerateOBJ("Alien Body", "OBJ//Body.obj");
+		temp.m_Body->textureID = LoadTGA("Image//alienUV.tga");
+		temp.m_HandR = MeshBuilder::GenerateOBJ("Alien Right Hand", "OBJ//RightHand.obj");
+		temp.m_HandR->textureID = LoadTGA("Image//alienUV.tga");
+		temp.m_HandL = MeshBuilder::GenerateOBJ("Alien Left Hand", "OBJ//LeftHand.obj");
+		temp.m_HandL->textureID = LoadTGA("Image//alienUV.tga");
+		temp.m_LegR = MeshBuilder::GenerateOBJ("Alien Right Leg", "OBJ//RightLeg.obj");
+		temp.m_LegR->textureID = LoadTGA("Image//alienUV.tga");
+		temp.m_LegL = MeshBuilder::GenerateOBJ("Alien Left Leg", "OBJ//LeftLeg.obj");
+		temp.m_LegL->textureID = LoadTGA("Image//alienUV.tga");
+
+		temp.transparency = 1;
+		temp.position = coordinates[i];
+		temp.temp = coordinates[i];
+		allAliens.push_back(temp);
+	}
 
 	meshList[GEO_PISTOL] = MeshBuilder::GenerateOBJ("apple", "OBJ//Pistol.obj");
 	meshList[GEO_PISTOL]->textureID = LoadTGA("Image//Pistol.tga");
@@ -556,19 +578,21 @@ void SP2::Update(double dt)
 	
 	
 	player.currentItems(dt, camera, meshList, player.object);
-	if (Application::IsKeyPressed('4'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+	//if (Application::IsKeyPressed('4'))
+	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
 	
 	time += dt;
 	fps = 1 / dt;
 	move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
 	camera.Update(dt);
 	Vector3 bulletSpeed = (0.1, 0.1, 0.1);
-	shoot.ShootingBullets(camera, dt, time, meshList,player);
-	shoot.bulletHitDetection(mobs, dt, camera);
-	//alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
-	object = shoot.Shootable(dt, camera, meshList,mobs);
-	
+	shoot.ShootingBullets(camera, dt, time, meshList, player);
+	shoot.bulletHitDetection(allAliens, dt, camera);
+	for (int i = 0; i < allAliens.size(); i++)
+	{
+		allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt);
+	}
+	//cout << allAliens[0].position << endl;
 	//Player Take Damage
 	if (Application::IsKeyPressed('Z') && takeDamage == false)
 	{
@@ -577,22 +601,6 @@ void SP2::Update(double dt)
 	if (takeDamage == true && scaleHealth > 0)
 	{
 		scaleHealth -= dt;
-	}
-	if (Application::IsKeyPressed(VK_NUMPAD8))
-	{
-		pivot.y += dt;
-	}
-	if (Application::IsKeyPressed(VK_NUMPAD5))
-	{
-		pivot.y -= dt;
-	}
-	if (Application::IsKeyPressed(VK_NUMPAD4))
-	{
-		pivot.x += dt;
-	}
-	if (Application::IsKeyPressed(VK_NUMPAD6))
-	{
-		pivot.x -= dt;
 	}
 }
 
@@ -671,7 +679,7 @@ void SP2::RenderMesh(Mesh * mesh, bool enableLight)
 	}
 }
 
-void SP2::RenderMesh(Mesh * mesh, bool enableLight, MS ms, MS vs, MS ps)
+void SP2::RenderMesh(Mesh * mesh, bool enableLight, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL])
 {
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
 	MVP = ps.Top() * vs.Top() * ms.Top();
@@ -911,6 +919,8 @@ void SP2::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float si
 void SP2::Scenario2Render()
 {
 
+
+	//FloorShip
 	modelStack.PushMatrix();
 
 	modelStack.Translate(meshList[GEO_GROUND]->position.x, meshList[GEO_GROUND]->position.y, meshList[GEO_GROUND]->position.z);
@@ -918,6 +928,7 @@ void SP2::Scenario2Render()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
+
 
 	modelStack.Translate(meshList[GEO_ARENAFRONTWALL1]->position.x, meshList[GEO_ARENAFRONTWALL1]->position.y, meshList[GEO_ARENAFRONTWALL1]->position.z);
 	RenderMesh(meshList[GEO_ARENAFRONTWALL1], true);
@@ -932,76 +943,75 @@ void SP2::Scenario2Render()
 	
 	modelStack.Translate(meshList[GEO_ARENAFRONTWALL3]->position.x, meshList[GEO_ARENAFRONTWALL3]->position.y, meshList[GEO_ARENAFRONTWALL3]->position.z);
 	RenderMesh(meshList[GEO_ARENAFRONTWALL3], true);
+
+	modelStack.Translate(meshList[GEO_ARENAFRONTWALL]->position.x, meshList[GEO_ARENAFRONTWALL]->position.y, meshList[GEO_ARENAFRONTWALL]->position.z);
+	RenderMesh(meshList[GEO_ARENAFRONTWALL], true);
+
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//	modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_ARENALEFTWALL]->position.x, meshList[GEO_ARENALEFTWALL]->position.y, meshList[GEO_ARENALEFTWALL]->position.z);
 	RenderMesh(meshList[GEO_ARENALEFTWALL], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//	modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_ARENARIGHTWALL]->position.x, meshList[GEO_ARENARIGHTWALL]->position.y, meshList[GEO_ARENARIGHTWALL]->position.z);
 	RenderMesh(meshList[GEO_ARENARIGHTWALL], true);
 	modelStack.PopMatrix();
 
 
 	modelStack.PushMatrix();
-	//	modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_ARENABACKWALL1]->position.x, meshList[GEO_ARENABACKWALL1]->position.y, meshList[GEO_ARENABACKWALL1]->position.z);
 	RenderMesh(meshList[GEO_ARENABACKWALL1], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_ARENABACKWALL2]->position.x, meshList[GEO_ARENABACKWALL2]->position.y, meshList[GEO_ARENABACKWALL2]->position.z);
 	RenderMesh(meshList[GEO_ARENABACKWALL2], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_ARENABACKWALL3]->position.x, meshList[GEO_ARENABACKWALL3]->position.y, meshList[GEO_ARENABACKWALL3]->position.z);
 	RenderMesh(meshList[GEO_ARENABACKWALL3], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
+
+	
 	modelStack.Translate(meshList[GEO_LANDINGPAD1]->position.x, meshList[GEO_LANDINGPAD1]->position.y, meshList[GEO_LANDINGPAD1]->position.z);
 	RenderMesh(meshList[GEO_LANDINGPAD1], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_LANDINGPAD2]->position.x, meshList[GEO_LANDINGPAD2]->position.y, meshList[GEO_LANDINGPAD2]->position.z);
 	RenderMesh(meshList[GEO_LANDINGPAD2], true);
+
+	modelStack.Translate(meshList[GEO_LANDINGPAD]->position.x, meshList[GEO_LANDINGPAD]->position.y, meshList[GEO_LANDINGPAD]->position.z);
+	RenderMesh(meshList[GEO_LANDINGPAD], true);
+
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//	modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_FRONTINTERSECTWALL]->position.x, meshList[GEO_FRONTINTERSECTWALL]->position.y, meshList[GEO_FRONTINTERSECTWALL]->position.z);
 	RenderMesh(meshList[GEO_FRONTINTERSECTWALL], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//	modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_BACKINTERSECTWALL]->position.x, meshList[GEO_BACKINTERSECTWALL]->position.y, meshList[GEO_BACKINTERSECTWALL]->position.z);
 	RenderMesh(meshList[GEO_BACKINTERSECTWALL], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//	modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_RIGHTINTERSECTWALL]->position.x, meshList[GEO_RIGHTINTERSECTWALL]->position.y, meshList[GEO_RIGHTINTERSECTWALL]->position.z);
 	RenderMesh(meshList[GEO_RIGHTINTERSECTWALL], true);
 	modelStack.PopMatrix();
+
 	modelStack.PushMatrix();
-	//	modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_LEFTINTERSECTWALL]->position.x, meshList[GEO_LEFTINTERSECTWALL]->position.y, meshList[GEO_LEFTINTERSECTWALL]->position.z);
 	RenderMesh(meshList[GEO_LEFTINTERSECTWALL], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//	modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_MIDDLEPILLAR]->position.x, meshList[GEO_MIDDLEPILLAR]->position.y, meshList[GEO_MIDDLEPILLAR]->position.z);
 	RenderMesh(meshList[GEO_MIDDLEPILLAR], true);
 	modelStack.PopMatrix();
@@ -1016,135 +1026,107 @@ void SP2::Scenario2Render()
 	}
 
 	modelStack.PushMatrix();
-//	modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_1STMAZEWALL1]->position.x, meshList[GEO_1STMAZEWALL1]->position.y, meshList[GEO_1STMAZEWALL1]->position.z);
 	RenderMesh(meshList[GEO_1STMAZEWALL1], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_1STMAZEWALL2]->position.x, meshList[GEO_1STMAZEWALL2]->position.y, meshList[GEO_1STMAZEWALL2]->position.z);
 	RenderMesh(meshList[GEO_1STMAZEWALL2], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_1STMAZEWALL3]->position.x, meshList[GEO_1STMAZEWALL3]->position.y, meshList[GEO_1STMAZEWALL3]->position.z);
 	RenderMesh(meshList[GEO_1STMAZEWALL3], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_1STMAZEWALL4]->position.x, meshList[GEO_1STMAZEWALL4]->position.y, meshList[GEO_1STMAZEWALL4]->position.z);
 	RenderMesh(meshList[GEO_1STMAZEWALL4], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-  //  modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_1STMAZEWALL5]->position.x, meshList[GEO_1STMAZEWALL5]->position.y, meshList[GEO_1STMAZEWALL5]->position.z);
 	RenderMesh(meshList[GEO_1STMAZEWALL5], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_1STMAZEWALL6]->position.x, meshList[GEO_1STMAZEWALL6]->position.y, meshList[GEO_1STMAZEWALL6]->position.z);
 	RenderMesh(meshList[GEO_1STMAZEWALL6], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_1STMAZEWALL7]->position.x, meshList[GEO_1STMAZEWALL7]->position.y, meshList[GEO_1STMAZEWALL7]->position.z);
 	RenderMesh(meshList[GEO_1STMAZEWALL7], true);
 	modelStack.PopMatrix();
 
-
-
-
-
-
 	modelStack.PushMatrix();
-	//	modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_2NDMAZEWALL1]->position.x, meshList[GEO_2NDMAZEWALL1]->position.y, meshList[GEO_2NDMAZEWALL1]->position.z);
 	RenderMesh(meshList[GEO_2NDMAZEWALL1], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_2NDMAZEWALL2]->position.x, meshList[GEO_2NDMAZEWALL2]->position.y, meshList[GEO_2NDMAZEWALL2]->position.z);
 	RenderMesh(meshList[GEO_2NDMAZEWALL2], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_2NDMAZEWALL3]->position.x, meshList[GEO_2NDMAZEWALL3]->position.y, meshList[GEO_2NDMAZEWALL3]->position.z);
 	RenderMesh(meshList[GEO_2NDMAZEWALL3], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_2NDMAZEWALL4]->position.x, meshList[GEO_2NDMAZEWALL4]->position.y, meshList[GEO_2NDMAZEWALL4]->position.z);
 	RenderMesh(meshList[GEO_2NDMAZEWALL4], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//  modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_2NDMAZEWALL5]->position.x, meshList[GEO_2NDMAZEWALL5]->position.y, meshList[GEO_2NDMAZEWALL5]->position.z);
 	RenderMesh(meshList[GEO_2NDMAZEWALL5], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_2NDMAZEWALL6]->position.x, meshList[GEO_2NDMAZEWALL6]->position.y, meshList[GEO_2NDMAZEWALL6]->position.z);
 	RenderMesh(meshList[GEO_2NDMAZEWALL6], true);
 	modelStack.PopMatrix();
 
-
-
-
+	// THIRD WALL
 	modelStack.PushMatrix();
-	//	modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_3RDMAZEWALL1]->position.x, meshList[GEO_3RDMAZEWALL1]->position.y, meshList[GEO_3RDMAZEWALL1]->position.z);
 	RenderMesh(meshList[GEO_3RDMAZEWALL1], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_3RDMAZEWALL2]->position.x, meshList[GEO_3RDMAZEWALL2]->position.y, meshList[GEO_3RDMAZEWALL2]->position.z);
 	RenderMesh(meshList[GEO_3RDMAZEWALL2], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_3RDMAZEWALL3]->position.x, meshList[GEO_3RDMAZEWALL3]->position.y, meshList[GEO_3RDMAZEWALL3]->position.z);
 	RenderMesh(meshList[GEO_3RDMAZEWALL3], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_3RDMAZEWALL4]->position.x, meshList[GEO_3RDMAZEWALL4]->position.y, meshList[GEO_3RDMAZEWALL4]->position.z);
 	RenderMesh(meshList[GEO_3RDMAZEWALL4], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//  modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_3RDMAZEWALL5]->position.x, meshList[GEO_3RDMAZEWALL5]->position.y, meshList[GEO_3RDMAZEWALL5]->position.z);
 	RenderMesh(meshList[GEO_3RDMAZEWALL5], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_3RDMAZEWALL6]->position.x, meshList[GEO_3RDMAZEWALL6]->position.y, meshList[GEO_3RDMAZEWALL6]->position.z);
 	RenderMesh(meshList[GEO_3RDMAZEWALL6], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_3RDMAZEWALL7]->position.x, meshList[GEO_3RDMAZEWALL7]->position.y, meshList[GEO_3RDMAZEWALL7]->position.z);
 	RenderMesh(meshList[GEO_3RDMAZEWALL7], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_3RDMAZEWALL8]->position.x, meshList[GEO_3RDMAZEWALL8]->position.y, meshList[GEO_3RDMAZEWALL8]->position.z);
 	RenderMesh(meshList[GEO_3RDMAZEWALL8], true);
 	modelStack.PopMatrix();
@@ -1154,132 +1136,45 @@ void SP2::Scenario2Render()
 
 
 	modelStack.PushMatrix();
-	//	modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_4THMAZEWALL1]->position.x, meshList[GEO_4THMAZEWALL1]->position.y, meshList[GEO_4THMAZEWALL1]->position.z);
 	RenderMesh(meshList[GEO_4THMAZEWALL1], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_4THMAZEWALL2]->position.x, meshList[GEO_4THMAZEWALL2]->position.y, meshList[GEO_4THMAZEWALL2]->position.z);
 	RenderMesh(meshList[GEO_4THMAZEWALL2], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
+	
 	modelStack.Translate(meshList[GEO_4THMAZEWALL3]->position.x, meshList[GEO_4THMAZEWALL3]->position.y, meshList[GEO_4THMAZEWALL3]->position.z);
 	RenderMesh(meshList[GEO_4THMAZEWALL3], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_4THMAZEWALL4]->position.x, meshList[GEO_4THMAZEWALL4]->position.y, meshList[GEO_4THMAZEWALL4]->position.z);
 	RenderMesh(meshList[GEO_4THMAZEWALL4], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//  modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_4THMAZEWALL5]->position.x, meshList[GEO_4THMAZEWALL5]->position.y, meshList[GEO_4THMAZEWALL5]->position.z);
 	RenderMesh(meshList[GEO_4THMAZEWALL5], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_4THMAZEWALL6]->position.x, meshList[GEO_4THMAZEWALL6]->position.y, meshList[GEO_4THMAZEWALL6]->position.z);
 	RenderMesh(meshList[GEO_4THMAZEWALL6], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_4THMAZEWALL7]->position.x, meshList[GEO_4THMAZEWALL7]->position.y, meshList[GEO_4THMAZEWALL7]->position.z);
 	RenderMesh(meshList[GEO_4THMAZEWALL7], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
 	modelStack.Translate(meshList[GEO_4THMAZEWALL8]->position.x, meshList[GEO_4THMAZEWALL8]->position.y, meshList[GEO_4THMAZEWALL8]->position.z);
 	RenderMesh(meshList[GEO_4THMAZEWALL8], true);
 	modelStack.PopMatrix();
-
-	////ArenaWalls
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_ARENAWALLFRONT]->position.x, meshList[GEO_ARENAWALLFRONT]->position.y, meshList[GEO_ARENAWALLFRONT]->position.z);
-	//RenderMesh(meshList[GEO_ARENAWALLFRONT], true);
-	//modelStack.PopMatrix();
-
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_ARENAWALLBACK]->position.x, meshList[GEO_ARENAWALLBACK]->position.y, meshList[GEO_ARENAWALLBACK]->position.z);
-	//RenderMesh(meshList[GEO_ARENAWALLBACK], true);
-	//modelStack.PopMatrix();
-
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_ARENAWALLLEFT]->position.x, meshList[GEO_ARENAWALLLEFT]->position.y, meshList[GEO_ARENAWALLLEFT]->position.z);
-	//RenderMesh(meshList[GEO_ARENAWALLLEFT], true);
-	//modelStack.PopMatrix();
-
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_ARENAWALLRIGHT]->position.x, meshList[GEO_ARENAWALLRIGHT]->position.y, meshList[GEO_ARENAWALLRIGHT]->position.z);
-	//RenderMesh(meshList[GEO_ARENAWALLRIGHT], true);
-	//modelStack.PopMatrix();
-
-	////Barrels
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_BARREL1]->position.x, meshList[GEO_BARREL1]->position.y, meshList[GEO_BARREL1]->position.z);
-	//RenderMesh(meshList[GEO_BARREL1], true);
-	//modelStack.PopMatrix();
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_BARREL2]->position.x, meshList[GEO_BARREL2]->position.y, meshList[GEO_BARREL2]->position.z);
-	//RenderMesh(meshList[GEO_BARREL2], true);
-	//modelStack.PopMatrix();
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_BARREL3]->position.x, meshList[GEO_BARREL3]->position.y, meshList[GEO_BARREL3]->position.z);
-	//RenderMesh(meshList[GEO_BARREL3], true);
-	//modelStack.PopMatrix();
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_BARREL4]->position.x, meshList[GEO_BARREL4]->position.y, meshList[GEO_BARREL4]->position.z);
-	//RenderMesh(meshList[GEO_BARREL4], true);
-	//modelStack.PopMatrix();
-	//
-
-	////Crates
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_CRATE1]->position.x, meshList[GEO_CRATE1]->position.y, meshList[GEO_CRATE1]->position.z);
-	//RenderMesh(meshList[GEO_CRATE1], true);
-	//modelStack.PopMatrix();
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_CRATE2]->position.x, meshList[GEO_CRATE2]->position.y, meshList[GEO_CRATE2]->position.z);
-	//RenderMesh(meshList[GEO_CRATE2], true);
-	//modelStack.PopMatrix();
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_CRATE3]->position.x, meshList[GEO_CRATE3]->position.y, meshList[GEO_CRATE3]->position.z);
-	//RenderMesh(meshList[GEO_CRATE3], true);
-	//modelStack.PopMatrix();
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_CRATE4]->position.x, meshList[GEO_CRATE4]->position.y, meshList[GEO_CRATE4]->position.z);
-	//RenderMesh(meshList[GEO_CRATE4], true);
-	//modelStack.PopMatrix();
-
-	////SqPyramids
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_SQPYRA1]->position.x, meshList[GEO_SQPYRA1]->position.y, meshList[GEO_SQPYRA1]->position.z);
-	//RenderMesh(meshList[GEO_SQPYRA1], true);
-	//modelStack.PopMatrix();
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_SQPYRA2]->position.x, meshList[GEO_SQPYRA2]->position.y, meshList[GEO_SQPYRA2]->position.z);
-	//RenderMesh(meshList[GEO_SQPYRA2], true);
-	//modelStack.PopMatrix();
-
-	////RdPyramids
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_RDPYRA1]->position.x, meshList[GEO_RDPYRA1]->position.y, meshList[GEO_RDPYRA1]->position.z);
-	//RenderMesh(meshList[GEO_RDPYRA1], true);
-	//modelStack.PopMatrix();
-	//modelStack.PushMatrix();
-	//modelStack.Translate(meshList[GEO_RDPYRA2]->position.x, meshList[GEO_RDPYRA2]->position.y, meshList[GEO_RDPYRA2]->position.z);
-	//RenderMesh(meshList[GEO_RDPYRA2], true);
-	//modelStack.PopMatrix();
-//	modelStack.PopMatrix();
-
 }
 
 void SP2::Scenario3Render()
@@ -1481,14 +1376,19 @@ void SP2::Render()
 	}*/
 
 	
-		for (int a = 0; a <shoot.bullets.size(); a++)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(shoot.bullets[a].Position.x, shoot.bullets[a].Position.y, shoot.bullets[a].Position.z);
-			modelStack.Scale(0.5, 0.5,0.5);
-			RenderMesh(meshList[GEO_BULLET], true);
-			modelStack.PopMatrix();
-		}
+	for (int a = 0; a <shoot.bullets.size(); a++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(shoot.bullets[a].Position.x, shoot.bullets[a].Position.y, shoot.bullets[a].Position.z);
+		modelStack.Scale(0.5, 0.5,0.5);
+		RenderMesh(meshList[GEO_BULLET], true);
+		modelStack.PopMatrix();
+	}
+
+	for (int i = 0; i < allAliens.size(); i++)
+	{
+		allAliens[i].renderAlien(true, modelStack, viewStack, projectionStack, m_parameters);
+	}
 
 	//Arun's Wall
 	
@@ -1498,30 +1398,12 @@ void SP2::Render()
 	//Render Scenario3
 	Scenario3Render();
 
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	//////////////////////////////////
-	//			Enemy Health        //
-	/////////////////////////////////
-	if (object )
-	{
-	//	cout << healthDisplay.health<<endl;
-		if (object->ifShootable == true)
-		{
-			std::ostringstream enemyHp;
-			enemyHp << std::setprecision(3) << object->health;
-			RenderTextOnScreen(meshList[GEO_TEXT], "Enemy HP: ", Color(0, 1, 0), 2, 25, 10);
-			RenderTextOnScreen(meshList[GEO_TEXT], enemyHp.str(), Color(1, 1, 1), 2, 37, 10);
-			//		std::ostringstream enemyHp;
-		}
-	}
-	
 	//////////////////////////////////
 	//			JetFuel             //
 	/////////////////////////////////
 	if (move.jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
 	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 2, 7);
+		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 1, 7);
 	}
 	if (move.jetPack.getFuel() > 15)
 	{
@@ -1568,7 +1450,15 @@ void SP2::Render()
 	timeString << std::setprecision(3) << time;
 	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 3, 24);
 
-
+	timeString.str("");
+	timeString << "X: " << static_cast<int>(camera.position.x);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 10.4);
+	timeString.str("");
+	timeString << "Y: " << static_cast<int>(camera.position.y);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 9.4);
+	timeString.str("");
+	timeString << "Z: " << static_cast<int>(camera.position.z);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 8.4);
 	//////////////////////////////////
 	//			Gun                //
 	/////////////////////////////////

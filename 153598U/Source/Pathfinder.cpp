@@ -13,7 +13,7 @@ PathFinding::~PathFinding()
 }
 void PathFinding::FindPath(Vector3 currentPos, Vector3 targetPos, Mesh ** meshList, int modelStart, int modelEnd)
 {
-		for (int i = 0; i < 150; i++)
+		for (int i = 0; i < 1000; i++)
 		{
 			if (!m_initializedStartGoal)
 			{
@@ -63,6 +63,10 @@ void PathFinding::FindPath(Vector3 currentPos, Vector3 targetPos, Mesh ** meshLi
 
 void PathFinding::SetStartAndGoal(Node start, Node goal)
 {
+	start.m_X = start.m_X - (fmod(start.m_X, 2));
+	start.m_Z = start.m_Z - (fmod(start.m_Z, 2));
+	goal.m_X = goal.m_X - (fmod(goal.m_X, 2));
+	goal.m_Z = goal.m_Z - (fmod(goal.m_Z, 2));
 	m_start = new Node(start.m_X, start.m_Z, NULL);
 	m_goal = new Node(goal.m_X, goal.m_Z, &goal);
 
@@ -167,35 +171,35 @@ void PathFinding::ContinuePath(Mesh ** meshList)
 	}
 	else
 	{
-		int blockSize = 1;
+		int blockSize = 2;
 
 		//right side
-		PathOpened(currentNode->m_X + blockSize, currentNode->m_Z, currentNode->G + blockSize ,currentNode, meshList);
+		PathOpened(currentNode->m_X + blockSize, currentNode->m_Z, currentNode->G + 2 ,currentNode, meshList);
 
 		//left side
-		PathOpened(currentNode->m_X - blockSize, currentNode->m_Z, currentNode->G + blockSize, currentNode, meshList);
+		PathOpened(currentNode->m_X - blockSize, currentNode->m_Z, currentNode->G + 2, currentNode, meshList);
 
 		//above
-		PathOpened(currentNode->m_X, currentNode->m_Z + blockSize, currentNode->G + blockSize, currentNode, meshList);
+		PathOpened(currentNode->m_X, currentNode->m_Z + blockSize, currentNode->G + 2, currentNode, meshList);
 
 		//bottom
-		PathOpened(currentNode->m_X, currentNode->m_Z - blockSize, currentNode->G + blockSize, currentNode, meshList);
+		PathOpened(currentNode->m_X, currentNode->m_Z - blockSize, currentNode->G + 2, currentNode, meshList);
 
 		//left-above diagonal
 
-		PathOpened(currentNode->m_X - blockSize, currentNode->m_Z + blockSize, currentNode->G + 1.414f, currentNode, meshList);
+		PathOpened(currentNode->m_X - blockSize, currentNode->m_Z + blockSize, currentNode->G + 2.83, currentNode, meshList);
 
 		//right-above diagonal
 
-		PathOpened(currentNode->m_X + blockSize, currentNode->m_Z + blockSize, currentNode->G + 1.414f, currentNode, meshList);
+		PathOpened(currentNode->m_X + blockSize, currentNode->m_Z + blockSize, currentNode->G + 2.83, currentNode, meshList);
 
 		//left-down diagonal
 
-		PathOpened(currentNode->m_X - blockSize, currentNode->m_Z - blockSize, currentNode->G + 1.414f, currentNode, meshList);
+		PathOpened(currentNode->m_X - blockSize, currentNode->m_Z - blockSize, currentNode->G + 2.83, currentNode, meshList);
 
 		//right-down diagonal
 
-		PathOpened(currentNode->m_X + blockSize, currentNode->m_Z - blockSize, currentNode->G + 1.414f, currentNode, meshList);
+		PathOpened(currentNode->m_X + blockSize, currentNode->m_Z - blockSize, currentNode->G + 2.83, currentNode, meshList);
 
 		for (int i = 0; i < m_openList.size(); i++)
 		{
@@ -218,18 +222,7 @@ Vector3 PathFinding::NextPathPos(Mesh * theMesh)
 
 	if (index < m_pathToGoal.size())
 	{
-		if (distance.Length() < 10)
-		{
 			m_pathToGoal.erase(m_pathToGoal.end() - index);
-		}
 	}
 	return nextPos;
-}
-
-void PathFinding::removeStep()
-{
-	if (m_pathToGoal.size() > 0)
-	{
-		m_pathToGoal.erase(m_pathToGoal.end()-1);
-	}
 }

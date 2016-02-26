@@ -51,8 +51,8 @@ Mesh* Shop::ShopInteraction(double dt, Camera5 camera, Mesh** meshList)
 		}
 	}
 	return nullptr;
-
 }
+
 bool Shop::buyRifle(Inventory &inv)
 {
 

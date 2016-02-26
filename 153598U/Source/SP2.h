@@ -195,7 +195,7 @@ public:
 		GEO_SMG,
 		NUM_GEOMETRY,
 	};
-	enum UNIFORM_TYPE
+static enum UNIFORM_TYPE
 	{
 		U_MVP = 0,
 		U_MODELVIEW,
@@ -245,7 +245,7 @@ public:
 	Mesh* meshList[NUM_GEOMETRY];
 	Shooting shoot;
 	void RenderMesh(Mesh *mesh, bool enableLight);
-	void RenderMesh(Mesh *mesh, bool enableLight, MS ms, MS vs, MS ps);
+	static void RenderMesh(Mesh *mesh, bool enableLight, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL]);
 	void RenderSkybox(Vector3 position);
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
@@ -274,8 +274,9 @@ public:
 	bool shot=false ; // when object get shot
 	bool objectDied = false;//when object is dead
 	bool takeDamage = false;
-	AI alien;
-	Mesh *object;
+	//AI alien;
+	vector<AI> allAliens;
+	Mesh* object;
 	Shop shop;
 	Player player;
 	Vector3 pivot;

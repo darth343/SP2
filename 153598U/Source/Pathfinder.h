@@ -20,7 +20,6 @@ public:
 	bool m_initializedStartGoal;
 	bool m_found;
 	vector<Vector3*> getPath() { return m_pathToGoal; };
-	void removeStep();
 	vector<Vector3*> m_pathToGoal;
 	vector<Node*> m_visitedList;
 	vector<Node*> m_openList;
