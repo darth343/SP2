@@ -334,7 +334,7 @@ void Movement::Gravity(double dt, Camera5 &camera, Mesh ** meshList, int Start, 
 		}
 		if (jetPack.fuel < 100)
 		{
-			jetPack.fuel += rechargeRate;
+			jetPack.fuel += rechargeRate;	
 			if (jetPack.fuel > 60)
 			{
 				jetPack.activated = true;

@@ -60,9 +60,10 @@ public:
 	bool animate;
 	Vector3 position;
 	Vector3 temp;
-	Vector3 distance;
-private:
 	float health;
+	bool isDead() { if (health <= 0)return true; return false; };
+private:
+
 	Vector3 inBetween;
 	int count;
 	float angleRad;
@@ -72,6 +73,7 @@ private:
 	PathFinding m_path;
 	bool left = true;
 	bool right = false;
+	Vector3 distance;
 	//Animation Variables
 
 		//Hand Movements

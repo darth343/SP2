@@ -4,63 +4,66 @@
 #include "GL\glew.h"
 void AI::move(Vector3 targetPos, Camera5 camera,  Mesh ** meshList, int modelStart, int modelEnd, double time, double dt)
 {
-	distance = Vector3(camera.position - position);
-
-	if (m_path.getPath().size() > 0)
+	if (!isDead())
 	{
-		int speed = 100;
-		Vector3 move(0, 0, 0);
-		if ((static_cast<int>(position.x) >= temp.x -1 &&
-			static_cast<int>(position.x) <= temp.x +1) &&
-			(static_cast<int>(position.z) >= temp.z -1 &&
-			static_cast<int>(position.z) <= temp.z + 1) )
+		distance = Vector3(camera.position - position);
+
+		if (m_path.getPath().size() > 0)
 		{
-		temp = m_path.NextPathPos(m_Body);
-		}
-		else
-		{
-			if (distance.Length() > 12)
+			int speed = 100;
+			Vector3 move(0, 0, 0);
+			if ((static_cast<int>(position.x) >= temp.x - 1 &&
+				static_cast<int>(position.x) <= temp.x + 1) &&
+				(static_cast<int>(position.z) >= temp.z - 1 &&
+				static_cast<int>(position.z) <= temp.z + 1))
 			{
-				animate = true;
-				move = temp - position;
-				move.y = 0;
-				position += move.Normalized() * dt * speed;
-				inBetween = temp - position; // vector in between enemy and next path
-				angleRad = atan(inBetween.z / inBetween.x);
+				temp = m_path.NextPathPos(m_Body);
 			}
 			else
 			{
-				inBetween = camera.position - position; // vector in between enemy and next path
-				angleRad = atan(inBetween.z / inBetween.x);
+				if (distance.Length() > 12)
+				{
+					animate = true;
+					move = temp - position;
+					move.y = 0;
+					position += move.Normalized() * dt * speed;
+					inBetween = temp - position; // vector in between enemy and next path
+					angleRad = atan(inBetween.z / inBetween.x);
+				}
+				else
+				{
+					inBetween = camera.position - position; // vector in between enemy and next path
+					angleRad = atan(inBetween.z / inBetween.x);
+				}
 			}
 		}
-	}
-	if (m_path.getPath().size() <=1 && (distance.Length() < 30 && distance.Length() > 13))
-	{
-		if (camera.position != prevPos)
+		if (m_path.getPath().size() <= 1 && (distance.Length() < 30 && distance.Length() > 13))
 		{
-			m_path.m_initializedStartGoal = false;
-			m_path.m_found = false;;
-			m_path.FindPath(position, camera.position, meshList, modelStart, modelEnd);
-			prevPos = camera.position;
+			if (camera.position != prevPos)
+			{
+				m_path.m_initializedStartGoal = false;
+				m_path.m_found = false;;
+				m_path.FindPath(position, camera.position, meshList, modelStart, modelEnd);
+				prevPos = camera.position;
+			}
 		}
-	}
-	if (m_path.getPath().size() <= 1)
-	{
-		animate = false;
-	}
-	if (distance.Length() > 40)
-	{
-		transparency = 1;
-	}
-	else if (distance.Length() < 40)
-	{
-		transparency = (distance.Length()) / 40;
-		if (distance.Length() < 30)
-			transparency = fmod((30 / distance.Length()), 1);
-	}
+		if (m_path.getPath().size() <= 1)
+		{
+			animate = false;
+		}
+		if (distance.Length() > 40)
+		{
+			transparency = 1;
+		}
+		else if (distance.Length() < 40)
+		{
+			transparency = (distance.Length()) / 40;
+			if (distance.Length() < 30)
+				transparency = fmod((30 / distance.Length()), 1);
+		}
 
-	animation();
+		animation();
+	}
 }
 
 float AI::getAngle()
@@ -251,11 +254,8 @@ void AI::renderAlien(bool enableLight, MS modelStack, MS viewStack, MS projectio
 	hpDp <<"HP: "<< health;
 	modelStack.PushMatrix();
 	modelStack.Translate(position.x - 5, position.y + 10, position.z);
-	//modelStack.Scale(10,10,10);
-	cout << position.x << " "<<  position.y + 10 << " " << position.z << endl;
-	SP2::RenderText(meshlist[100], hpDp.str() , Color(1, 0.5, 0.5), modelStack, viewStack, projectionStack, m_parameters);
-	modelStack.Rotate(180, 0, 1, 0);
-	SP2::RenderText(meshlist[100], hpDp.str(), Color(1, 0.5, 0.5), modelStack, viewStack, projectionStack, m_parameters);
+	modelStack.Rotate(getAngle(), 0, 1, 0);
+	SP2::RenderText(meshlist[104], hpDp.str() , Color(1, 0.5, 0.5), modelStack, viewStack, projectionStack, m_parameters);
 	modelStack.PopMatrix();
 
 

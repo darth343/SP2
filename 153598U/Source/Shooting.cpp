@@ -160,7 +160,14 @@ void Shooting::bulletHitDetection(vector<AI> &mobs, double dt, Camera5 camera)
 				//(bullets[i].Position.z < mobs[j].m_Head->max->z + mobs[j].position.z && bullets[i].Position.z < mobs[j].m_Head->min->z + mobs[j].position.z))
 				)
 			{
+				
+				mobs[j].health -= 30;
+				if (mobs[j].health <= 0)
+				{
+					mobs[j].health = 0;
+				}
 				cout << "HEADSHOT" << j << endl;
+				cout << "health: " << mobs[j].health << endl;
 				bullets.erase(bullets.begin() + i);
 				break;
 			}
@@ -172,9 +179,16 @@ void Shooting::bulletHitDetection(vector<AI> &mobs, double dt, Camera5 camera)
 				bullets[i].Position.x < mobs[j].m_Body->max->x + mobs[j].position.x &&
 				bullets[i].Position.y < mobs[j].m_Body->max->y + mobs[j].position.y &&
 				bullets[i].Position.z < mobs[j].m_Body->max->z + mobs[j].position.z
+
 				)
 			{
 				cout << "BODYSHOT" << j << endl;
+				mobs[j].health -= 15;
+				if (mobs[j].health <= 0)
+				{
+					mobs[j].health = 0;
+				}
+				cout << "health: " << mobs[j].health << endl;
 				bullets.erase(bullets.begin() + i);
 				break;
 			}
@@ -189,6 +203,12 @@ void Shooting::bulletHitDetection(vector<AI> &mobs, double dt, Camera5 camera)
 				)
 			{
 				cout << "RIGHT HAND SHOT" << j << endl;
+				mobs[j].health -= 15;
+				if (mobs[j].health <= 0)
+				{
+					mobs[j].health = 0;
+				}
+				cout << "health: " << mobs[j].health << endl;
 				bullets.erase(bullets.begin() + i);
 				break;
 			}
@@ -203,6 +223,12 @@ void Shooting::bulletHitDetection(vector<AI> &mobs, double dt, Camera5 camera)
 				)
 			{
 				cout << "LEFT HAND SHOT" << j << endl;
+				mobs[j].health -= 15;
+				if (mobs[j].health <= 0)
+				{
+					mobs[j].health = 0;
+				}
+				cout << "health: " << mobs[j].health << endl;
 				bullets.erase(bullets.begin() + i);
 				break;
 			}
@@ -217,6 +243,12 @@ void Shooting::bulletHitDetection(vector<AI> &mobs, double dt, Camera5 camera)
 				)
 			{
 				cout << "LEFT LEG SHOT" << j << endl;
+				mobs[j].health -= 10;
+				if (mobs[j].health <= 0)
+				{
+					mobs[j].health = 0;
+				}
+				cout << "health: " << mobs[j].health << endl;
 				bullets.erase(bullets.begin() + i);
 				break;
 			}
@@ -231,6 +263,13 @@ void Shooting::bulletHitDetection(vector<AI> &mobs, double dt, Camera5 camera)
 				)
 			{
 				cout << "RIGHT LEG SHOT" << j << endl;
+				
+				mobs[j].health -= 10;
+				if (mobs[j].health <= 0)
+				{
+					mobs[j].health = 0;
+				}
+				cout << "health: " << mobs[j].health << endl;
 				bullets.erase(bullets.begin() + i);
 				break;
 			}
