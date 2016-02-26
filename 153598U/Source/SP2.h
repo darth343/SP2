@@ -118,6 +118,48 @@ public:
 		GEO_RDPYRA2,
 		//ArenaEnd
 
+		//Runner
+		GEO_RAINBOW,
+		GEO_ROCK1,
+		GEO_ROCK2,
+		GEO_ROCK3,
+		GEO_ROCK4,
+		GEO_ROCK5,
+		GEO_ROCK6,
+		GEO_ROCK7,
+		GEO_ROCK8,
+		GEO_ROCK9,
+		GEO_ROCK10,
+		GEO_ROCK11,
+		GEO_ROCK12,
+		GEO_ROCK13,
+		GEO_ROCK14,
+		GEO_ROCK15,
+		GEO_ROCK16,
+		GEO_ROCK17,
+		GEO_ROCK18,
+		GEO_ROCK19,
+		GEO_ROCK20,
+		GEO_ROCK21,
+		GEO_ROCK22,
+		GEO_ROCK23,
+		GEO_ROCK24,
+		GEO_ROCK25,
+		GEO_ROCK26,
+		GEO_ROCK27,
+		GEO_ROCK28,
+		GEO_ROCK29,
+		GEO_ROCK30,
+		GEO_ROCK31,
+		GEO_ROCK32,
+		GEO_ROCK33,
+		GEO_ROCK34,
+		GEO_ROCK35,
+		GEO_ROCK36,
+		GEO_ROCK37,
+		GEO_ROCK38,
+		//RunnerEnd
+
 		GEO_TEXT,
 		GEO_RIFLE,
 		GEO_ENEMY,
@@ -168,10 +210,12 @@ public:
 	};
 	SP2();
 	~SP2();
-	void Scenario3Init();
-	void Scenario2Init();
-	void Scenario3Render();
-	void Scenario2Render();
+	void ScenarioParkourInit();
+	void ScenarioArenaInit();
+	void ScenarioRunnerInit();
+	void ScenarioParkourRender();
+	void ScenarioArenaRender();
+	void ScenarioRunnerRender();
 	virtual void Init();
 	virtual void Update(double dt);
 	virtual void Render();

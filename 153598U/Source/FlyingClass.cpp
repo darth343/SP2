@@ -38,8 +38,8 @@ void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList, int start, int end
 					}
 					else
 					{
-						if (camera.position.y - 6 > meshList[i]->position.y + meshList[i]->max->y ||
-							camera.position.y + 2 < meshList[i]->position.y + meshList[i]->min->y
+						if (camera.position.y - 5 + dt * speed > meshList[i]->position.y + meshList[i]->max->y ||
+							camera.position.y + 2 + dt * speed < meshList[i]->position.y + meshList[i]->min->y
 							)
 						{
 							move = true;
