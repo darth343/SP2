@@ -43,10 +43,6 @@ public:
 	Material material;
 	bool light;
 	bool interactable;
-	bool shootable;
-	float health=100;
-
-	bool ifShootable;
 };
 
 #endif

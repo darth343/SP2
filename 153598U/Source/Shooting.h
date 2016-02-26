@@ -4,7 +4,7 @@
 #include"Camera5.h"
 #include "Mesh.h"
 #include "Vector3.h"
-#include "Enemy.h"
+#include "AI.h"
 #include <iostream>
 #include "Gun.h"
 #include "Damage.h"
@@ -26,13 +26,13 @@ public:
 	Shooting();
 	~Shooting();
 	void ShootingBullets(Camera5 camera, double dt, float time,Mesh** meshList);
-	void bulletHitDetection(vector<enemy> &mobs, double dt, Camera5 camera);
-	Mesh* Shootable(double dt, Camera5 camera, Mesh** meshList, vector<enemy> &mobs);
+	void bulletHitDetection(vector<AI> &mobs, double dt, Camera5 camera);
+	Mesh* Shootable(double dt, Camera5 camera, Mesh** meshList, vector<AI> &mobs);
 	vector<TestBullet> bullets;
 	//bool ifShootable; // when object get shot
 	bool objectDied;//when object is dead
 //	Mesh * shootable(double dt, Camera5 camera, Mesh ** meshList);
-	float bulletspeed = 5;
+	float bulletspeed = 100;
 	TestBullet tempMag;
 	//Camera5 camera;
 	float delay = 0;
