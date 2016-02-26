@@ -30,9 +30,15 @@ void SP2::Scenario2Init()
 	meshList[GEO_GROUND] = MeshBuilder::GenerateOBJ("ground", "OBJ//Ground.obj");
 	meshList[GEO_GROUND]->position.Set(0, -500, 0);
 	meshList[GEO_GROUND]->textureID = LoadTGA("Image//ArenaWall.tga");
-	meshList[GEO_ARENAFRONTWALL] = MeshBuilder::GenerateOBJ("ground", "OBJ//ArenaFrontWall.obj");
-	meshList[GEO_ARENAFRONTWALL]->position.Set(0, -500, 0);
-	meshList[GEO_ARENAFRONTWALL]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+	meshList[GEO_ARENAFRONTWALL1] = MeshBuilder::GenerateOBJ("ground", "OBJ//ArenaFrontWall1.obj");
+	meshList[GEO_ARENAFRONTWALL1]->position.Set(0, -500, 0);
+	meshList[GEO_ARENAFRONTWALL1]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+	meshList[GEO_ARENAFRONTWALL2] = MeshBuilder::GenerateOBJ("ground", "OBJ//ArenaFrontWall2.obj");
+	meshList[GEO_ARENAFRONTWALL2]->position.Set(0, -500, 0);
+	meshList[GEO_ARENAFRONTWALL2]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+	meshList[GEO_ARENAFRONTWALL3] = MeshBuilder::GenerateOBJ("ground", "OBJ//ArenaFrontWall3.obj");
+	meshList[GEO_ARENAFRONTWALL3]->position.Set(0, -500, 0);
+	meshList[GEO_ARENAFRONTWALL3]->textureID = LoadTGA("Image//Arena4thMaze.tga");
 	meshList[GEO_ARENALEFTWALL] = MeshBuilder::GenerateOBJ("ground", "OBJ//ArenaLeftWall.obj");
 	meshList[GEO_ARENALEFTWALL]->position.Set(0, -500, 0);
 	meshList[GEO_ARENALEFTWALL]->textureID = LoadTGA("Image//Arena2ndMaze.tga");
@@ -50,9 +56,14 @@ void SP2::Scenario2Init()
 	meshList[GEO_ARENABACKWALL3]->position.Set(0, -500, 0);
 	meshList[GEO_ARENABACKWALL3]->textureID = LoadTGA("Image//Arena1stMaze.tga");
 
-	meshList[GEO_LANDINGPAD] = MeshBuilder::GenerateOBJ("ground", "OBJ//LandingPad.obj");
-	meshList[GEO_LANDINGPAD]->position.Set(0, -500, 0);
-	meshList[GEO_LANDINGPAD]->textureID = LoadTGA("Image//ArenaWall.tga");
+	meshList[GEO_LANDINGPAD1] = MeshBuilder::GenerateOBJ("ground", "OBJ//LandingPad.obj");
+	meshList[GEO_LANDINGPAD1]->position.Set(0, -500, 0);
+	meshList[GEO_LANDINGPAD1]->textureID = LoadTGA("Image//ArenaWall.tga");
+
+	meshList[GEO_LANDINGPAD2] = MeshBuilder::GenerateOBJ("ground", "OBJ//LandingPad2.obj");
+	meshList[GEO_LANDINGPAD2]->position.Set(0, -500, 0);
+	meshList[GEO_LANDINGPAD2]->textureID = LoadTGA("Image//ArenaWall.tga");
+
 
 	meshList[GEO_FRONTINTERSECTWALL] = MeshBuilder::GenerateOBJ("ground", "OBJ//FrontIntersectWall.obj");
 	meshList[GEO_FRONTINTERSECTWALL]->position.Set(0, -500, 0);
@@ -70,6 +81,10 @@ void SP2::Scenario2Init()
 	meshList[GEO_MIDDLEPILLAR] = MeshBuilder::GenerateOBJ("ground", "OBJ//MiddlePillar.obj");
 	meshList[GEO_MIDDLEPILLAR]->position.Set(0, -500, 0);
 	meshList[GEO_MIDDLEPILLAR]->textureID = LoadTGA("Image//MiddlePillar.tga");
+
+	meshList[GEO_DOOR] = MeshBuilder::GenerateOBJ("ground", "OBJ//Door.obj");
+	meshList[GEO_DOOR]->position.Set(0, -500, 0);
+	meshList[GEO_DOOR]->textureID = LoadTGA("Image//ArenaWall.tga");
 
 
 	meshList[GEO_1STMAZEWALL1] = MeshBuilder::GenerateOBJ("ground", "OBJ//1stMazeWall1.obj");
@@ -895,19 +910,28 @@ void SP2::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float si
 
 void SP2::Scenario2Render()
 {
-	//Ground
-	//modelStack.PushMatrix();
-//	modelStack.Scale(500, 500, 500);
+
 	modelStack.PushMatrix();
-//	modelStack.Scale(500, 500, 500);
+
 	modelStack.Translate(meshList[GEO_GROUND]->position.x, meshList[GEO_GROUND]->position.y, meshList[GEO_GROUND]->position.z);
 	RenderMesh(meshList[GEO_GROUND], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	//	modelStack.Scale(500, 500, 500);
-	modelStack.Translate(meshList[GEO_ARENAFRONTWALL]->position.x, meshList[GEO_ARENAFRONTWALL]->position.y, meshList[GEO_ARENAFRONTWALL]->position.z);
-	RenderMesh(meshList[GEO_ARENAFRONTWALL], true);
+
+	modelStack.Translate(meshList[GEO_ARENAFRONTWALL1]->position.x, meshList[GEO_ARENAFRONTWALL1]->position.y, meshList[GEO_ARENAFRONTWALL1]->position.z);
+	RenderMesh(meshList[GEO_ARENAFRONTWALL1], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+
+	modelStack.Translate(meshList[GEO_ARENAFRONTWALL2]->position.x, meshList[GEO_ARENAFRONTWALL2]->position.y, meshList[GEO_ARENAFRONTWALL2]->position.z);
+	RenderMesh(meshList[GEO_ARENAFRONTWALL2], true);
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	
+	modelStack.Translate(meshList[GEO_ARENAFRONTWALL3]->position.x, meshList[GEO_ARENAFRONTWALL3]->position.y, meshList[GEO_ARENAFRONTWALL3]->position.z);
+	RenderMesh(meshList[GEO_ARENAFRONTWALL3], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
@@ -943,8 +967,14 @@ void SP2::Scenario2Render()
 
 	modelStack.PushMatrix();
 	//modelStack.Scale(500, 500, 500);
-	modelStack.Translate(meshList[GEO_LANDINGPAD]->position.x, meshList[GEO_LANDINGPAD]->position.y, meshList[GEO_LANDINGPAD]->position.z);
-	RenderMesh(meshList[GEO_LANDINGPAD], true);
+	modelStack.Translate(meshList[GEO_LANDINGPAD1]->position.x, meshList[GEO_LANDINGPAD1]->position.y, meshList[GEO_LANDINGPAD1]->position.z);
+	RenderMesh(meshList[GEO_LANDINGPAD1], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	//modelStack.Scale(500, 500, 500);
+	modelStack.Translate(meshList[GEO_LANDINGPAD2]->position.x, meshList[GEO_LANDINGPAD2]->position.y, meshList[GEO_LANDINGPAD2]->position.z);
+	RenderMesh(meshList[GEO_LANDINGPAD2], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
@@ -975,6 +1005,15 @@ void SP2::Scenario2Render()
 	modelStack.Translate(meshList[GEO_MIDDLEPILLAR]->position.x, meshList[GEO_MIDDLEPILLAR]->position.y, meshList[GEO_MIDDLEPILLAR]->position.z);
 	RenderMesh(meshList[GEO_MIDDLEPILLAR], true);
 	modelStack.PopMatrix();
+
+	if (surviveDone == true)
+	{
+		modelStack.PushMatrix();
+		//	modelStack.Scale(500, 500, 500);
+		modelStack.Translate(meshList[GEO_DOOR]->position.x, meshList[GEO_DOOR]->position.y, meshList[GEO_DOOR]->position.z);
+		RenderMesh(meshList[GEO_DOOR], true);
+		modelStack.PopMatrix();
+	}
 
 	modelStack.PushMatrix();
 //	modelStack.Scale(500, 500, 500);
