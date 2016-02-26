@@ -810,8 +810,8 @@ Mesh* MeshBuilder::GenerateOBJ(const std::string &meshName, const std::string &f
 			return false;
 		}
 
-		Vector3 minimum(0, 0, 0);
-		Vector3 maximum(0, 0, 0);
+		Vector3 minimum(9999, 9999, 9999);
+		Vector3 maximum(-9999, -9999, -9999);
 
 		while (!fileStream.eof()) {
 			char buf[256];

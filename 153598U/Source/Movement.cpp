@@ -4,7 +4,7 @@ int cameraHeight = 5;
 void Movement::MovementCharac(double dt, Camera5 &camera, Mesh ** meshList, int Start, int End)
 {
 	int speed = 50;
-	float offset = 2;
+	float offset = 01;
 	int cameraX = -1;
 
 	if (Application::IsKeyPressed('W'))
