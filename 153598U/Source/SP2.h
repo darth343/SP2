@@ -18,6 +18,7 @@
 #include "Gun.h"
 #include "Shop.h"
 #include "Player.h"
+
 using std::vector;
 using std::string;
 class SP2 : public Scene
@@ -60,7 +61,24 @@ public:
 		GEO_TURRET1,
 		//TurretsEnd
 
-		//Walls
+		//// New Arena Stuff
+		//GEO_1STMAZEWALL1,
+		//GEO_1STMAZEWALL2,
+		//GEO_1STMAZEWALL3,
+		//GEO_1STMAZEWALL4,
+		//GEO_1STMAZEWALL5,
+		//GEO_1STMAZEWALL6,
+		//GEO_1STMAZEWALL7,
+
+		/*
+
+		
+
+
+
+	,*/
+
+		////Walls
 		GEO_LONGWALL,
 		GEO_FLOOR1,
 		GEO_FLOOR2,
@@ -89,18 +107,66 @@ public:
 		GEO_WALLWALL1,
 		GEO_WALLWALL2,
 	
+		GEO_ARENAFRONTWALL1,
+		GEO_ARENAFRONTWALL2,
+		GEO_ARENAFRONTWALL3,
+		GEO_ARENALEFTWALL,
+		GEO_ARENARIGHTWALL,
+		GEO_ARENABACKWALL1,
+		GEO_ARENABACKWALL2,
+		GEO_ARENABACKWALL3,
+		GEO_LANDINGPAD1,
+		GEO_LANDINGPAD2,
 
+		GEO_BACKINTERSECTWALL,
+		GEO_FRONTINTERSECTWALL,
+		GEO_LEFTINTERSECTWALL,
+		GEO_RIGHTINTERSECTWALL,
+
+		GEO_MIDDLEPILLAR,
+		
+		// New Arena Stuff
+		GEO_1STMAZEWALL1,
+		GEO_1STMAZEWALL2,
+		GEO_1STMAZEWALL3,
+		GEO_1STMAZEWALL4,
+		GEO_1STMAZEWALL5,
+		GEO_1STMAZEWALL6,
+		GEO_1STMAZEWALL7,
 		
 
+		GEO_2NDMAZEWALL1,
+		GEO_2NDMAZEWALL2,
+		GEO_2NDMAZEWALL3,
+		GEO_2NDMAZEWALL4,
+		GEO_2NDMAZEWALL5,
+		GEO_2NDMAZEWALL6,
+
+		GEO_3RDMAZEWALL1,
+		GEO_3RDMAZEWALL2,
+		GEO_3RDMAZEWALL3,
+		GEO_3RDMAZEWALL4,
+		GEO_3RDMAZEWALL5,
+		GEO_3RDMAZEWALL6,
+		GEO_3RDMAZEWALL7,
+		GEO_3RDMAZEWALL8,
 		
 
-		
+		GEO_4THMAZEWALL1,
+		GEO_4THMAZEWALL2,
+		GEO_4THMAZEWALL3,
+		GEO_4THMAZEWALL4,
+		GEO_4THMAZEWALL5,
+		GEO_4THMAZEWALL6,
+		GEO_4THMAZEWALL7,
+		GEO_4THMAZEWALL8,
 
-		
+		GEO_DOOR,
+
 		GEO_GROUND,
 
 		//Arena
-		GEO_ARENAWALLFRONT,
+	/*	GEO_ARENAWALLFRONT,
 		GEO_ARENAWALLBACK,
 		GEO_ARENAWALLLEFT,
 		GEO_ARENAWALLRIGHT,
@@ -114,8 +180,8 @@ public:
 		GEO_CRATE4,
 		GEO_SQPYRA1,
 		GEO_SQPYRA2,
-		GEO_RDPYRA1,
-		GEO_RDPYRA2,
+		GEO_RDPYRA1,*/
+	//	GEO_RDPYRA2,
 		//ArenaEnd
 
 		//Runner
@@ -172,7 +238,7 @@ public:
 		GEO_SMG,
 		NUM_GEOMETRY,
 	};
-	enum UNIFORM_TYPE
+static enum UNIFORM_TYPE
 	{
 		U_MVP = 0,
 		U_MODELVIEW,
@@ -224,7 +290,8 @@ public:
 	Mesh* meshList[NUM_GEOMETRY];
 	Shooting shoot;
 	void RenderMesh(Mesh *mesh, bool enableLight);
-	void RenderMesh(Mesh *mesh, bool enableLight, MS ms, MS vs, MS ps);
+	static void RenderMesh(Mesh *mesh, bool enableLight, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL]);
+	static void RenderText(Mesh* mesh, std::string text, Color color, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL]);
 	void RenderSkybox(Vector3 position);
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
@@ -253,11 +320,16 @@ public:
 	bool shot=false ; // when object get shot
 	bool objectDied = false;//when object is dead
 	bool takeDamage = false;
-	AI alien;
+	//AI alien;
+	vector<AI> allAliens;
 	Mesh* object;
 	Shop shop;
 	Player player;
 	Vector3 pivot;
+//	Mesh* object;
+
+
+	bool surviveDone=false;
 };
 
 #endif

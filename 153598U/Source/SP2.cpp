@@ -26,7 +26,7 @@ SP2::~SP2()
 
 void SP2::Init()
 {
-	move.allowInput = false;
+	move.allowInput = true;
 	// Init VBO here
 	// Set background color to dark blue
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
@@ -192,6 +192,43 @@ void SP2::Init()
 	meshList[GEO_JETPACKUI] = MeshBuilder::GenerateQuad("Jetpack UI", Color(1, 2, 1));
 
 
+	//Aliens
+	Vector3 coordinates[9] =
+	{
+		Vector3(110, -500, 55),
+		Vector3(59, -500, 55),
+		Vector3(84, -500, 152),
+		Vector3(0, -500, 21),
+		Vector3(12, -500, -160),
+		Vector3(-160, -500, -39),
+		Vector3(-170, -500, 18),
+		Vector3(-130, -500, 162),
+		Vector3(70, -500, 153)
+	};
+
+	for (int i = 0; i < 4; i++)
+	{
+		AI temp;
+		temp.m_Head = MeshBuilder::GenerateOBJ("Alien Head", "OBJ//Head.obj");
+		temp.m_Head->textureID = LoadTGA("Image//alienUV.tga");
+		temp.m_Body = MeshBuilder::GenerateOBJ("Alien Body", "OBJ//Body.obj");
+		temp.m_Body->textureID = LoadTGA("Image//alienUV.tga");
+		temp.m_HandR = MeshBuilder::GenerateOBJ("Alien Right Hand", "OBJ//RightHand.obj");
+		temp.m_HandR->textureID = LoadTGA("Image//alienUV.tga");
+		temp.m_HandL = MeshBuilder::GenerateOBJ("Alien Left Hand", "OBJ//LeftHand.obj");
+		temp.m_HandL->textureID = LoadTGA("Image//alienUV.tga");
+		temp.m_LegR = MeshBuilder::GenerateOBJ("Alien Right Leg", "OBJ//RightLeg.obj");
+		temp.m_LegR->textureID = LoadTGA("Image//alienUV.tga");
+		temp.m_LegL = MeshBuilder::GenerateOBJ("Alien Left Leg", "OBJ//LeftLeg.obj");
+		temp.m_LegL->textureID = LoadTGA("Image//alienUV.tga");
+
+		temp.transparency = 1;
+		temp.position = coordinates[i];
+		cout << temp.position << endl;
+		temp.temp = temp.position;
+		allAliens.push_back(temp);
+	}
+
 	//Player Health
 	meshList[GEO_PLAYERHEALTH] = MeshBuilder::GenerateQuad("Player Health", Color(0.71, 0.03, 0.03));
 
@@ -223,54 +260,168 @@ void SP2::Init()
 void SP2::ScenarioArenaInit()
 {
 	//Arena GROUND
-	meshList[GEO_GROUND] = MeshBuilder::GenerateOBJ("ground", "OBJ//ArenaFloor.obj");
+	meshList[GEO_GROUND] = MeshBuilder::GenerateOBJ("ground", "OBJ//Ground.obj");
 	meshList[GEO_GROUND]->position.Set(0, -500, 0);
-	meshList[GEO_GROUND]->textureID = LoadTGA("Image//sand.tga");
+	meshList[GEO_GROUND]->textureID = LoadTGA("Image//ArenaWall.tga");
+	meshList[GEO_ARENAFRONTWALL1] = MeshBuilder::GenerateOBJ("ground", "OBJ//ArenaFrontWall1.obj");
+	meshList[GEO_ARENAFRONTWALL1]->position.Set(0, -500, 0);
+	meshList[GEO_ARENAFRONTWALL1]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+	meshList[GEO_ARENAFRONTWALL2] = MeshBuilder::GenerateOBJ("ground", "OBJ//ArenaFrontWall2.obj");
+	meshList[GEO_ARENAFRONTWALL2]->position.Set(0, -500, 0);
+	meshList[GEO_ARENAFRONTWALL2]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+	meshList[GEO_ARENAFRONTWALL3] = MeshBuilder::GenerateOBJ("ground", "OBJ//ArenaFrontWall3.obj");
+	meshList[GEO_ARENAFRONTWALL3]->position.Set(0, -500, 0);
+	meshList[GEO_ARENAFRONTWALL3]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+	meshList[GEO_ARENALEFTWALL] = MeshBuilder::GenerateOBJ("ground", "OBJ//ArenaLeftWall.obj");
+	meshList[GEO_ARENALEFTWALL]->position.Set(0, -500, 0);
+	meshList[GEO_ARENALEFTWALL]->textureID = LoadTGA("Image//Arena2ndMaze.tga");
+	meshList[GEO_ARENARIGHTWALL] = MeshBuilder::GenerateOBJ("ground", "OBJ//ArenaRightWall.obj");
+	meshList[GEO_ARENARIGHTWALL]->position.Set(0, -500, 0);
+	meshList[GEO_ARENARIGHTWALL]->textureID = LoadTGA("Image//Arena3rdMaze.tga");
 
-	//ArenaWalls
-	meshList[GEO_ARENAWALLFRONT] = MeshBuilder::GenerateOBJ("arenawallfront", "OBJ//ArenaWallFrontBack.obj");
-	meshList[GEO_ARENAWALLFRONT]->position.Set(0, -475, 250);
+	meshList[GEO_ARENABACKWALL1] = MeshBuilder::GenerateOBJ("ground", "OBJ//ArenaBackWall1.obj");
+	meshList[GEO_ARENABACKWALL1]->position.Set(0, -500, 0);
+	meshList[GEO_ARENABACKWALL1]->textureID = LoadTGA("Image//Arena1stMaze.tga");
+	meshList[GEO_ARENABACKWALL2] = MeshBuilder::GenerateOBJ("ground", "OBJ//ArenaBackWall2.obj");
+	meshList[GEO_ARENABACKWALL2]->position.Set(0, -500, 0);
+	meshList[GEO_ARENABACKWALL2]->textureID = LoadTGA("Image//Arena1stMaze.tga");
+	meshList[GEO_ARENABACKWALL3] = MeshBuilder::GenerateOBJ("ground", "OBJ//ArenaBackWall3.obj");
+	meshList[GEO_ARENABACKWALL3]->position.Set(0, -500, 0);
+	meshList[GEO_ARENABACKWALL3]->textureID = LoadTGA("Image//Arena1stMaze.tga");
 
-	meshList[GEO_ARENAWALLBACK] = MeshBuilder::GenerateOBJ("arenawallback", "OBJ//ArenaWallFrontBack.obj");
-	meshList[GEO_ARENAWALLBACK]->position.Set(0, -475, -250);
+	meshList[GEO_LANDINGPAD1] = MeshBuilder::GenerateOBJ("ground", "OBJ//LandingPad.obj");
+	meshList[GEO_LANDINGPAD1]->position.Set(0, -500, 0);
+	meshList[GEO_LANDINGPAD1]->textureID = LoadTGA("Image//ArenaWall.tga");
 
-	meshList[GEO_ARENAWALLLEFT] = MeshBuilder::GenerateOBJ("arenawallleft", "OBJ//ArenaWallLeftRight.obj");
-	meshList[GEO_ARENAWALLLEFT]->position.Set(250, -475, 0);
+	meshList[GEO_LANDINGPAD2] = MeshBuilder::GenerateOBJ("ground", "OBJ//LandingPad2.obj");
+	meshList[GEO_LANDINGPAD2]->position.Set(0, -500, 0);
+	meshList[GEO_LANDINGPAD2]->textureID = LoadTGA("Image//ArenaWall.tga");
 
-	meshList[GEO_ARENAWALLRIGHT] = MeshBuilder::GenerateOBJ("arenawallright", "OBJ//ArenaWallLeftRight.obj");
-	meshList[GEO_ARENAWALLRIGHT]->position.Set(-250, -475, 0);
 
-	//Barrels
-	meshList[GEO_BARREL1] = MeshBuilder::GenerateOBJ("arenabarrels", "OBJ//Barrel.obj");
-	meshList[GEO_BARREL1]->position.Set(0, -490, 100);
-	meshList[GEO_BARREL2] = MeshBuilder::GenerateOBJ("arenabarrels", "OBJ//Barrel.obj");
-	meshList[GEO_BARREL2]->position.Set(0, -490, -100);
-	meshList[GEO_BARREL3] = MeshBuilder::GenerateOBJ("arenabarrels", "OBJ//Barrel.obj");
-	meshList[GEO_BARREL3]->position.Set(-100, -490, 0);
-	meshList[GEO_BARREL4] = MeshBuilder::GenerateOBJ("arenabarrels", "OBJ//Barrel.obj");
-	meshList[GEO_BARREL4]->position.Set(100, -490, 0);
+	meshList[GEO_FRONTINTERSECTWALL] = MeshBuilder::GenerateOBJ("ground", "OBJ//FrontIntersectWall.obj");
+	meshList[GEO_FRONTINTERSECTWALL]->position.Set(0, -500, 0);
+	meshList[GEO_FRONTINTERSECTWALL]->textureID = LoadTGA("Image//Arena1stMaze.tga");
+	meshList[GEO_BACKINTERSECTWALL] = MeshBuilder::GenerateOBJ("ground", "OBJ//BackIntersectWall.obj");
+	meshList[GEO_BACKINTERSECTWALL]->position.Set(0, -500, 0);
+	meshList[GEO_BACKINTERSECTWALL]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+	meshList[GEO_LEFTINTERSECTWALL] = MeshBuilder::GenerateOBJ("ground", "OBJ//LeftIntersectWall.obj");
+	meshList[GEO_LEFTINTERSECTWALL]->position.Set(0, -500, 0);
+	meshList[GEO_LEFTINTERSECTWALL]->textureID = LoadTGA("Image//Arena3rdMaze.tga");
+	meshList[GEO_RIGHTINTERSECTWALL] = MeshBuilder::GenerateOBJ("ground", "OBJ//RightIntersectWall.obj");
+	meshList[GEO_RIGHTINTERSECTWALL]->position.Set(0, -500, 0);
+	meshList[GEO_RIGHTINTERSECTWALL]->textureID = LoadTGA("Image//Arena2ndMaze.tga");
 
-	//Crates
-	meshList[GEO_CRATE1] = MeshBuilder::GenerateOBJ("arenacrates", "OBJ//Crate.obj");
-	meshList[GEO_CRATE1]->position.Set(0, -490, -200);
-	meshList[GEO_CRATE2] = MeshBuilder::GenerateOBJ("arenacrates", "OBJ//Crate.obj");
-	meshList[GEO_CRATE2]->position.Set(0, -490, 200);
-	meshList[GEO_CRATE3] = MeshBuilder::GenerateOBJ("arenacrates", "OBJ//Crate.obj");
-	meshList[GEO_CRATE3]->position.Set(-200, -490, 0);
-	meshList[GEO_CRATE4] = MeshBuilder::GenerateOBJ("arenacrates", "OBJ//Crate.obj");
-	meshList[GEO_CRATE4]->position.Set(200, -490, 0);
+	meshList[GEO_MIDDLEPILLAR] = MeshBuilder::GenerateOBJ("ground", "OBJ//MiddlePillar.obj");
+	meshList[GEO_MIDDLEPILLAR]->position.Set(0, -500, 0);
+	meshList[GEO_MIDDLEPILLAR]->textureID = LoadTGA("Image//MiddlePillar.tga");
 
-	//SqPyramids
-	meshList[GEO_SQPYRA1] = MeshBuilder::GenerateOBJ("arenapyramid", "OBJ//SqPyramid.obj");
-	meshList[GEO_SQPYRA1]->position.Set(-150, -490, -150);
-	meshList[GEO_SQPYRA2] = MeshBuilder::GenerateOBJ("arenapyramid", "OBJ//SqPyramid.obj");
-	meshList[GEO_SQPYRA2]->position.Set(150, -490, 150);
+	meshList[GEO_DOOR] = MeshBuilder::GenerateOBJ("ground", "OBJ//Door.obj");
+	meshList[GEO_DOOR]->position.Set(0, -500, 0);
+	meshList[GEO_DOOR]->textureID = LoadTGA("Image//ArenaWall.tga");
 
-	//RdPyramids
-	meshList[GEO_RDPYRA1] = MeshBuilder::GenerateOBJ("arenapyramid", "OBJ//RdPyramid.obj");
-	meshList[GEO_RDPYRA1]->position.Set(-100, -490, 100);
-	meshList[GEO_RDPYRA2] = MeshBuilder::GenerateOBJ("arenapyramid", "OBJ//RdPyramid.obj");
-	meshList[GEO_RDPYRA2]->position.Set(100, -490, -100);
+
+	meshList[GEO_1STMAZEWALL1] = MeshBuilder::GenerateOBJ("ground", "OBJ//1stMazeWall1.obj");
+	meshList[GEO_1STMAZEWALL1]->position.Set(0, -500, 0);
+	meshList[GEO_1STMAZEWALL1]->textureID = LoadTGA("Image//Arena1stMaze.tga");
+	meshList[GEO_1STMAZEWALL2] = MeshBuilder::GenerateOBJ("ground", "OBJ//1stMazeWall2.obj");
+	meshList[GEO_1STMAZEWALL2]->position.Set(0, -500, 0);
+	meshList[GEO_1STMAZEWALL2]->textureID = LoadTGA("Image//Arena1stMaze.tga");
+	meshList[GEO_1STMAZEWALL3] = MeshBuilder::GenerateOBJ("ground", "OBJ//1stMazeWall3.obj");
+	meshList[GEO_1STMAZEWALL3]->position.Set(0, -500, 0);
+	meshList[GEO_1STMAZEWALL3]->textureID = LoadTGA("Image//Arena1stMaze.tga");
+	meshList[GEO_1STMAZEWALL4] = MeshBuilder::GenerateOBJ("ground", "OBJ//1stMazeWall4.obj");
+	meshList[GEO_1STMAZEWALL4]->position.Set(0, -500, 0);
+	meshList[GEO_1STMAZEWALL4]->textureID = LoadTGA("Image//Arena1stMaze.tga");
+	meshList[GEO_1STMAZEWALL5] = MeshBuilder::GenerateOBJ("ground", "OBJ//1stMazeWall5.obj");
+	meshList[GEO_1STMAZEWALL5]->position.Set(0, -500, 0);
+	meshList[GEO_1STMAZEWALL5]->textureID = LoadTGA("Image//Arena1stMaze.tga");
+	meshList[GEO_1STMAZEWALL6] = MeshBuilder::GenerateOBJ("ground", "OBJ//1stMazeWall6.obj");
+	meshList[GEO_1STMAZEWALL6]->position.Set(0, -500, 0);
+	meshList[GEO_1STMAZEWALL6]->textureID = LoadTGA("Image//Arena1stMaze.tga");
+	meshList[GEO_1STMAZEWALL7] = MeshBuilder::GenerateOBJ("ground", "OBJ//1stMazeWall7.obj");
+	meshList[GEO_1STMAZEWALL7]->position.Set(0, -500, 0);
+	meshList[GEO_1STMAZEWALL7]->textureID = LoadTGA("Image//Arena1stMaze.tga");
+
+
+
+	meshList[GEO_2NDMAZEWALL1] = MeshBuilder::GenerateOBJ("ground", "OBJ//2ndMazeWall1.obj");
+	meshList[GEO_2NDMAZEWALL1]->position.Set(0, -500, 0);
+	meshList[GEO_2NDMAZEWALL1]->textureID = LoadTGA("Image//Arena2ndMaze.tga");
+	meshList[GEO_2NDMAZEWALL2] = MeshBuilder::GenerateOBJ("ground", "OBJ//2ndMazeWall2.obj");
+	meshList[GEO_2NDMAZEWALL2]->position.Set(0, -500, 0);
+	meshList[GEO_2NDMAZEWALL2]->textureID = LoadTGA("Image//Arena2ndMaze.tga");
+	meshList[GEO_2NDMAZEWALL3] = MeshBuilder::GenerateOBJ("ground", "OBJ//2ndMazeWall3.obj");
+	meshList[GEO_2NDMAZEWALL3]->position.Set(0, -500, 0);
+	meshList[GEO_2NDMAZEWALL3]->textureID = LoadTGA("Image//Arena2ndMaze.tga");
+	meshList[GEO_2NDMAZEWALL4] = MeshBuilder::GenerateOBJ("ground", "OBJ//2ndMazeWall4.obj");
+	meshList[GEO_2NDMAZEWALL4]->position.Set(0, -500, 0);
+	meshList[GEO_2NDMAZEWALL4]->textureID = LoadTGA("Image//Arena2ndMaze.tga");
+	meshList[GEO_2NDMAZEWALL5] = MeshBuilder::GenerateOBJ("ground", "OBJ//2ndMazeWall5.obj");
+	meshList[GEO_2NDMAZEWALL5]->position.Set(0, -500, 0);
+	meshList[GEO_2NDMAZEWALL5]->textureID = LoadTGA("Image//Arena2ndMaze.tga");
+	meshList[GEO_2NDMAZEWALL6] = MeshBuilder::GenerateOBJ("ground", "OBJ//2ndMazeWall6.obj");
+	meshList[GEO_2NDMAZEWALL6]->position.Set(0, -500, 0);
+	meshList[GEO_2NDMAZEWALL6]->textureID = LoadTGA("Image//Arena2ndMaze.tga");
+
+
+
+	meshList[GEO_3RDMAZEWALL1] = MeshBuilder::GenerateOBJ("ground", "OBJ//3rdMazeWall1.obj");
+	meshList[GEO_3RDMAZEWALL1]->position.Set(0, -500, 0);
+	meshList[GEO_3RDMAZEWALL1]->textureID = LoadTGA("Image//Arena3rdMaze.tga");
+	meshList[GEO_3RDMAZEWALL2] = MeshBuilder::GenerateOBJ("ground", "OBJ//3rdMazeWall2.obj");
+	meshList[GEO_3RDMAZEWALL2]->position.Set(0, -500, 0);
+	meshList[GEO_3RDMAZEWALL2]->textureID = LoadTGA("Image//Arena3rdMaze.tga");
+	meshList[GEO_3RDMAZEWALL3] = MeshBuilder::GenerateOBJ("ground", "OBJ//3rdMazeWall3.obj");
+	meshList[GEO_3RDMAZEWALL3]->position.Set(0, -500, 0);
+	meshList[GEO_3RDMAZEWALL3]->textureID = LoadTGA("Image//Arena3rdMaze.tga");
+	meshList[GEO_3RDMAZEWALL4] = MeshBuilder::GenerateOBJ("ground", "OBJ//3rdMazeWall4.obj");
+	meshList[GEO_3RDMAZEWALL4]->position.Set(0, -500, 0);
+	meshList[GEO_3RDMAZEWALL4]->textureID = LoadTGA("Image//Arena3rdMaze.tga");
+	meshList[GEO_3RDMAZEWALL5] = MeshBuilder::GenerateOBJ("ground", "OBJ//3rdMazeWall5.obj");
+	meshList[GEO_3RDMAZEWALL5]->position.Set(0, -500, 0);
+	meshList[GEO_3RDMAZEWALL5]->textureID = LoadTGA("Image//Arena3rdMaze.tga");
+	meshList[GEO_3RDMAZEWALL6] = MeshBuilder::GenerateOBJ("ground", "OBJ//3rdMazeWall6.obj");
+	meshList[GEO_3RDMAZEWALL6]->position.Set(0, -500, 0);
+	meshList[GEO_3RDMAZEWALL6]->textureID = LoadTGA("Image//Arena3rdMaze.tga");
+	meshList[GEO_3RDMAZEWALL7] = MeshBuilder::GenerateOBJ("ground", "OBJ//3rdMazeWall7.obj");
+	meshList[GEO_3RDMAZEWALL7]->position.Set(0, -500, 0);
+	meshList[GEO_3RDMAZEWALL7]->textureID = LoadTGA("Image//Arena3rdMaze.tga");
+	meshList[GEO_3RDMAZEWALL8] = MeshBuilder::GenerateOBJ("ground", "OBJ//3rdMazeWall7.obj");
+	meshList[GEO_3RDMAZEWALL8]->position.Set(0, -500, 0);
+	meshList[GEO_3RDMAZEWALL8]->textureID = LoadTGA("Image//Arena3rdMaze.tga");
+
+
+
+
+
+
+	meshList[GEO_4THMAZEWALL1] = MeshBuilder::GenerateOBJ("ground", "OBJ//4thMazeWall1.obj");
+	meshList[GEO_4THMAZEWALL1]->position.Set(0, -500, 0);
+	meshList[GEO_4THMAZEWALL1]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+	meshList[GEO_4THMAZEWALL2] = MeshBuilder::GenerateOBJ("ground", "OBJ//4thMazeWall2.obj");
+	meshList[GEO_4THMAZEWALL2]->position.Set(0, -500, 0);
+	meshList[GEO_4THMAZEWALL2]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+	meshList[GEO_4THMAZEWALL3] = MeshBuilder::GenerateOBJ("ground", "OBJ//4thMazeWall3.obj");
+	meshList[GEO_4THMAZEWALL3]->position.Set(0, -500, 0);
+	meshList[GEO_4THMAZEWALL3]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+	meshList[GEO_4THMAZEWALL4] = MeshBuilder::GenerateOBJ("ground", "OBJ//4thMazeWall4.obj");
+	meshList[GEO_4THMAZEWALL4]->position.Set(0, -500, 0);
+	meshList[GEO_4THMAZEWALL4]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+	meshList[GEO_4THMAZEWALL5] = MeshBuilder::GenerateOBJ("ground", "OBJ//4thMazeWall5.obj");
+	meshList[GEO_4THMAZEWALL5]->position.Set(0, -500, 0);
+	meshList[GEO_4THMAZEWALL5]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+	meshList[GEO_4THMAZEWALL6] = MeshBuilder::GenerateOBJ("ground", "OBJ//4thMazeWall6.obj");
+	meshList[GEO_4THMAZEWALL6]->position.Set(0, -500, 0);
+	meshList[GEO_4THMAZEWALL6]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+	meshList[GEO_4THMAZEWALL7] = MeshBuilder::GenerateOBJ("ground", "OBJ//4thMazeWall7.obj");
+	meshList[GEO_4THMAZEWALL7]->position.Set(0, -500, 0);
+	meshList[GEO_4THMAZEWALL7]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+	meshList[GEO_4THMAZEWALL8] = MeshBuilder::GenerateOBJ("ground", "OBJ//4thMazeWall7.obj");
+	meshList[GEO_4THMAZEWALL8]->position.Set(0, -500, 0);
+	meshList[GEO_4THMAZEWALL8]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+	
+
+
 
 }
 
@@ -285,7 +436,7 @@ void SP2::ScenarioParkourInit()
 	meshList[GEO_FUEL3] = MeshBuilder::GenerateQuad("fuel3", Color(0, 0.8, 0));
 	meshList[GEO_FUEL4] = MeshBuilder::GenerateQuad("fuel4", Color(0, 1, 0));
 	meshList[GEO_FUEL5] = MeshBuilder::GenerateQuad("fuel5", Color(0.2, 1, 0.2));
-	meshList[GEO_JETPACKUI] = MeshBuilder::GenerateQuad("Jetpack UI", Color(1, 2, 1));
+	//meshList[GEO_JETPACKUI] = MeshBuilder::GenerateQuad("Jetpack UI", Color(1, 2, 1));
 
 
 	//LongWall
@@ -318,18 +469,18 @@ void SP2::ScenarioParkourInit()
 	meshList[GEO_CRATES3]->position.Set(11, 5, -110);
 	meshList[GEO_CRATES3]->textureID = LoadTGA("Image//Crate.tga");
 
-	//Balancewall1
-	meshList[GEO_BALANCE1] = MeshBuilder::GenerateOBJ("balancewall", "OBJ//BalanceWall.obj");
+	//BalanceWall1
+	meshList[GEO_BALANCE1] = MeshBuilder::GenerateOBJ("BalanceWall", "OBJ//BalanceWall.obj");
 	meshList[GEO_BALANCE1]->position.Set(17, 10, -50);
 	meshList[GEO_BALANCE1]->textureID = LoadTGA("Image//scifiwall.tga");
 
-	//Balancewall2
-	meshList[GEO_BALANCE2] = MeshBuilder::GenerateOBJ("balancewall", "OBJ//BalanceWall.obj");
+	//BalanceWall2
+	meshList[GEO_BALANCE2] = MeshBuilder::GenerateOBJ("BalanceWall", "OBJ//BalanceWall.obj");
 	meshList[GEO_BALANCE2]->position.Set(-17, 10, -80);
 	meshList[GEO_BALANCE2]->textureID = LoadTGA("Image//scifiwall.tga");
 
-	//Balancewall3
-	meshList[GEO_BALANCE3] = MeshBuilder::GenerateOBJ("balancewall", "OBJ//BalanceWall.obj");
+	//BalanceWall3
+	meshList[GEO_BALANCE3] = MeshBuilder::GenerateOBJ("BalanceWall", "OBJ//BalanceWall.obj");
 	meshList[GEO_BALANCE3]->position.Set(-17, 10, -120);
 	meshList[GEO_BALANCE3]->textureID = LoadTGA("Image//scifiwall.tga");
 
@@ -496,9 +647,11 @@ void SP2::ScenarioRunnerInit()
 	meshList[GEO_ROCK9]->position.Set(0, 256, -265);
 	meshList[GEO_ROCK9]->textureID = LoadTGA("Image//Rock.tga");
 
+
 	meshList[GEO_ROCK10] = MeshBuilder::GenerateOBJ("Rocks", "OBJ//Rock.obj");
 	meshList[GEO_ROCK10]->position.Set(10, 256, -225);
 	meshList[GEO_ROCK10]->textureID = LoadTGA("Image//Rock.tga");
+
 
 	meshList[GEO_ROCK11] = MeshBuilder::GenerateOBJ("Rocks", "OBJ//Rock.obj");
 	meshList[GEO_ROCK11]->position.Set(-10, 256, -225);
@@ -511,6 +664,7 @@ void SP2::ScenarioRunnerInit()
 	meshList[GEO_ROCK13] = MeshBuilder::GenerateOBJ("Rocks", "OBJ//Rock.obj");
 	meshList[GEO_ROCK13]->position.Set(-10, 256, -145);
 	meshList[GEO_ROCK13]->textureID = LoadTGA("Image//Rock.tga");
+
 
 	meshList[GEO_ROCK14] = MeshBuilder::GenerateOBJ("Rocks", "OBJ//Rock.obj");
 	meshList[GEO_ROCK14]->position.Set(0, 256, -105);
@@ -528,6 +682,7 @@ void SP2::ScenarioRunnerInit()
 	meshList[GEO_ROCK17]->position.Set(10, 256, -65);
 	meshList[GEO_ROCK17]->textureID = LoadTGA("Image//Rock.tga");
 
+
 	meshList[GEO_ROCK18] = MeshBuilder::GenerateOBJ("Rocks", "OBJ//Rock.obj");
 	meshList[GEO_ROCK18]->position.Set(10, 256, -25);
 	meshList[GEO_ROCK18]->textureID = LoadTGA("Image//Rock.tga");
@@ -535,6 +690,7 @@ void SP2::ScenarioRunnerInit()
 	meshList[GEO_ROCK19] = MeshBuilder::GenerateOBJ("Rocks", "OBJ//Rock.obj");
 	meshList[GEO_ROCK19]->position.Set(-10, 256, -25);
 	meshList[GEO_ROCK19]->textureID = LoadTGA("Image//Rock.tga");
+
 
 	meshList[GEO_ROCK20] = MeshBuilder::GenerateOBJ("Rocks", "OBJ//Rock.obj");
 	meshList[GEO_ROCK20]->position.Set(0, 256, 15);
@@ -547,6 +703,7 @@ void SP2::ScenarioRunnerInit()
 	meshList[GEO_ROCK22] = MeshBuilder::GenerateOBJ("Rocks", "OBJ//Rock.obj");
 	meshList[GEO_ROCK22]->position.Set(-10, 256, 55);
 	meshList[GEO_ROCK22]->textureID = LoadTGA("Image//Rock.tga");
+
 
 	meshList[GEO_ROCK23] = MeshBuilder::GenerateOBJ("Rocks", "OBJ//Rock.obj");
 	meshList[GEO_ROCK23]->position.Set(-10, 256, 95);
@@ -612,64 +769,16 @@ void SP2::ScenarioRunnerInit()
 	meshList[GEO_ROCK38]->position.Set(0, 256, 385);
 	meshList[GEO_ROCK38]->textureID = LoadTGA("Image//Rock.tga");
 
-	
+
 }
 
 void SP2::Update(double dt)
 {
 	
-	object = shop.ShopInteraction(dt, camera, meshList);
-	if (Application::IsKeyPressed('X') && shop.openShop == false && player.inv.ownRifle == true && player.inv.GunSelected->semiAuto == true && time>delay) //enable back Automatic fire
-		//	glEnable(GL_CULL_FACE);
-	{
-		player.inv.GunSelected->delayMultiplier = 0.5;
-		player.inv.GunSelected->semiAuto = false;
-		delay = time + 0.5;
-	}
-	else  if (Application::IsKeyPressed('X') && shop.openShop == false && player.inv.ownRifle == true && player.inv.GunSelected->semiAuto == false && time>delay) //disable back face cullinzgs
-		//glDisable(GL_CULL_FACE);
-	{
-		player.inv.GunSelected->semiAuto = true;
-		player.inv.GunSelected->delayMultiplier = 0.4;
-		cout << "Semi Auto mode" << endl;
-		delay = time + 0.5;
-	}
-	if (Application::IsKeyPressed('E') && shop.openShop == false && time >delay&& object == meshList[GEO_STORE])
-	{
-		shop.openShop = true;
-		cout << "shop is open bois";
-		delay = time + 0.5;
-	}
-	else if (Application::IsKeyPressed('E') && shop.openShop == true && time>delay&& object == meshList[GEO_STORE])
-	{
-		shop.openShop = false;
-		cout << "shop is close bois";
-		delay = time + 0.5;
-	}
-	if (shop.openShop == true && object==meshList[GEO_STORE])
-	{
-		shop.shopping(player);
-	}
-	if (Application::IsKeyPressed('1') && shop.openShop == false && time > delay)
-	{
-		player.inv.GunSelected = &player.inv.Rifle;
-		std::cout << "Rifle Equipped" << std::endl;
-		delay = time + 0.5;
-	}
-	if (Application::IsKeyPressed('2') && shop.openShop == false && time > delay)
-	{
-		player.inv.GunSelected = &player.inv.SMG;
-		std::cout << "SMG Equipped" << std::endl;
-		delay = time + 0.5;
-	}
-	if (Application::IsKeyPressed('3') && shop.openShop == false && time > delay)
-	{
-		player.inv.GunSelected = &player.inv.Pistol;
-		std::cout << "Pistol Equipped" << std::endl;
-		delay = time + 0.5;
-	}
-	if (Application::IsKeyPressed('4'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+	
+	player.currentItems(dt, camera, meshList, player.object);
+	//if (Application::IsKeyPressed('4'))
+	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
 	
 	time += dt;
 	fps = 1 / dt;
@@ -686,11 +795,12 @@ void SP2::Update(double dt)
 	//move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
 	//camera.Update(dt);
 	Vector3 bulletSpeed = (0.1, 0.1, 0.1);
-	shoot.ShootingBullets(camera, dt, time, meshList,player);
-	shoot.bulletHitDetection(mobs, dt, camera);
-	//alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
-	object = shoot.Shootable(dt, camera, meshList,mobs);
-
+	shoot.ShootingBullets(camera, dt, time, meshList, player);
+	shoot.bulletHitDetection(allAliens, dt, camera);
+	for (int i = 0; i < allAliens.size(); i++)
+	{
+		allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt);
+	}
 	//Player Take Damage
 	if (Application::IsKeyPressed('Z') && takeDamage == false)
 	{
@@ -699,22 +809,6 @@ void SP2::Update(double dt)
 	if (takeDamage == true && scaleHealth > 0)
 	{
 		scaleHealth -= dt;
-	}
-	if (Application::IsKeyPressed(VK_NUMPAD8))
-	{
-		pivot.y += dt;
-	}
-	if (Application::IsKeyPressed(VK_NUMPAD5))
-	{
-		pivot.y -= dt;
-	}
-	if (Application::IsKeyPressed(VK_NUMPAD4))
-	{
-		pivot.x += dt;
-	}
-	if (Application::IsKeyPressed(VK_NUMPAD6))
-	{
-		pivot.x -= dt;
 	}
 }
 
@@ -742,6 +836,7 @@ Mesh* SP2::Interaction(double dt)
 					else
 					{
 						return meshList[i];
+						//return tempAI[i];
 						break;
 					}
 				}
@@ -774,7 +869,6 @@ void SP2::RenderMesh(Mesh * mesh, bool enableLight)
 	{
 		glUniform1i(m_parameters[U_LIGHTENABLED], 0);
 	}
-
 	if (mesh->textureID > 0)
 	{
 		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
@@ -794,7 +888,7 @@ void SP2::RenderMesh(Mesh * mesh, bool enableLight)
 	}
 }
 
-void SP2::RenderMesh(Mesh * mesh, bool enableLight, MS ms, MS vs, MS ps)
+void SP2::RenderMesh(Mesh * mesh, bool enableLight, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL])
 {
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
 	MVP = ps.Top() * vs.Top() * ms.Top();
@@ -930,6 +1024,33 @@ void SP2::RenderText(Mesh* mesh, std::string text, Color color)
 	glEnable(GL_DEPTH_TEST);
 }
 
+void SP2::RenderText(Mesh* mesh, std::string text, Color color, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL])
+{
+	if (!mesh || mesh->textureID <= 0) //Proper error check
+		return;
+
+	//glDisable(GL_DEPTH_TEST);
+	glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
+	glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
+	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+	for (unsigned i = 0; i < text.length(); ++i)
+	{
+		Mtx44 characterSpacing;
+		characterSpacing.SetToTranslation(i * 1.0f, 0, 0); //1.0f is the spacing of each character, you may change this value
+		Mtx44 MVP = ps.Top() * vs.Top() * ms.Top() * characterSpacing;
+		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+
+		mesh->Render((unsigned)text[i] * 6, 6);
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
+	//glEnable(GL_DEPTH_TEST);
+}
+
 void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float y)
 {
 	Mtx44 ortho;
@@ -1033,91 +1154,262 @@ void SP2::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float si
 
 void SP2::ScenarioArenaRender()
 {
-	//Ground
+	//FloorShip
 	modelStack.PushMatrix();
-	//modelStack.Scale(500, 500, 500);
+
 	modelStack.Translate(meshList[GEO_GROUND]->position.x, meshList[GEO_GROUND]->position.y, meshList[GEO_GROUND]->position.z);
 	RenderMesh(meshList[GEO_GROUND], true);
 	modelStack.PopMatrix();
 
-	//ArenaWalls
 	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_ARENAWALLFRONT]->position.x, meshList[GEO_ARENAWALLFRONT]->position.y, meshList[GEO_ARENAWALLFRONT]->position.z);
-	RenderMesh(meshList[GEO_ARENAWALLFRONT], true);
+
+
+	modelStack.Translate(meshList[GEO_ARENAFRONTWALL1]->position.x, meshList[GEO_ARENAFRONTWALL1]->position.y, meshList[GEO_ARENAFRONTWALL1]->position.z);
+	RenderMesh(meshList[GEO_ARENAFRONTWALL1], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_ARENAWALLBACK]->position.x, meshList[GEO_ARENAWALLBACK]->position.y, meshList[GEO_ARENAWALLBACK]->position.z);
-	RenderMesh(meshList[GEO_ARENAWALLBACK], true);
-	modelStack.PopMatrix();
 
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_ARENAWALLLEFT]->position.x, meshList[GEO_ARENAWALLLEFT]->position.y, meshList[GEO_ARENAWALLLEFT]->position.z);
-	RenderMesh(meshList[GEO_ARENAWALLLEFT], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_ARENAWALLRIGHT]->position.x, meshList[GEO_ARENAWALLRIGHT]->position.y, meshList[GEO_ARENAWALLRIGHT]->position.z);
-	RenderMesh(meshList[GEO_ARENAWALLRIGHT], true);
-	modelStack.PopMatrix();
-
-	//Barrels
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_BARREL1]->position.x, meshList[GEO_BARREL1]->position.y, meshList[GEO_BARREL1]->position.z);
-	RenderMesh(meshList[GEO_BARREL1], true);
+	modelStack.Translate(meshList[GEO_ARENAFRONTWALL2]->position.x, meshList[GEO_ARENAFRONTWALL2]->position.y, meshList[GEO_ARENAFRONTWALL2]->position.z);
+	RenderMesh(meshList[GEO_ARENAFRONTWALL2], true);
 	modelStack.PopMatrix();
 	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_BARREL2]->position.x, meshList[GEO_BARREL2]->position.y, meshList[GEO_BARREL2]->position.z);
-	RenderMesh(meshList[GEO_BARREL2], true);
-	modelStack.PopMatrix();
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_BARREL3]->position.x, meshList[GEO_BARREL3]->position.y, meshList[GEO_BARREL3]->position.z);
-	RenderMesh(meshList[GEO_BARREL3], true);
-	modelStack.PopMatrix();
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_BARREL4]->position.x, meshList[GEO_BARREL4]->position.y, meshList[GEO_BARREL4]->position.z);
-	RenderMesh(meshList[GEO_BARREL4], true);
-	modelStack.PopMatrix();
 	
+	modelStack.Translate(meshList[GEO_ARENAFRONTWALL3]->position.x, meshList[GEO_ARENAFRONTWALL3]->position.y, meshList[GEO_ARENAFRONTWALL3]->position.z);
+	RenderMesh(meshList[GEO_ARENAFRONTWALL3], true);
 
-	//Crates
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_CRATE1]->position.x, meshList[GEO_CRATE1]->position.y, meshList[GEO_CRATE1]->position.z);
-	RenderMesh(meshList[GEO_CRATE1], true);
-	modelStack.PopMatrix();
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_CRATE2]->position.x, meshList[GEO_CRATE2]->position.y, meshList[GEO_CRATE2]->position.z);
-	RenderMesh(meshList[GEO_CRATE2], true);
-	modelStack.PopMatrix();
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_CRATE3]->position.x, meshList[GEO_CRATE3]->position.y, meshList[GEO_CRATE3]->position.z);
-	RenderMesh(meshList[GEO_CRATE3], true);
-	modelStack.PopMatrix();
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_CRATE4]->position.x, meshList[GEO_CRATE4]->position.y, meshList[GEO_CRATE4]->position.z);
-	RenderMesh(meshList[GEO_CRATE4], true);
+	//modelStack.Translate(meshList[GEO_ARENAFRONTWALL1]->position.x, meshList[GEO_ARENAFRONTWALL]->position.y, meshList[GEO_ARENAFRONTWALL]->position.z);
+	//RenderMesh(meshList[GEO_ARENAFRONTWALL], true);
+
 	modelStack.PopMatrix();
 
-	//SqPyramids
 	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_SQPYRA1]->position.x, meshList[GEO_SQPYRA1]->position.y, meshList[GEO_SQPYRA1]->position.z);
-	RenderMesh(meshList[GEO_SQPYRA1], true);
-	modelStack.PopMatrix();
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_SQPYRA2]->position.x, meshList[GEO_SQPYRA2]->position.y, meshList[GEO_SQPYRA2]->position.z);
-	RenderMesh(meshList[GEO_SQPYRA2], true);
+	modelStack.Translate(meshList[GEO_ARENALEFTWALL]->position.x, meshList[GEO_ARENALEFTWALL]->position.y, meshList[GEO_ARENALEFTWALL]->position.z);
+	RenderMesh(meshList[GEO_ARENALEFTWALL], true);
 	modelStack.PopMatrix();
 
-	//RdPyramids
 	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_RDPYRA1]->position.x, meshList[GEO_RDPYRA1]->position.y, meshList[GEO_RDPYRA1]->position.z);
-	RenderMesh(meshList[GEO_RDPYRA1], true);
-	modelStack.PopMatrix();
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_RDPYRA2]->position.x, meshList[GEO_RDPYRA2]->position.y, meshList[GEO_RDPYRA2]->position.z);
-	RenderMesh(meshList[GEO_RDPYRA2], true);
+	modelStack.Translate(meshList[GEO_ARENARIGHTWALL]->position.x, meshList[GEO_ARENARIGHTWALL]->position.y, meshList[GEO_ARENARIGHTWALL]->position.z);
+	RenderMesh(meshList[GEO_ARENARIGHTWALL], true);
 	modelStack.PopMatrix();
 
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_ARENABACKWALL1]->position.x, meshList[GEO_ARENABACKWALL1]->position.y, meshList[GEO_ARENABACKWALL1]->position.z);
+	RenderMesh(meshList[GEO_ARENABACKWALL1], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_ARENABACKWALL2]->position.x, meshList[GEO_ARENABACKWALL2]->position.y, meshList[GEO_ARENABACKWALL2]->position.z);
+	RenderMesh(meshList[GEO_ARENABACKWALL2], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_ARENABACKWALL3]->position.x, meshList[GEO_ARENABACKWALL3]->position.y, meshList[GEO_ARENABACKWALL3]->position.z);
+	RenderMesh(meshList[GEO_ARENABACKWALL3], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	
+	modelStack.Translate(meshList[GEO_LANDINGPAD1]->position.x, meshList[GEO_LANDINGPAD1]->position.y, meshList[GEO_LANDINGPAD1]->position.z);
+	RenderMesh(meshList[GEO_LANDINGPAD1], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_LANDINGPAD2]->position.x, meshList[GEO_LANDINGPAD2]->position.y, meshList[GEO_LANDINGPAD2]->position.z);
+	RenderMesh(meshList[GEO_LANDINGPAD2], true);
+
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_FRONTINTERSECTWALL]->position.x, meshList[GEO_FRONTINTERSECTWALL]->position.y, meshList[GEO_FRONTINTERSECTWALL]->position.z);
+	RenderMesh(meshList[GEO_FRONTINTERSECTWALL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_BACKINTERSECTWALL]->position.x, meshList[GEO_BACKINTERSECTWALL]->position.y, meshList[GEO_BACKINTERSECTWALL]->position.z);
+	RenderMesh(meshList[GEO_BACKINTERSECTWALL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_RIGHTINTERSECTWALL]->position.x, meshList[GEO_RIGHTINTERSECTWALL]->position.y, meshList[GEO_RIGHTINTERSECTWALL]->position.z);
+	RenderMesh(meshList[GEO_RIGHTINTERSECTWALL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_LEFTINTERSECTWALL]->position.x, meshList[GEO_LEFTINTERSECTWALL]->position.y, meshList[GEO_LEFTINTERSECTWALL]->position.z);
+	RenderMesh(meshList[GEO_LEFTINTERSECTWALL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_MIDDLEPILLAR]->position.x, meshList[GEO_MIDDLEPILLAR]->position.y, meshList[GEO_MIDDLEPILLAR]->position.z);
+	RenderMesh(meshList[GEO_MIDDLEPILLAR], true);
+	modelStack.PopMatrix();
+
+	if (surviveDone == true)
+	{
+		meshList[GEO_DOOR]->position = NULL;
+	}
+	else
+	{
+		modelStack.PushMatrix();
+		//	modelStack.Scale(500, 500, 500);
+		modelStack.Translate(meshList[GEO_DOOR]->position.x, meshList[GEO_DOOR]->position.y, meshList[GEO_DOOR]->position.z);
+		RenderMesh(meshList[GEO_DOOR], true);
+		modelStack.PopMatrix();
+		
+	}
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_1STMAZEWALL1]->position.x, meshList[GEO_1STMAZEWALL1]->position.y, meshList[GEO_1STMAZEWALL1]->position.z);
+	RenderMesh(meshList[GEO_1STMAZEWALL1], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_1STMAZEWALL2]->position.x, meshList[GEO_1STMAZEWALL2]->position.y, meshList[GEO_1STMAZEWALL2]->position.z);
+	RenderMesh(meshList[GEO_1STMAZEWALL2], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_1STMAZEWALL3]->position.x, meshList[GEO_1STMAZEWALL3]->position.y, meshList[GEO_1STMAZEWALL3]->position.z);
+	RenderMesh(meshList[GEO_1STMAZEWALL3], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_1STMAZEWALL4]->position.x, meshList[GEO_1STMAZEWALL4]->position.y, meshList[GEO_1STMAZEWALL4]->position.z);
+	RenderMesh(meshList[GEO_1STMAZEWALL4], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_1STMAZEWALL5]->position.x, meshList[GEO_1STMAZEWALL5]->position.y, meshList[GEO_1STMAZEWALL5]->position.z);
+	RenderMesh(meshList[GEO_1STMAZEWALL5], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_1STMAZEWALL6]->position.x, meshList[GEO_1STMAZEWALL6]->position.y, meshList[GEO_1STMAZEWALL6]->position.z);
+	RenderMesh(meshList[GEO_1STMAZEWALL6], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_1STMAZEWALL7]->position.x, meshList[GEO_1STMAZEWALL7]->position.y, meshList[GEO_1STMAZEWALL7]->position.z);
+	RenderMesh(meshList[GEO_1STMAZEWALL7], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_2NDMAZEWALL1]->position.x, meshList[GEO_2NDMAZEWALL1]->position.y, meshList[GEO_2NDMAZEWALL1]->position.z);
+	RenderMesh(meshList[GEO_2NDMAZEWALL1], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_2NDMAZEWALL2]->position.x, meshList[GEO_2NDMAZEWALL2]->position.y, meshList[GEO_2NDMAZEWALL2]->position.z);
+	RenderMesh(meshList[GEO_2NDMAZEWALL2], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_2NDMAZEWALL3]->position.x, meshList[GEO_2NDMAZEWALL3]->position.y, meshList[GEO_2NDMAZEWALL3]->position.z);
+	RenderMesh(meshList[GEO_2NDMAZEWALL3], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_2NDMAZEWALL4]->position.x, meshList[GEO_2NDMAZEWALL4]->position.y, meshList[GEO_2NDMAZEWALL4]->position.z);
+	RenderMesh(meshList[GEO_2NDMAZEWALL4], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_2NDMAZEWALL5]->position.x, meshList[GEO_2NDMAZEWALL5]->position.y, meshList[GEO_2NDMAZEWALL5]->position.z);
+	RenderMesh(meshList[GEO_2NDMAZEWALL5], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_2NDMAZEWALL6]->position.x, meshList[GEO_2NDMAZEWALL6]->position.y, meshList[GEO_2NDMAZEWALL6]->position.z);
+	RenderMesh(meshList[GEO_2NDMAZEWALL6], true);
+	modelStack.PopMatrix();
+
+	// THIRD WALL
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_3RDMAZEWALL1]->position.x, meshList[GEO_3RDMAZEWALL1]->position.y, meshList[GEO_3RDMAZEWALL1]->position.z);
+	RenderMesh(meshList[GEO_3RDMAZEWALL1], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_3RDMAZEWALL2]->position.x, meshList[GEO_3RDMAZEWALL2]->position.y, meshList[GEO_3RDMAZEWALL2]->position.z);
+	RenderMesh(meshList[GEO_3RDMAZEWALL2], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_3RDMAZEWALL3]->position.x, meshList[GEO_3RDMAZEWALL3]->position.y, meshList[GEO_3RDMAZEWALL3]->position.z);
+	RenderMesh(meshList[GEO_3RDMAZEWALL3], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_3RDMAZEWALL4]->position.x, meshList[GEO_3RDMAZEWALL4]->position.y, meshList[GEO_3RDMAZEWALL4]->position.z);
+	RenderMesh(meshList[GEO_3RDMAZEWALL4], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_3RDMAZEWALL5]->position.x, meshList[GEO_3RDMAZEWALL5]->position.y, meshList[GEO_3RDMAZEWALL5]->position.z);
+	RenderMesh(meshList[GEO_3RDMAZEWALL5], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_3RDMAZEWALL6]->position.x, meshList[GEO_3RDMAZEWALL6]->position.y, meshList[GEO_3RDMAZEWALL6]->position.z);
+	RenderMesh(meshList[GEO_3RDMAZEWALL6], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_3RDMAZEWALL7]->position.x, meshList[GEO_3RDMAZEWALL7]->position.y, meshList[GEO_3RDMAZEWALL7]->position.z);
+	RenderMesh(meshList[GEO_3RDMAZEWALL7], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_3RDMAZEWALL8]->position.x, meshList[GEO_3RDMAZEWALL8]->position.y, meshList[GEO_3RDMAZEWALL8]->position.z);
+	RenderMesh(meshList[GEO_3RDMAZEWALL8], true);
+	modelStack.PopMatrix();
+
+
+
+
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_4THMAZEWALL1]->position.x, meshList[GEO_4THMAZEWALL1]->position.y, meshList[GEO_4THMAZEWALL1]->position.z);
+	RenderMesh(meshList[GEO_4THMAZEWALL1], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_4THMAZEWALL2]->position.x, meshList[GEO_4THMAZEWALL2]->position.y, meshList[GEO_4THMAZEWALL2]->position.z);
+	RenderMesh(meshList[GEO_4THMAZEWALL2], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	
+	modelStack.Translate(meshList[GEO_4THMAZEWALL3]->position.x, meshList[GEO_4THMAZEWALL3]->position.y, meshList[GEO_4THMAZEWALL3]->position.z);
+	RenderMesh(meshList[GEO_4THMAZEWALL3], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_4THMAZEWALL4]->position.x, meshList[GEO_4THMAZEWALL4]->position.y, meshList[GEO_4THMAZEWALL4]->position.z);
+	RenderMesh(meshList[GEO_4THMAZEWALL4], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_4THMAZEWALL5]->position.x, meshList[GEO_4THMAZEWALL5]->position.y, meshList[GEO_4THMAZEWALL5]->position.z);
+	RenderMesh(meshList[GEO_4THMAZEWALL5], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_4THMAZEWALL6]->position.x, meshList[GEO_4THMAZEWALL6]->position.y, meshList[GEO_4THMAZEWALL6]->position.z);
+	RenderMesh(meshList[GEO_4THMAZEWALL6], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_4THMAZEWALL7]->position.x, meshList[GEO_4THMAZEWALL7]->position.y, meshList[GEO_4THMAZEWALL7]->position.z);
+	RenderMesh(meshList[GEO_4THMAZEWALL7], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_4THMAZEWALL8]->position.x, meshList[GEO_4THMAZEWALL8]->position.y, meshList[GEO_4THMAZEWALL8]->position.z);
+	RenderMesh(meshList[GEO_4THMAZEWALL8], true);
+	modelStack.PopMatrix();
 }
 
 void SP2::ScenarioParkourRender()
@@ -1516,20 +1808,25 @@ void SP2::Render()
 		}
 	}*/
 
-	
-		for (int a = 0; a <shoot.bullets.size(); a++)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(shoot.bullets[a].Position.x, shoot.bullets[a].Position.y, shoot.bullets[a].Position.z);
-			modelStack.Scale(0.1, 0.1,0.1);
-			RenderMesh(meshList[GEO_BULLET], true);
-			modelStack.PopMatrix();
-		}
+	for (int a = 0; a <shoot.bullets.size(); a++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(shoot.bullets[a].Position.x, shoot.bullets[a].Position.y, shoot.bullets[a].Position.z);
+		modelStack.Scale(0.5, 0.5,0.5);
+		RenderMesh(meshList[GEO_BULLET], true);
+		modelStack.PopMatrix();
+	}
 
 	//Arun's Wall
-	
+
 	//Render Scenario2
+
 	ScenarioArenaRender();
+	for (int i = 0; i < allAliens.size(); i++)
+	{
+		allAliens[i].renderAlien(true, modelStack, viewStack, projectionStack, m_parameters, meshList);
+	}
+
 
 	//Render Scenario3
 	ScenarioParkourRender();
@@ -1537,30 +1834,14 @@ void SP2::Render()
 	//Render ScenarioRunner
 	ScenarioRunnerRender();
 
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	//////////////////////////////////
-	//			Enemy Health        //
-	/////////////////////////////////
-	if (object )
-	{
-	//	cout << healthDisplay.health<<endl;
-		if (object->ifShootable == true)
-		{
-			std::ostringstream enemyHp;
-			enemyHp << std::setprecision(3) << object->health;
-			RenderTextOnScreen(meshList[GEO_TEXT], "Enemy HP: ", Color(0, 1, 0), 2, 25, 10);
-			RenderTextOnScreen(meshList[GEO_TEXT], enemyHp.str(), Color(1, 1, 1), 2, 37, 10);
-			//		std::ostringstream enemyHp;
-		}
-	}
-	
+
 	//////////////////////////////////
 	//			JetFuel             //
 	/////////////////////////////////
 	if (move.jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
 	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 2, 7);
+		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 1, 7);
 	}
 	if (move.jetPack.getFuel() > 15)
 	{
@@ -1607,11 +1888,31 @@ void SP2::Render()
 	timeString << std::setprecision(3) << time;
 	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 3, 24);
 
+	timeString.str("");
+	timeString << "X: " << static_cast<int>(camera.position.x);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 10.4);
+	timeString.str("");
+	timeString << "Y: " << static_cast<int>(camera.position.y);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 9.4);
+	timeString.str("");
+	timeString << "Z: " << static_cast<int>(camera.position.z);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 8.4);
+
+	timeString.str("");
+	timeString << "X: " << static_cast<int>(allAliens[0].position.x);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 13.4);
+	timeString.str("");
+	timeString << "Y: " << static_cast<int>(allAliens[0].position.y);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 12.4);
+	timeString.str("");
+	timeString << "Z: " << static_cast<int>(allAliens[0].position.z);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 11.4);
+
 
 	//////////////////////////////////
 	//			Gun                //
 	/////////////////////////////////
-	//RenderTextOnScreen(meshList[GEO_TEXT], "Gun Mode: ", Color(0, 1, 0), 2, 30, 6);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Gun Mode: ", Color(0, 1, 0), 2, 30, 6);
 	if (player.inv.GunSelected->semiAuto==false)
 	{
 		//RenderTextOnScreen(meshList[GEO_TEXT], "|||", Color(0, 1, 0), 3, 21 , 3);
@@ -1642,6 +1943,7 @@ void SP2::Render()
 	modelStack.PopMatrix();
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	//Player's Health
 	modelStack.PushMatrix();
 	RenderOBJonScreen(meshList[GEO_PLAYERHEALTH], 30*scaleHealth, 1, 40, 55);
@@ -1649,7 +1951,7 @@ void SP2::Render()
 
 	//Crosshair
 	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_CROSSHAIR], 10, 10, 40, 30);
+	RenderOBJonScreen(meshList[GEO_CROSSHAIR], 10, 10, 40.2, 29.8);
 	modelStack.PopMatrix();
 
 

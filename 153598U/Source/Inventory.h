@@ -12,7 +12,7 @@ public:
 		ownRifle = true;
 		ownSMG = false;
 		ownPistol = false;
-		Rifle.ammo = 10;
+		Rifle.ammo = 100;
 		SMG.ammo = 10;
 		Pistol.ammo = 41;
 		SMG.delayMultiplier = 0.1;

@@ -6,7 +6,13 @@
 class Movement
 {
 public:
-	Movement(){};
+	Movement()
+	{
+		offset = 2;
+		cameraHeight = 10;
+		gravity = 10;
+		gravityMultiplier = 5;
+	};
 	~Movement(){};
 	Flying jetPack;
 	bool allowInput;
@@ -14,7 +20,10 @@ public:
 	void MovementRunner(double dt, Camera5 &camera, Mesh ** meshList, int Start, int End);
 	void Gravity(double dt, Camera5 &camera, Mesh ** meshList, int Start, int End);
 private:
-	float gravity = 10;
+	float offset;
+	float gravityMultiplier;
+	float cameraHeight;
+	float gravity;
 	Vector3 prevPos;
 };
 

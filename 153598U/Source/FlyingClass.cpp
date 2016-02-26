@@ -12,7 +12,7 @@ Flying::~Flying()
 {
 }
 
-void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList, int start, int end)
+void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList, int start, int end, int height)
 {
 	float fuelrate = 0.8;
 	float rechargeRate = 0.4;
@@ -38,8 +38,8 @@ void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList, int start, int end
 					}
 					else
 					{
-						if (camera.position.y - 5 + dt * speed > meshList[i]->position.y + meshList[i]->max->y ||
-							camera.position.y + 2 + dt * speed < meshList[i]->position.y + meshList[i]->min->y
+						if (camera.position.y - height > meshList[i]->position.y + meshList[i]->max->y ||
+							camera.position.y + 2 < meshList[i]->position.y + meshList[i]->min->y
 							)
 						{
 							move = true;
