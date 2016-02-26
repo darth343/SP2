@@ -5,15 +5,14 @@
 Flying::Flying()
 {
 	activated = true;
-	fuel = 100;
-	gravity = 10;
+	fuel = 10000;
 	speed = 15;
 }
 Flying::~Flying()
 {
 }
 
-void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList, int start, int end)
+void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList, int start, int end, int height)
 {
 	float fuelrate = 0.8;
 	float rechargeRate = 0.4;
@@ -27,21 +26,30 @@ void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList, int start, int end
 			{
 				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
-					if (camera.position.y + camera.position.Normalized().y * dt * speed < meshList[i]->min->y ||
-						camera.position.y + camera.position.Normalized().y * dt * speed > meshList[i]->max->y ||
+					if (//camera.position.y + camera.position.Normalized().y * dt * speed < meshList[i]->min->y ||
+						//camera.position.y + camera.position.Normalized().y * dt * speed > meshList[i]->max->y ||
 						camera.position.x < meshList[i]->min->x + meshList[i]->position.x ||
 						camera.position.x > meshList[i]->max->x + meshList[i]->position.x ||
 						camera.position.z < meshList[i]->min->z + meshList[i]->position.z ||
 						camera.position.z > meshList[i]->max->z + meshList[i]->position.z 
 						)
 					{
-
 						move = true;
 					}
 					else
 					{
-						move = false;
-						break;
+						if (camera.position.y - height > meshList[i]->position.y + meshList[i]->max->y ||
+							camera.position.y + 2 < meshList[i]->position.y + meshList[i]->min->y
+							)
+						{
+							move = true;
+						}
+						else
+						{
+							cout << i << endl;
+							move = false;
+							break;
+						}
 					}
 				}
 				else
@@ -57,54 +65,6 @@ void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList, int start, int end
 					activated = false;
 				}
 				camera.position.y += dt * speed;
-				gravity = 10 * dt;
-			}
-		}
-	}
-	else
-	{
-		bool fall = false;
-		for (int i = start; i < end; i++)
-		{
-			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-			{
-				if (camera.position.x  > meshList[i]->position.x + meshList[i]->min->x + offset - 3.8 &&
-					camera.position.x < meshList[i]->position.x + meshList[i]->max->x - offset + 3.8 &&
-					camera.position.z > meshList[i]->position.z + meshList[i]->min->z + offset - 3.8 &&
-					camera.position.z < meshList[i]->position.z + meshList[i]->max->z - offset + 3.8
-					)
-				{
-					if (camera.position.y - 6 - gravity > meshList[i]->position.y + meshList[i]->max->y)
-					{
-						fall = true;
-					}
-					else
-					{
-						fall = false;
-						break;
-					}
-				}
-				else
-				{
-					fall = true;
-				}
-			}
-		}
-		if (fall == true && camera.position.y - 5 - gravity > 0)
-		{
-			gravity += dt;
-			camera.position.y -= gravity * 1.8;
-		}
-		else
-		{
-			gravity = 10 * dt;
-		}
-		if (fuel < 100)
-		{
-			fuel += rechargeRate;
-			if (fuel > 60)
-			{
-				activated = true;
 			}
 		}
 	}

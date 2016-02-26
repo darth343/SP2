@@ -14,7 +14,7 @@ public:
 	bool  shotOne;
 	bool  shotTwo;
 	bool  stopFiring;
-
+	int ammo = 0;
 
 };
 

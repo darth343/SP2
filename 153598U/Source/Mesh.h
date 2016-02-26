@@ -43,6 +43,7 @@ public:
 	Material material;
 	bool light;
 	bool interactable;
+	bool lookAtShop;
 };
 
 #endif

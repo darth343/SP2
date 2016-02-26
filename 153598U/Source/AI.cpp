@@ -22,24 +22,6 @@ void AI::move(Vector3 targetPos, Camera5 camera,  Mesh ** meshList, int modelSta
 				animate = true;
 				move = temp - position;
 				position += move.Normalized() * dt * speed;
-				//m_Head->position += move.Normalized() * dt * speed;
-
-
-				//move = temp - position;
-				//position += move.Normalized() * dt * speed;
-
-				//move = temp - m_HandL->position;
-				//m_HandL->position += move.Normalized() * dt * speed;
-
-				//move = temp - m_HandR->position;
-				//m_HandR->position += move.Normalized() * dt * speed;
-
-				//move = temp - m_LegL->position;
-				//m_LegL->position += move.Normalized() * dt * speed;
-
-				//move = temp - m_LegR->position;
-				//m_LegR->position += move.Normalized() * dt * speed;
-
 				inBetween = temp - position; // vector in between enemy and next path
 				angleRad = atan(inBetween.z / inBetween.x);
 			}
@@ -56,6 +38,7 @@ void AI::move(Vector3 targetPos, Camera5 camera,  Mesh ** meshList, int modelSta
 		{
 			m_path.m_initializedStartGoal = false;
 			m_path.m_found = false;
+			cout << "finding" << endl;
 			m_path.FindPath(position, camera.position, meshList, modelStart, modelEnd);
 			prevPos = camera.position;
 		}

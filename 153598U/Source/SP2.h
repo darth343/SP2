@@ -11,10 +11,13 @@
 #include "Shooting.h"
 #include "Enemy.h"
 #include "Pathfinder.h"
+#include "Movement.h"
 #include <Vector>
 #include "FlyingClass.h"
 #include "AI.h"
 #include "Gun.h"
+#include "Shop.h"
+#include "Player.h"
 using std::vector;
 using std::string;
 class SP2 : public Scene
@@ -29,8 +32,6 @@ public:
 		GEO_TOP,
 		GEO_BOTTOM,
 		GEO_BACK,
-		GEO_GROUND,
-		GEO_SHIPFLOOR,
 		GEO_TIMEDISPLAY,
 		GEO_TIME,
 		GEO_FUEL1,
@@ -52,117 +53,131 @@ public:
 		GEO_ALIEN_LEGR,
 		GEO_ALIEN_LEGL,
 		GEO_HELMET,
+		GEO_CROSSHAIR,
 		GEO_MODEL1,
-		GEO_STARTLINE,
 
-		//Walls
-		GEO_LEFTWALL1,
-		GEO_RIGHTWALL1,
-		GEO_LEFTWALL2,
-		GEO_RIGHTWALL2,
-		GEO_LEFTWALL3,
-		GEO_RIGHTWALL3,
-		GEO_LEFTWALL4,
-		GEO_RIGHTWALL4,
-		GEO_LEFTWALL5,
-		GEO_RIGHTWALL5,
-		GEO_LEFTWALL6,
-		GEO_RIGHTWALL6,
-		GEO_LEFTWALL7,
-		GEO_RIGHTWALL7,
-		GEO_LEFTWALL8,
-		GEO_RIGHTWALL8,
-		GEO_LEFTWALL9,
-		GEO_RIGHTWALL9,
-		GEO_LEFTWALL10,
-		GEO_RIGHTWALL10,
-		GEO_LEFTWALL11,
-		GEO_RIGHTWALL11,
-		GEO_LEFTWALL12,
-		GEO_RIGHTWALL12,
-		GEO_LEFTWALL13,
-		GEO_RIGHTWALL13,
-		GEO_LEFTWALL14,
-		GEO_RIGHTWALL14,
-		GEO_LEFTWALL15,
-		GEO_RIGHTWALL15,
-		GEO_LEFTWALL16,
-		GEO_RIGHTWALL16,
-		GEO_LEFTWALL17,
-		GEO_RIGHTWALL17,
-		GEO_LEFTWALL18,
-		GEO_RIGHTWALL18,
-		GEO_LEFTWALL19,
-		GEO_RIGHTWALL19,
-		GEO_LEFTWALL20,
-		GEO_RIGHTWALL20,
-		GEO_LEFTWALL21,
-		GEO_RIGHTWALL21,
-		GEO_LEFTWALL22,
-		GEO_RIGHTWALL22,
-		GEO_LEFTWALL23,
-		GEO_RIGHTWALL23,
-		GEO_LEFTWALL24,
-		GEO_RIGHTWALL24,
-		GEO_LEFTWALL25,
-		GEO_RIGHTWALL25,
-		GEO_LEFTWALL26,
-		GEO_RIGHTWALL26,
-		GEO_LEFTWALL27,
-		GEO_RIGHTWALL27,
-		GEO_LEFTWALL28,
-		GEO_RIGHTWALL28,
-		GEO_LEFTWALL29,
-		GEO_RIGHTWALL29,
-		//WallEnd
+		//Turrets
+		GEO_TURRET1,
+		//TurretsEnd
 
-		//Blocks
-		GEO_BLOCK1,
-		GEO_BLOCK2,
-		GEO_BLOCK3,
-		GEO_BLOCK4,
-		GEO_BLOCK5,
-		GEO_BLOCK6,
-		GEO_BLOCK7,
-		GEO_BLOCK8,
-		GEO_BLOCK9,
-		GEO_BLOCK10,
-		GEO_BLOCK11,
-		GEO_BLOCK12,
-		GEO_BLOCK13,
-		GEO_BLOCK14,
-		GEO_BLOCK17,
-		GEO_BLOCK18,
-		//BlocksEnd
+		//// New Arena Stuff
+		//GEO_1STMAZEWALL1,
+		//GEO_1STMAZEWALL2,
+		//GEO_1STMAZEWALL3,
+		//GEO_1STMAZEWALL4,
+		//GEO_1STMAZEWALL5,
+		//GEO_1STMAZEWALL6,
+		//GEO_1STMAZEWALL7,
 
-		//Wall(Thin)
-		GEO_THIN1,
-		GEO_THIN2,
-		GEO_THIN3,
-		GEO_THIN4,
-		GEO_THIN5,
-		GEO_THIN6,
-		//Wall(Thin)End
+		/*
 
-		//Wall(Thin)2
-		GEO_THINz1,
-		GEO_THINz2,
-		GEO_THINz3,
-		GEO_THINz4,
-		GEO_THINz5,
-		GEO_THINz6,
-		GEO_THINz7,
-		GEO_THINz8,
-		GEO_THINz9,
-		GEO_THINz10,
-		GEO_THINz11,
-		GEO_THINz12,
-		//Wall(Thin)2End
+		
 
-		//Wall(Thick)
-		GEO_THICK1,
-		GEO_THICK2,
-		//Wall(Thick)End
+
+
+	,*/
+
+		////Walls
+		GEO_LONGWALL,
+		GEO_FLOOR1,
+		GEO_FLOOR2,
+		GEO_CRATES1,
+		GEO_CRATES2,
+		GEO_CRATES3,
+		GEO_BALANCE1,
+		GEO_BALANCE2,
+		GEO_BALANCE3,
+		GEO_FLOOR3,
+		GEO_WALLRUN1,
+		GEO_WALLRUN2,
+		GEO_WALLRUN3,
+		GEO_WALLRUN4,
+		GEO_WALLRUN5,
+		GEO_WALLRUN6,
+		GEO_FLOOR4,
+		GEO_TALLWALL1,
+		GEO_TALLWALL2,
+		GEO_TALLWALL3,
+		GEO_TALLCRATE,
+		GEO_FLOOR5,
+		GEO_FLOOR6,
+		GEO_FLOOR7,
+		GEO_FLOOR8,
+		GEO_WALLWALL1,
+		GEO_WALLWALL2,
+	
+		GEO_ARENAFRONTWALL,
+		GEO_ARENALEFTWALL,
+		GEO_ARENARIGHTWALL,
+		GEO_ARENABACKWALL1,
+		GEO_ARENABACKWALL2,
+		GEO_ARENABACKWALL3,
+		GEO_LANDINGPAD,
+
+		GEO_BACKINTERSECTWALL,
+		GEO_FRONTINTERSECTWALL,
+		GEO_LEFTINTERSECTWALL,
+		GEO_RIGHTINTERSECTWALL,
+
+		GEO_MIDDLEPILLAR,
+		
+		// New Arena Stuff
+		GEO_1STMAZEWALL1,
+		GEO_1STMAZEWALL2,
+		GEO_1STMAZEWALL3,
+		GEO_1STMAZEWALL4,
+		GEO_1STMAZEWALL5,
+		GEO_1STMAZEWALL6,
+		GEO_1STMAZEWALL7,
+		
+
+		GEO_2NDMAZEWALL1,
+		GEO_2NDMAZEWALL2,
+		GEO_2NDMAZEWALL3,
+		GEO_2NDMAZEWALL4,
+		GEO_2NDMAZEWALL5,
+		GEO_2NDMAZEWALL6,
+
+		GEO_3RDMAZEWALL1,
+		GEO_3RDMAZEWALL2,
+		GEO_3RDMAZEWALL3,
+		GEO_3RDMAZEWALL4,
+		GEO_3RDMAZEWALL5,
+		GEO_3RDMAZEWALL6,
+		GEO_3RDMAZEWALL7,
+		GEO_3RDMAZEWALL8,
+		
+
+		GEO_4THMAZEWALL1,
+		GEO_4THMAZEWALL2,
+		GEO_4THMAZEWALL3,
+		GEO_4THMAZEWALL4,
+		GEO_4THMAZEWALL5,
+		GEO_4THMAZEWALL6,
+		GEO_4THMAZEWALL7,
+		GEO_4THMAZEWALL8,
+
+		GEO_GROUND,
+
+		//Arena
+	/*	GEO_ARENAWALLFRONT,
+		GEO_ARENAWALLBACK,
+		GEO_ARENAWALLLEFT,
+		GEO_ARENAWALLRIGHT,
+		GEO_BARREL1,
+		GEO_BARREL2,
+		GEO_BARREL3,
+		GEO_BARREL4,
+		GEO_CRATE1,
+		GEO_CRATE2,
+		GEO_CRATE3,
+		GEO_CRATE4,
+		GEO_SQPYRA1,
+		GEO_SQPYRA2,
+		GEO_RDPYRA1,*/
+	//	GEO_RDPYRA2,
+		//ArenaEnd
+
 		GEO_TEXT,
 		GEO_RIFLE,
 		GEO_ENEMY,
@@ -170,6 +185,9 @@ public:
 		GEO_PATH_F,
 		GEO_PATH_V,
 		GEO_PATH_O,
+		GEO_STORE,
+		GEO_PISTOL,
+		GEO_SMG,
 		NUM_GEOMETRY,
 	};
 static enum UNIFORM_TYPE
@@ -210,11 +228,15 @@ static enum UNIFORM_TYPE
 	};
 	SP2();
 	~SP2();
+	void Scenario3Init();
+	void Scenario2Init();
+	void Scenario3Render();
+	void Scenario2Render();
 	virtual void Init();
 	virtual void Update(double dt);
 	virtual void Render();
 	virtual void Exit();
-	//Mesh* Shootable(double dt);
+
 	Mesh* meshList[NUM_GEOMETRY];
 	Shooting shoot;
 	void RenderMesh(Mesh *mesh, bool enableLight);
@@ -223,8 +245,6 @@ static enum UNIFORM_TYPE
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderOBJonScreen(Mesh* mesh, float sizex, float sizey, float x, float y);
-	void Movement(double dt);
-	void CharacMovement(double dt);
 	Mesh* Interaction(double dt);
 
 	private:
@@ -238,7 +258,9 @@ static enum UNIFORM_TYPE
 	float scaleHealth = 1;
 	MS modelStack, viewStack, projectionStack;
 	Light light[4];
-	//Mesh * object;
+
+	Movement move;
+
 	vector<enemy> mobs;
 	Camera5 camera;
 	string timeDisplay="Time : ";
@@ -247,10 +269,11 @@ static enum UNIFORM_TYPE
 	bool shot=false ; // when object get shot
 	bool objectDied = false;//when object is dead
 	bool takeDamage = false;
-	Flying jetPack;
 	//AI alien;
 	vector<AI> allAliens;
 	Mesh* object;
+	Shop shop;
+	Player player;
 	Vector3 pivot;
 };
 

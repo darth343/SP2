@@ -13,7 +13,7 @@ PathFinding::~PathFinding()
 }
 void PathFinding::FindPath(Vector3 currentPos, Vector3 targetPos, Mesh ** meshList, int modelStart, int modelEnd)
 {
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 1000; i++)
 		{
 			if (!m_initializedStartGoal)
 			{
@@ -113,8 +113,8 @@ void PathFinding::PathOpened(int x, int z, float newCost, Node * parent, Mesh **
 			)
 		{
 			return;
-	}
 		}
+	}
 	int id = z * Node::WORLD_SIZE + x;
 	for (int i = 0; i < m_visitedList.size(); i++)
 	{

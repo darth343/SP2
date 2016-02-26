@@ -8,6 +8,8 @@
 #include <iostream>
 #include "Gun.h"
 #include "Damage.h"
+//#include "Inventory.h"
+#include "Player.h"
 using std::cout;
 using std::endl;
 using std::vector;
@@ -25,21 +27,21 @@ public:
 
 	Shooting();
 	~Shooting();
-	void ShootingBullets(Camera5 camera, double dt, float time,Mesh** meshList);
+	void ShootingBullets(Camera5 camera, double dt, float time,Mesh** meshList, Player &player);
 	void bulletHitDetection(vector<AI> &mobs, double dt, Camera5 camera);
-	Mesh* Shootable(double dt, Camera5 camera, Mesh** meshList, vector<AI> &mobs);
 	vector<TestBullet> bullets;
-	//bool ifShootable; // when object get shot
 	bool objectDied;//when object is dead
 //	Mesh * shootable(double dt, Camera5 camera, Mesh ** meshList);
-	float bulletspeed = 100;
+	float bulletspeed = 200;
 	TestBullet tempMag;
-	//Camera5 camera;
 	float delay = 0;
-	//float delayMultiplier = 0.1;
 	Mesh * object;
-	Gun Gun;
+	bool GunFiring;
+	bool JetFiring;
+	//Gun Gun;
 	Damage damage;
+	Player player;
+	//Inventory inv;
 };
 
 
