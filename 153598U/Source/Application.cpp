@@ -1,12 +1,11 @@
 
 #include "Application.h"
 
-GLFWwindow* m_window;
 const unsigned char FPS = 60; // FPS of this game
 const unsigned int frameTime = 1000 / FPS; // time for each frame
 double Application::mouseX = 0;
 double Application::mouseY = 0;
-
+GLFWwindow* Application::m_window;
 
 //Define an error callback
 static void error_callback(int error, const char* description)
@@ -130,8 +129,8 @@ void Application::Run()
 
 		//if (!IsKeyPressed('Y'))
 		//{
-			glfwGetCursorPos(m_window, &mouseX, &mouseY);
-			glfwSetCursorPos(m_window, 800 / 2, 600 / 2);
+			//glfwGetCursorPos(m_window, &mouseX, &mouseY);
+			//glfwSetCursorPos(m_window, 800 / 2, 600 / 2);
 		//}
 		//else
 		//{

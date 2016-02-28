@@ -32,6 +32,7 @@ public:
 	static double scrollX;
 	static double scrollY;
 	static void pass(double xpos, double ypos);
+	static GLFWwindow* m_window;
 private:
 
 	//Declare a window object

@@ -292,6 +292,7 @@ static enum UNIFORM_TYPE
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	static void RenderMesh(Mesh *mesh, bool enableLight, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL]);
 	static void RenderText(Mesh* mesh, std::string text, Color color, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL]);
+	static void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL]);
 	void RenderSkybox(Vector3 position);
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
@@ -306,7 +307,6 @@ static enum UNIFORM_TYPE
 	float gravity = 10;
 	float rotateAngle;
 	float fps;
-	float scaleHealth = 1;
 	MS modelStack, viewStack, projectionStack;
 	Light light[4];
 

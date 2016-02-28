@@ -13,6 +13,7 @@
 #include <string>
 #include <iomanip>
 
+
 using std::cout;
 using std::endl;
 
@@ -774,41 +775,42 @@ void SP2::ScenarioRunnerInit()
 
 void SP2::Update(double dt)
 {
-	
-	
-	player.currentItems(dt, camera, meshList, player.object);
-	//if (Application::IsKeyPressed('4'))
-	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
-	
-	time += dt;
-	fps = 1 / dt;
-	if (move.allowInput == true)
+	glfwGetCursorPos(Application::m_window, &Application::mouseX, &Application::mouseY);
+	if (!player.isDead())
 	{
-		move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
-		camera.Update(dt);
+		player.currentItems(dt, camera, meshList, player.object);
+		//if (Application::IsKeyPressed('4'))
+		//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+
+		time += dt;
+		fps = 1 / dt;
+		if (move.allowInput == true)
+		{
+			move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
+			camera.Update(dt);
+		}
+		else if (move.allowInput == false)
+		{
+			move.MovementRunner(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
+			camera.Update(dt);
+		}
+		//move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
+		//camera.Update(dt);
+		Vector3 bulletSpeed = (0.1, 0.1, 0.1);
+		shoot.ShootingBullets(camera, dt, time, meshList, player);
+		shoot.bulletHitDetection(allAliens, dt, camera);
+		for (int i = 0; i < allAliens.size(); i++)
+		{
+			allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt, player);
+		}
 	}
-	else if (move.allowInput == false)
+	else
 	{
-		move.MovementRunner(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
-		camera.Update(dt);
+
 	}
-	//move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
-	//camera.Update(dt);
-	Vector3 bulletSpeed = (0.1, 0.1, 0.1);
-	shoot.ShootingBullets(camera, dt, time, meshList, player);
-	shoot.bulletHitDetection(allAliens, dt, camera);
-	for (int i = 0; i < allAliens.size(); i++)
+	if (!Application::IsKeyPressed('V'))
 	{
-		allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt);
-	}
-	//Player Take Damage
-	if (Application::IsKeyPressed('Z') && takeDamage == false)
-	{
-		takeDamage = true;
-	}
-	if (takeDamage == true && scaleHealth > 0)
-	{
-		scaleHealth -= dt;
+		glfwSetCursorPos(Application::m_window, 800 / 2, 600 / 2);
 	}
 }
 
@@ -1043,7 +1045,6 @@ void SP2::RenderText(Mesh* mesh, std::string text, Color color, MS ms, MS vs, MS
 		characterSpacing.SetToTranslation(i * 1.0f, 0, 0); //1.0f is the spacing of each character, you may change this value
 		Mtx44 MVP = ps.Top() * vs.Top() * ms.Top() * characterSpacing;
 		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
-
 		mesh->Render((unsigned)text[i] * 6, 6);
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -1149,6 +1150,48 @@ void SP2::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float si
 	projectionStack.PopMatrix();
 	viewStack.PopMatrix();
 	modelStack.PopMatrix();
+	glEnable(GL_DEPTH_TEST);
+}
+
+void SP2::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL])
+{
+	if (!mesh || mesh->textureID <= 0) //Proper error check
+		return;
+
+	glDisable(GL_DEPTH_TEST);
+	//Add these code just after glDisable(GL_DEPTH_TEST);
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -10, 10); //size of screen UI
+	ps.PushMatrix();
+	ps.LoadMatrix(ortho);
+	vs.PushMatrix();
+	vs.LoadIdentity(); //No need camera for ortho mode
+	ms.PushMatrix();
+	ms.LoadIdentity(); //Reset modelStack
+	ms.Scale(size, size, size);
+	ms.Translate(x, y, 0);
+	glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
+	glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
+	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+	for (unsigned i = 0; i < text.length(); ++i)
+	{
+		Mtx44 characterSpacing;
+		characterSpacing.SetToTranslation(i * 1.0f + 0.5, 0 + 0.5, 0); //1.0f is the spacing of each character, you may change this value
+		Mtx44 MVP = ps.Top() * vs.Top() * ms.Top() * characterSpacing;
+		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+
+		mesh->Render((unsigned)text[i] * 6, 6);
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
+	//Add these code just before glEnable(GL_DEPTH_TEST);
+	ps.PopMatrix();
+	vs.PopMatrix();
+	ms.PopMatrix();
 	glEnable(GL_DEPTH_TEST);
 }
 
@@ -1824,7 +1867,7 @@ void SP2::Render()
 	ScenarioArenaRender();
 	for (int i = 0; i < allAliens.size(); i++)
 	{
-		allAliens[i].renderAlien(true, modelStack, viewStack, projectionStack, m_parameters, meshList);
+		allAliens[i].renderAlien(true, modelStack, viewStack, projectionStack, m_parameters, meshList, player);
 	}
 
 
@@ -1898,16 +1941,6 @@ void SP2::Render()
 	timeString << "Z: " << static_cast<int>(camera.position.z);
 	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 8.4);
 
-	timeString.str("");
-	timeString << "X: " << static_cast<int>(allAliens[0].position.x);
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 13.4);
-	timeString.str("");
-	timeString << "Y: " << static_cast<int>(allAliens[0].position.y);
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 12.4);
-	timeString.str("");
-	timeString << "Z: " << static_cast<int>(allAliens[0].position.z);
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 11.4);
-
 
 	//////////////////////////////////
 	//			Gun                //
@@ -1946,7 +1979,7 @@ void SP2::Render()
 
 	//Player's Health
 	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_PLAYERHEALTH], 30*scaleHealth, 1, 40, 55);
+	RenderOBJonScreen(meshList[GEO_PLAYERHEALTH], 30 * player.getScaleHealth(), 1, 40, 55);
 	modelStack.PopMatrix();
 
 	//Crosshair

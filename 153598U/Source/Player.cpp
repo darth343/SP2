@@ -55,3 +55,17 @@ void Player::currentItems(double dt, Camera5 camera, Mesh** meshList, Mesh* obje
 		delay = time + 0.5;
 	}
 }
+
+float Player::getScaleHealth()
+{
+	 return Health / 100;
+}
+
+bool Player::isDead()
+{
+	if (Health <= 0)
+	{
+		return true;
+	}
+	return false;
+}
