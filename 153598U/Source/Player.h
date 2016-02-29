@@ -14,8 +14,10 @@ public:
 	~Player(){};
 
 	void currentItems(double dt,Camera5 camera,Mesh** meshList,Mesh* object);
+	bool isDead();
+	float getScaleHealth();
 	Inventory inv;
-	int Health;
+	float Health;
 	Mesh* object;
 	Shop shop;
 	float delay = 0;

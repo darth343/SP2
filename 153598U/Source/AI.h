@@ -4,11 +4,11 @@
 #include "Mesh.h"
 #include "MatrixStack.h"
 #include "Camera5.h"
+#include "Player.h"
 #include <vector>
 
 class AI
 {
-
 public:
 	AI()
 	{
@@ -40,15 +40,18 @@ public:
 		moveHandIdle = false;
 		attacked = false;
 		health = 250;
-
+		deathPivot = Vector3(0,0,0);
+		deathRendered = false;
+		deathAngle = 0;
 	};
 	~AI(){};
 	float getAngle();
-	void renderAlien(bool enableLight, MS modelStack, MS viewStack, MS projectionStack, unsigned int m_parameters[25], Mesh ** meshlist);
-	void move(Vector3 targetPos, Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd, double time, double dt);
+	void renderAlien(bool enableLight, MS modelStack, MS viewStack, MS projectionStack, unsigned int m_parameters[25], Mesh ** meshlist, Player & player);
+	void move(Vector3 targetPos, Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd, double time, double dt, Player & player);
 	void attack();
-	void animation();
-	void damagePlayer();
+	void animation(double dt, Player & player);
+	void deathAnimation(double dt, Camera5 camera);
+	void damagePlayer(Player & player);
 	Mesh * m_Head;
 	Mesh * m_Body;
 	Mesh * m_HandL;
@@ -62,8 +65,8 @@ public:
 	Vector3 temp;
 	float health;
 	bool isDead() { if (health <= 0)return true; return false; };
+	static int deathCount;
 private:
-
 	Vector3 inBetween;
 	int count;
 	float angleRad;
@@ -93,6 +96,10 @@ private:
 
 		//Attack
 		bool attacked;
+	// Death Animation Variables
+		Vector3 deathPivot;
+		bool deathRendered;
+		float deathAngle;
 };
 
 #endif

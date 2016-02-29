@@ -6,7 +6,10 @@
 
 struct Damage
 {
-	Damage(){damageMultiplier = 1; };
+	Damage()
+	{
+		damageMultiplier = 1; 
+	};
 	~Damage(){};
 	float damageMultiplier;
 	Mesh mesh;

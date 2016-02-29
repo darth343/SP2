@@ -13,7 +13,7 @@ PathFinding::~PathFinding()
 }
 void PathFinding::FindPath(Vector3 currentPos, Vector3 targetPos, Mesh ** meshList, int modelStart, int modelEnd)
 {
-		for (int i = 0; i < 500; i++)
+		for (int i = 0; i < 100; i++)
 		{
 			if (!m_initializedStartGoal)
 			{
