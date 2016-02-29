@@ -1757,6 +1757,11 @@ void SP2::ScenarioRunnerRender()
 	modelStack.PopMatrix();
 }
 
+void SP2::PlayerPoints()
+{
+	points =(coins * 10) + (aliensKilled * 50);
+}
+
 void SP2::Render()
 {
 	// Render VBO here
@@ -1907,6 +1912,15 @@ void SP2::Render()
 	timeString.str("");
 	timeString << "Z: " << static_cast<int>(allAliens[0].position.z);
 	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 11.4);
+
+
+	PlayerPoints();
+
+	timeString.str("");
+	timeString << "Points: " << static_cast<int>(points);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 20);
+
+	
 
 
 	//////////////////////////////////

@@ -282,6 +282,7 @@ static enum UNIFORM_TYPE
 	void ScenarioParkourRender();
 	void ScenarioArenaRender();
 	void ScenarioRunnerRender();
+	void PlayerPoints();
 	virtual void Init();
 	virtual void Update(double dt);
 	virtual void Render();
@@ -317,6 +318,9 @@ static enum UNIFORM_TYPE
 	string timeDisplay="Time : ";
 	float time = 0;
 	float delay = 0;
+	int points = 0;
+	int aliensKilled = 0;
+	int coins = 0;
 	bool shot=false ; // when object get shot
 	bool objectDied = false;//when object is dead
 	bool takeDamage = false;
