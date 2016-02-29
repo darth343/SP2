@@ -106,6 +106,10 @@ void PathFinding::PathOpened(int x, int z, float newCost, Node * parent, Mesh **
 	int offset = 1;
 	for (int i = Starter; i < Ender; i++)
 	{
+		if (meshList[i]->min == nullptr || meshList[i]->max == nullptr)
+		{
+			break;
+		}
 		if (
 			x > meshList[i]->position.x + meshList[i]->min->x - offset &&
 			x < meshList[i]->position.x + meshList[i]->max->x + offset &&

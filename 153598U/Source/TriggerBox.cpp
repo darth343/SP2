@@ -1,8 +1,8 @@
 #include "TriggerBox.h"
 #include "Vertex.h"
 #include "SP2.h"
-bool TriggerBox::render = false;
-void TriggerBox::TriggerEvent(double dt, Camera5 &camera, Vector3 teleportLocation, double time)
+bool TriggerBox::rendering = false;
+void TriggerBox::TriggerEvent(double dt, Camera5 &camera, double time)
 {
 	if (
 		(camera.position.x > minimum.x && camera.position.x < maximum.x) &&
@@ -23,11 +23,15 @@ void TriggerBox::TriggerEvent(double dt, Camera5 &camera, Vector3 teleportLocati
 		{
 			runTime += dt;
 			render = true;
+			rendering = true;
 			camera.position = teleportLocation;
+			camera.horiRot = 0;
+			camera.vertRot = 0;
 		}
 		else
 		{
 			render = false;
+			rendering = false;
 			triggered = false;
 		}
 	}
@@ -35,11 +39,12 @@ void TriggerBox::TriggerEvent(double dt, Camera5 &camera, Vector3 teleportLocati
 
 void TriggerBox::renderTransition(MS ms, MS vs, MS ps, unsigned int m_parameters[25], Mesh * text, Mesh * screen)
 {
-	string test = "Aksks";
 	if (render)
 	{
 		cout << "rendering" << endl;
+
 		SP2::RenderOBJonScreen(screen, 100, 100, 40, 30, ms, vs, ps, m_parameters);
-		SP2::RenderTextOnScreen(text, test , Color(1, 1, 1), textSize, 40 - (test.size()/2), 20, ms, vs, ps, m_parameters);
+		SP2::RenderTextOnScreen(text, displayText1, Color(1, 1, 1), textSize1, x1, y1, ms, vs, ps, m_parameters);
+		SP2::RenderTextOnScreen(text, displayText2, Color(1, 1, 1), textSize2, x2, y2, ms, vs, ps, m_parameters);
 	}
 }
