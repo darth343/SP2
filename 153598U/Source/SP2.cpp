@@ -110,7 +110,7 @@ void SP2::Init()
 	rotateAngle = 0;
 
 	//Initialize camera settings
-	camera.Init(Vector3(0, 300, -440), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(15, 400, -245), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
@@ -227,6 +227,7 @@ void SP2::Init()
 	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("Rifle", "OBJ//Rifle.obj");
 	meshList[GEO_RIFLE]->textureID = LoadTGA("Image//Rifle.tga");
 	meshList[GEO_BLACKSCREEN] = MeshBuilder::GenerateQuad("UI", Color(0, 0, 0));
+	coin.init();
 	//TriggerBox temp(Vector3(-14, 260, -420), Vector3(14, 300, -390), "test");
 	//events.push_back(temp);
 }
@@ -555,15 +556,6 @@ void SP2::ScenarioParkourInit()
 	meshList[GEO_MODEL1]->textureID = LoadTGA("Image//wallleft.tga");
 	meshList[GEO_MODEL1]->interactable = true;
 
-	//Map(FreeRun)
-
-
-
-	//Turrets
-	meshList[GEO_TURRET1] = MeshBuilder::GenerateOBJ("Turret", "OBJ//Turret.obj");
-	meshList[GEO_TURRET1]->position.Set(60, 5, -480);
-	meshList[GEO_TURRET1]->interactable = true;
-
 	//TEXT
 	meshList[GEO_TIMEDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TIMEDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
@@ -781,6 +773,7 @@ void SP2::Update(double dt)
 		{
 			allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt, player);
 		}
+		coin.pickup(camera);
 	}
 
 	for (int i = 0; i < events.size(); ++i)
@@ -1594,13 +1587,7 @@ void SP2::ScenarioParkourRender()
 	RenderMesh(meshList[GEO_WALLWALL2], true);
 	modelStack.PopMatrix();
 
-	
 
-	//Turrets
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_TURRET1]->position.x, meshList[GEO_TURRET1]->position.y, meshList[GEO_TURRET1]->position.z);
-	RenderMesh(meshList[GEO_TURRET1], meshList[GEO_TURRET1]->light);
-	modelStack.PopMatrix();
 }
 
 void SP2::ScenarioRunnerRender()
@@ -1801,10 +1788,22 @@ void SP2::ScenarioRunnerRender()
 	modelStack.PopMatrix();
 }
 
+void SP2::RenderCoins()
+{
+	for (int i = 0; i < coin.allCoins.size(); ++i)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(coin.allCoins[i]->position.x, coin.allCoins[i]->position.y, coin.allCoins[i]->position.z);
+		modelStack.Rotate(coin.rotateAngle++, 0, 1, 0);
+		RenderMesh(coin.allCoins[i], true);
+		modelStack.PopMatrix();
+	}
+}
+
 
 void SP2::PlayerPoints()
 {
-	points =(coins * 10) + (aliensKilled * 50);
+	points = (AI::deathCount * 50) + (coin.acquired * 10);
 }
 
 
@@ -2011,6 +2010,9 @@ void SP2::Render()
 
 	//Render ScenarioRunner
 	ScenarioRunnerRender();
+
+	//RenderCoins
+	RenderCoins();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_STORE]->position.x, meshList[GEO_STORE]->position.y, meshList[GEO_STORE]->position.z);

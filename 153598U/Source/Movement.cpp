@@ -479,26 +479,29 @@ void Movement::Gravity(double dt, Camera5 &camera, Mesh ** meshList, int Start, 
 			bool wallrunning = false;
 			for (int i = Start; i < End; i++)
 			{
-				if (
-					(camera.right.x + camera.position.x > meshList[i]->position.x + meshList[i]->min->x + offset - 3.8&&
-					camera.right.x + camera.position.x < meshList[i]->position.x + meshList[i]->max->x - offset + 3.8 &&
-					camera.right.z + camera.position.z > meshList[i]->position.z + meshList[i]->min->z + offset - 3.8 &&
-					camera.right.z + camera.position.z < meshList[i]->position.z + meshList[i]->max->z - offset + 3.8&&
-					camera.right.y + camera.position.y > meshList[i]->position.y + meshList[i]->min->y &&
-					camera.right.y + camera.position.y < meshList[i]->position.y + meshList[i]->max->y) ||
-					(
-					-camera.right.x + camera.position.x > meshList[i]->position.x + meshList[i]->min->x + offset - 3.8&&
-					-camera.right.x + camera.position.x < meshList[i]->position.x + meshList[i]->max->x - offset + 3.8 &&
-					-camera.right.z + camera.position.z > meshList[i]->position.z + meshList[i]->min->z + offset - 3.8 &&
-					-camera.right.z + camera.position.z < meshList[i]->position.z + meshList[i]->max->z - offset + 3.8&&
-					-camera.right.y + camera.position.y > meshList[i]->position.y + meshList[i]->min->y &&
-					-camera.right.y + camera.position.y < meshList[i]->position.y + meshList[i]->max->y
-					)
-					)
+				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
-					wallrunning = true;
-					gravity -= dt/2;
-					break;
+					if (
+						(camera.right.x + camera.position.x > meshList[i]->position.x + meshList[i]->min->x + offset - 3.8&&
+						camera.right.x + camera.position.x < meshList[i]->position.x + meshList[i]->max->x - offset + 3.8 &&
+						camera.right.z + camera.position.z > meshList[i]->position.z + meshList[i]->min->z + offset - 3.8 &&
+						camera.right.z + camera.position.z < meshList[i]->position.z + meshList[i]->max->z - offset + 3.8&&
+						camera.right.y + camera.position.y > meshList[i]->position.y + meshList[i]->min->y &&
+						camera.right.y + camera.position.y < meshList[i]->position.y + meshList[i]->max->y) ||
+						(
+						-camera.right.x + camera.position.x > meshList[i]->position.x + meshList[i]->min->x + offset - 3.8&&
+						-camera.right.x + camera.position.x < meshList[i]->position.x + meshList[i]->max->x - offset + 3.8 &&
+						-camera.right.z + camera.position.z > meshList[i]->position.z + meshList[i]->min->z + offset - 3.8 &&
+						-camera.right.z + camera.position.z < meshList[i]->position.z + meshList[i]->max->z - offset + 3.8&&
+						-camera.right.y + camera.position.y > meshList[i]->position.y + meshList[i]->min->y &&
+						-camera.right.y + camera.position.y < meshList[i]->position.y + meshList[i]->max->y
+						)
+						)
+					{
+						wallrunning = true;
+						gravity -= dt / 2;
+						break;
+					}
 				}
 			}
 			if (wallrunning == false || prevPos == camera.position)
