@@ -319,7 +319,6 @@ static enum UNIFORM_TYPE
 	float time = 0;
 	float delay = 0;
 	int points = 0;
-	int aliensKilled = 0;
 	int coins = 0;
 	bool shot=false ; // when object get shot
 	bool objectDied = false;//when object is dead

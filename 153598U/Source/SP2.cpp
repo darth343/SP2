@@ -110,7 +110,7 @@ void SP2::Init()
 	rotateAngle = 0;
 
 	//Initialize camera settings
-	camera.Init(Vector3(0, 300, -440), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(14, 15, -245), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
@@ -168,18 +168,18 @@ void SP2::Init()
 	//Aliens
 	Vector3 coordinates[9] =
 	{
-		Vector3(110, -500, 55),
-		Vector3(59, -500, 55),
-		Vector3(84, -500, 152),
-		Vector3(0, -500, 21),
-		Vector3(12, -500, -160),
-		Vector3(-160, -500, -39),
-		Vector3(-170, -500, 18),
-		Vector3(-130, -500, 162),
-		Vector3(70, -500, 153)
+		Vector3(110, -501, 55),
+		Vector3(59, -501, 55),
+		Vector3(84, -501, 152),
+		Vector3(0, -501, 21),
+		Vector3(12, -501, -160),
+		Vector3(-160, -501, -39),
+		Vector3(-170, -501, 18),
+		Vector3(-130, -501, 162),
+		Vector3(70, -501, 153)
 	};
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 9; i++)
 	{
 		AI temp;
 		temp.m_Head = MeshBuilder::GenerateOBJ("Alien Head", "OBJ//Head.obj");
@@ -195,7 +195,7 @@ void SP2::Init()
 		temp.m_LegL = MeshBuilder::GenerateOBJ("Alien Left Leg", "OBJ//LeftLeg.obj");
 		temp.m_LegL->textureID = LoadTGA("Image//alienUV.tga");
 
-		temp.transparency = 1;
+		temp.transparency = 0.01;
 		temp.position = coordinates[i];
 		temp.temp = temp.position;
 		allAliens.push_back(temp);
@@ -227,8 +227,12 @@ void SP2::Init()
 	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("Rifle", "OBJ//Rifle.obj");
 	meshList[GEO_RIFLE]->textureID = LoadTGA("Image//Rifle.tga");
 	meshList[GEO_BLACKSCREEN] = MeshBuilder::GenerateQuad("UI", Color(0, 0, 0));
-	//TriggerBox temp(Vector3(-14, 260, -420), Vector3(14, 300, -390), "test");
-	//events.push_back(temp);
+
+	TriggerBox temp(Vector3(-35, 10, -250), Vector3(-4, 50, -228), Vector3(160, -492, -250), "Your Ship is under Attack!", "Kill All Aliens", 3, 2.5, 2, 30, 20, 27);
+	events.push_back(temp);
+
+	TriggerBox temp2(Vector3(-14, -500, -9), Vector3(12, -480, 17), Vector3(0, 260, -443), "Reinforcements Inbound for Extraction", "GET TO THE SHIPPAA", 2, 2, 4, 30, 20, 27);
+	events.push_back(temp2);
 }
 
 void SP2::ScenarioArenaInit()
@@ -293,7 +297,6 @@ void SP2::ScenarioArenaInit()
 	meshList[GEO_DOOR]->position.Set(0, -500, 0);
 	meshList[GEO_DOOR]->textureID = LoadTGA("Image//ArenaWall.tga");
 
-
 	meshList[GEO_1STMAZEWALL1] = MeshBuilder::GenerateOBJ("ground", "OBJ//1stMazeWall1.obj");
 	meshList[GEO_1STMAZEWALL1]->position.Set(0, -500, 0);
 	meshList[GEO_1STMAZEWALL1]->textureID = LoadTGA("Image//Arena1stMaze.tga");
@@ -316,8 +319,6 @@ void SP2::ScenarioArenaInit()
 	meshList[GEO_1STMAZEWALL7]->position.Set(0, -500, 0);
 	meshList[GEO_1STMAZEWALL7]->textureID = LoadTGA("Image//Arena1stMaze.tga");
 
-
-
 	meshList[GEO_2NDMAZEWALL1] = MeshBuilder::GenerateOBJ("ground", "OBJ//2ndMazeWall1.obj");
 	meshList[GEO_2NDMAZEWALL1]->position.Set(0, -500, 0);
 	meshList[GEO_2NDMAZEWALL1]->textureID = LoadTGA("Image//Arena2ndMaze.tga");
@@ -336,8 +337,6 @@ void SP2::ScenarioArenaInit()
 	meshList[GEO_2NDMAZEWALL6] = MeshBuilder::GenerateOBJ("ground", "OBJ//2ndMazeWall6.obj");
 	meshList[GEO_2NDMAZEWALL6]->position.Set(0, -500, 0);
 	meshList[GEO_2NDMAZEWALL6]->textureID = LoadTGA("Image//Arena2ndMaze.tga");
-
-
 
 	meshList[GEO_3RDMAZEWALL1] = MeshBuilder::GenerateOBJ("ground", "OBJ//3rdMazeWall1.obj");
 	meshList[GEO_3RDMAZEWALL1]->position.Set(0, -500, 0);
@@ -364,11 +363,6 @@ void SP2::ScenarioArenaInit()
 	meshList[GEO_3RDMAZEWALL8]->position.Set(0, -500, 0);
 	meshList[GEO_3RDMAZEWALL8]->textureID = LoadTGA("Image//Arena3rdMaze.tga");
 
-
-
-
-
-
 	meshList[GEO_4THMAZEWALL1] = MeshBuilder::GenerateOBJ("ground", "OBJ//4thMazeWall1.obj");
 	meshList[GEO_4THMAZEWALL1]->position.Set(0, -500, 0);
 	meshList[GEO_4THMAZEWALL1]->textureID = LoadTGA("Image//Arena4thMaze.tga");
@@ -393,25 +387,15 @@ void SP2::ScenarioArenaInit()
 	meshList[GEO_4THMAZEWALL8] = MeshBuilder::GenerateOBJ("ground", "OBJ//4thMazeWall7.obj");
 	meshList[GEO_4THMAZEWALL8]->position.Set(0, -500, 0);
 	meshList[GEO_4THMAZEWALL8]->textureID = LoadTGA("Image//Arena4thMaze.tga");
-	
-
-
-
 }
 
 void SP2::ScenarioParkourInit()
 {
-
-
-	//Arun's Wall
-	//meshList[GEO_MODEL1] = MeshBuilder::GenerateOBJ("Model 1", "OBJ//wall.obj");
 	meshList[GEO_FUEL1] = MeshBuilder::GenerateQuad("fuel1", Color(0.8, 0, 0));
 	meshList[GEO_FUEL2] = MeshBuilder::GenerateQuad("fuel2", Color(1, 0, 0));
 	meshList[GEO_FUEL3] = MeshBuilder::GenerateQuad("fuel3", Color(0, 0.8, 0));
 	meshList[GEO_FUEL4] = MeshBuilder::GenerateQuad("fuel4", Color(0, 1, 0));
 	meshList[GEO_FUEL5] = MeshBuilder::GenerateQuad("fuel5", Color(0.2, 1, 0.2));
-	//meshList[GEO_JETPACKUI] = MeshBuilder::GenerateQuad("Jetpack UI", Color(1, 2, 1));
-
 
 	//LongWall
 	meshList[GEO_LONGWALL] = MeshBuilder::GenerateOBJ("LongWall", "OBJ//LongWall.obj");
@@ -772,20 +756,24 @@ void SP2::Update(double dt)
 			move.MovementRunner(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
 			camera.Update(dt);
 		}
-		//move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
-		//camera.Update(dt);
-		Vector3 bulletSpeed = (0.1, 0.1, 0.1);
-		shoot.ShootingBullets(camera, dt, time, meshList, player);
-		shoot.bulletHitDetection(allAliens, dt, camera);
+		
+		for (int i = 0; i < 5; ++i)
+		{
+			shoot.ShootingBullets(camera, dt, time, meshList, player);
+			shoot.bulletHitDetection(allAliens, dt, camera);
+		}
 		for (int i = 0; i < allAliens.size(); i++)
 		{
-			allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt, player);
+			for (int j = 0; j < 3; ++j)
+			{
+				allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt, player);
+			}
 		}
 	}
 
 	for (int i = 0; i < events.size(); ++i)
 	{
-		events[i].TriggerEvent(dt, camera, Vector3(), time);
+		events[i].TriggerEvent(dt, camera, time);
 	}
 	glfwSetCursorPos(Application::m_window, 800 / 2, 600 / 2);
 }
@@ -1221,10 +1209,6 @@ void SP2::ScenarioArenaRender()
 	
 	modelStack.Translate(meshList[GEO_ARENAFRONTWALL3]->position.x, meshList[GEO_ARENAFRONTWALL3]->position.y, meshList[GEO_ARENAFRONTWALL3]->position.z);
 	RenderMesh(meshList[GEO_ARENAFRONTWALL3], true);
-
-	//modelStack.Translate(meshList[GEO_ARENAFRONTWALL1]->position.x, meshList[GEO_ARENAFRONTWALL]->position.y, meshList[GEO_ARENAFRONTWALL]->position.z);
-	//RenderMesh(meshList[GEO_ARENAFRONTWALL], true);
-
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
@@ -1804,7 +1788,7 @@ void SP2::ScenarioRunnerRender()
 
 void SP2::PlayerPoints()
 {
-	points =(coins * 10) + (aliensKilled * 50);
+	points =(coins * 10) + (AI::deathCount * 50);
 }
 
 
@@ -2017,7 +2001,7 @@ void SP2::Render()
 	RenderMesh(meshList[GEO_STORE], false);
 	modelStack.PopMatrix();
 
-	if (!TriggerBox::render)
+	if (!TriggerBox::rendering)
 	{
 		RenderUI();
 	}

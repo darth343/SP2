@@ -12,9 +12,9 @@ public:
 		ownRifle = true;
 		ownSMG = false;
 		ownPistol = false;
-		Rifle.ammo = 100;
-		SMG.ammo = 10;
-		Pistol.ammo = 41;
+		Rifle.ammo = 1000;
+		SMG.ammo = 1000;
+		Pistol.ammo = 1000;
 		SMG.delayMultiplier = 0.1;
 		Pistol.delayMultiplier = 0.7;
 	};
