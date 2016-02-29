@@ -9,7 +9,6 @@
 #include "Light.h"
 #include "timer.h"
 #include "Shooting.h"
-#include "Enemy.h"
 #include "Pathfinder.h"
 #include "Movement.h"
 #include <Vector>
@@ -18,6 +17,7 @@
 #include "Gun.h"
 #include "Shop.h"
 #include "Player.h"
+#include "TriggerBox.h"
 
 using std::vector;
 using std::string;
@@ -136,107 +136,108 @@ public:
 		
 
 		GEO_2NDMAZEWALL1,
-		GEO_2NDMAZEWALL2,
-		GEO_2NDMAZEWALL3,
-		GEO_2NDMAZEWALL4,
-		GEO_2NDMAZEWALL5,
-		GEO_2NDMAZEWALL6,
+GEO_2NDMAZEWALL2,
+GEO_2NDMAZEWALL3,
+GEO_2NDMAZEWALL4,
+GEO_2NDMAZEWALL5,
+GEO_2NDMAZEWALL6,
 
-		GEO_3RDMAZEWALL1,
-		GEO_3RDMAZEWALL2,
-		GEO_3RDMAZEWALL3,
-		GEO_3RDMAZEWALL4,
-		GEO_3RDMAZEWALL5,
-		GEO_3RDMAZEWALL6,
-		GEO_3RDMAZEWALL7,
-		GEO_3RDMAZEWALL8,
-		
+GEO_3RDMAZEWALL1,
+GEO_3RDMAZEWALL2,
+GEO_3RDMAZEWALL3,
+GEO_3RDMAZEWALL4,
+GEO_3RDMAZEWALL5,
+GEO_3RDMAZEWALL6,
+GEO_3RDMAZEWALL7,
+GEO_3RDMAZEWALL8,
 
-		GEO_4THMAZEWALL1,
-		GEO_4THMAZEWALL2,
-		GEO_4THMAZEWALL3,
-		GEO_4THMAZEWALL4,
-		GEO_4THMAZEWALL5,
-		GEO_4THMAZEWALL6,
-		GEO_4THMAZEWALL7,
-		GEO_4THMAZEWALL8,
 
-		GEO_DOOR,
+GEO_4THMAZEWALL1,
+GEO_4THMAZEWALL2,
+GEO_4THMAZEWALL3,
+GEO_4THMAZEWALL4,
+GEO_4THMAZEWALL5,
+GEO_4THMAZEWALL6,
+GEO_4THMAZEWALL7,
+GEO_4THMAZEWALL8,
 
-		GEO_GROUND,
+GEO_DOOR,
 
-		//Arena
-	/*	GEO_ARENAWALLFRONT,
-		GEO_ARENAWALLBACK,
-		GEO_ARENAWALLLEFT,
-		GEO_ARENAWALLRIGHT,
-		GEO_BARREL1,
-		GEO_BARREL2,
-		GEO_BARREL3,
-		GEO_BARREL4,
-		GEO_CRATE1,
-		GEO_CRATE2,
-		GEO_CRATE3,
-		GEO_CRATE4,
-		GEO_SQPYRA1,
-		GEO_SQPYRA2,
-		GEO_RDPYRA1,*/
+GEO_GROUND,
+
+//Arena
+/*	GEO_ARENAWALLFRONT,
+	GEO_ARENAWALLBACK,
+	GEO_ARENAWALLLEFT,
+	GEO_ARENAWALLRIGHT,
+	GEO_BARREL1,
+	GEO_BARREL2,
+	GEO_BARREL3,
+	GEO_BARREL4,
+	GEO_CRATE1,
+	GEO_CRATE2,
+	GEO_CRATE3,
+	GEO_CRATE4,
+	GEO_SQPYRA1,
+	GEO_SQPYRA2,
+	GEO_RDPYRA1,*/
 	//	GEO_RDPYRA2,
-		//ArenaEnd
+	//ArenaEnd
 
-		//Runner
-		GEO_RAINBOW,
-		GEO_ROCK1,
-		GEO_ROCK2,
-		GEO_ROCK3,
-		GEO_ROCK4,
-		GEO_ROCK5,
-		GEO_ROCK6,
-		GEO_ROCK7,
-		GEO_ROCK8,
-		GEO_ROCK9,
-		GEO_ROCK10,
-		GEO_ROCK11,
-		GEO_ROCK12,
-		GEO_ROCK13,
-		GEO_ROCK14,
-		GEO_ROCK15,
-		GEO_ROCK16,
-		GEO_ROCK17,
-		GEO_ROCK18,
-		GEO_ROCK19,
-		GEO_ROCK20,
-		GEO_ROCK21,
-		GEO_ROCK22,
-		GEO_ROCK23,
-		GEO_ROCK24,
-		GEO_ROCK25,
-		GEO_ROCK26,
-		GEO_ROCK27,
-		GEO_ROCK28,
-		GEO_ROCK29,
-		GEO_ROCK30,
-		GEO_ROCK31,
-		GEO_ROCK32,
-		GEO_ROCK33,
-		GEO_ROCK34,
-		GEO_ROCK35,
-		GEO_ROCK36,
-		GEO_ROCK37,
-		GEO_ROCK38,
-		//RunnerEnd
+	//Runner
+	GEO_RAINBOW,
+	GEO_ROCK1,
+	GEO_ROCK2,
+	GEO_ROCK3,
+	GEO_ROCK4,
+	GEO_ROCK5,
+	GEO_ROCK6,
+	GEO_ROCK7,
+	GEO_ROCK8,
+	GEO_ROCK9,
+	GEO_ROCK10,
+	GEO_ROCK11,
+	GEO_ROCK12,
+	GEO_ROCK13,
+	GEO_ROCK14,
+	GEO_ROCK15,
+	GEO_ROCK16,
+	GEO_ROCK17,
+	GEO_ROCK18,
+	GEO_ROCK19,
+	GEO_ROCK20,
+	GEO_ROCK21,
+	GEO_ROCK22,
+	GEO_ROCK23,
+	GEO_ROCK24,
+	GEO_ROCK25,
+	GEO_ROCK26,
+	GEO_ROCK27,
+	GEO_ROCK28,
+	GEO_ROCK29,
+	GEO_ROCK30,
+	GEO_ROCK31,
+	GEO_ROCK32,
+	GEO_ROCK33,
+	GEO_ROCK34,
+	GEO_ROCK35,
+	GEO_ROCK36,
+	GEO_ROCK37,
+	GEO_ROCK38,
+	//RunnerEnd
 
-		GEO_TEXT,
-		GEO_RIFLE,
-		GEO_ENEMY,
-		GEO_FLASH,
-		GEO_PATH_F,
-		GEO_PATH_V,
-		GEO_PATH_O,
-		GEO_STORE,
-		GEO_PISTOL,
-		GEO_SMG,
-		NUM_GEOMETRY,
+	GEO_TEXT,
+	GEO_RIFLE,
+	GEO_ENEMY,
+	GEO_FLASH,
+	GEO_PATH_F,
+	GEO_PATH_V,
+	GEO_PATH_O,
+	GEO_STORE,
+	GEO_PISTOL,
+	GEO_SMG,
+	GEO_BLACKSCREEN, 
+	NUM_GEOMETRY,
 	};
 static enum UNIFORM_TYPE
 	{
@@ -282,6 +283,7 @@ static enum UNIFORM_TYPE
 	void ScenarioParkourRender();
 	void ScenarioArenaRender();
 	void ScenarioRunnerRender();
+	void RenderUI();
 	virtual void Init();
 	virtual void Update(double dt);
 	virtual void Render();
@@ -293,6 +295,7 @@ static enum UNIFORM_TYPE
 	static void RenderMesh(Mesh *mesh, bool enableLight, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL]);
 	static void RenderText(Mesh* mesh, std::string text, Color color, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL]);
 	static void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL]);
+	static void RenderOBJonScreen(Mesh* mesh, float sizex, float sizey, float x, float y, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL]);
 	void RenderSkybox(Vector3 position);
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
@@ -309,10 +312,7 @@ static enum UNIFORM_TYPE
 	float fps;
 	MS modelStack, viewStack, projectionStack;
 	Light light[4];
-
 	Movement move;
-
-	vector<enemy> mobs;
 	Camera5 camera;
 	string timeDisplay="Time : ";
 	float time = 0;
@@ -320,14 +320,14 @@ static enum UNIFORM_TYPE
 	bool shot=false ; // when object get shot
 	bool objectDied = false;//when object is dead
 	bool takeDamage = false;
+
 	//AI alien;
 	vector<AI> allAliens;
-	Mesh* object;
 	Shop shop;
 	Player player;
 	Vector3 pivot;
 //	Mesh* object;
-
+	vector<TriggerBox> events;
 
 	bool surviveDone=false;
 };

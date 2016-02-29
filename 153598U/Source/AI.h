@@ -65,6 +65,7 @@ public:
 	Vector3 temp;
 	float health;
 	bool isDead() { if (health <= 0)return true; return false; };
+	static int deathCount;
 private:
 	Vector3 inBetween;
 	int count;

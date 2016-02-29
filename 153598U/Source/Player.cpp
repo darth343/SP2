@@ -17,7 +17,6 @@ void Player::currentItems(double dt, Camera5 camera, Mesh** meshList, Mesh* obje
 	{
 		inv.GunSelected->semiAuto = true;
 		inv.GunSelected->delayMultiplier = 0.4;
-		cout << "Semi Auto mode" << endl;
 		delay = time + 0.5;
 	}
 	if (Application::IsKeyPressed('E') && shop.openShop == false && time > delay&& object == meshList[SP2::GEO_STORE])
@@ -39,19 +38,16 @@ void Player::currentItems(double dt, Camera5 camera, Mesh** meshList, Mesh* obje
 	if (Application::IsKeyPressed('1') && shop.openShop == false && time > delay)
 	{
 		inv.GunSelected = &inv.Rifle;
-		std::cout << "Rifle Equipped" << std::endl;
 		delay = time + 0.5;
 	}
 	if (Application::IsKeyPressed('2') && shop.openShop == false && time > delay)
 	{
 		inv.GunSelected = &inv.SMG;
-		std::cout << "SMG Equipped" << std::endl;
 		delay = time + 0.5;
 	}
 	if (Application::IsKeyPressed('3') && shop.openShop == false && time > delay)
 	{
 		inv.GunSelected = &inv.Pistol;
-		std::cout << "Pistol Equipped" << std::endl;
 		delay = time + 0.5;
 	}
 }

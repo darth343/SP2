@@ -2,6 +2,7 @@
 #include "SP2.h"
 #include <sstream>
 #include "GL\glew.h"
+int AI::deathCount = 0;
 void AI::move(Vector3 targetPos, Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd, double time, double dt, Player & player)
 {
 	if (!isDead())
@@ -316,7 +317,6 @@ void AI::renderAlien(bool enableLight, MS modelStack, MS viewStack, MS projectio
 		{
 			deathAngle+=10;
 		}
-		cout << deathAngle << endl;
 		modelStack.PushMatrix();
 		modelStack.Translate(position.x, position.y, position.z);
 		modelStack.Rotate(getAngle(), 0, 1, 0);
@@ -490,7 +490,6 @@ void AI::damagePlayer(Player & player)
 	if (distance.Length() < 13)
 	{
 		player.Health -= 5;
-		cout << player.Health << endl;
 	}
 }
 
@@ -501,30 +500,4 @@ void AI::deathAnimation(double dt, Camera5 camera)
 	rotation.SetToRotation(-90, 0, 1, 0);
 	temporary = rotation * temporary;
 	deathPivot = temporary;
-	//angle = atan(temporary.z / temporary.x);
-	//angle = Math::RadianToDegree(angle);
-
-	//if (temporary.x > 0 && temporary.z > 0)
-	//{
-	//	cout << "1" << endl;
-	//	angle = 90 - angle;
-	//}
-	//else if (temporary.x > 0 && temporary.z < 0)
-	//{
-	//	cout << "2" << endl;
-	//	angle = 90 - angle;
-	//}
-	//else if (temporary.x < 0 && temporary.z < 0)
-	//{
-	//	cout << "3" << endl;
-	//	angle = 270 - angle;
-	//}
-	//else if (temporary.x < 0 && temporary.z > 0)
-	//{
-	//	cout << "4" << endl;
-	//	angle = 270 - angle;
-	//}
-
-	//nextAngle = angle + 180;
-	//cout << "im dead from bullet coming from: " << angle << endl;
 }

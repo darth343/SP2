@@ -156,34 +156,6 @@ void SP2::Init()
 	// Enable blendings
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//meshList[GEO_ALIEN_HEAD] = MeshBuilder::GenerateOBJ("Alien Head", "OBJ//Head.obj");
-	//meshList[GEO_ALIEN_HEAD]->textureID = LoadTGA("Image//alienUV.tga");
-	//meshList[GEO_ALIEN_HEAD]->position = Vector3(0, 0, -480);
-	//meshList[GEO_ALIEN_BODY] = MeshBuilder::GenerateOBJ("Alien Body", "OBJ//Body.obj");
-	//meshList[GEO_ALIEN_BODY]->textureID = LoadTGA("Image//alienUV.tga");
-	//meshList[GEO_ALIEN_BODY]->position = Vector3(0, 0, -480);
-	//meshList[GEO_ALIEN_HANDR] = MeshBuilder::GenerateOBJ("Alien Right Hand", "OBJ//RightHand.obj");
-	//meshList[GEO_ALIEN_HANDR]->textureID = LoadTGA("Image//alienUV.tga");
-	//meshList[GEO_ALIEN_HANDR]->position = Vector3(0, 0, -480);
-	//meshList[GEO_ALIEN_HANDL] = MeshBuilder::GenerateOBJ("Alien Left Hand", "OBJ//LeftHand.obj");
-	//meshList[GEO_ALIEN_HANDL]->textureID = LoadTGA("Image//alienUV.tga");
-	//meshList[GEO_ALIEN_HANDL]->position = Vector3(0, 0, -480);
-	//meshList[GEO_ALIEN_LEGR] = MeshBuilder::GenerateOBJ("Alien Right Leg", "OBJ//RightLeg.obj");
-	//meshList[GEO_ALIEN_LEGR]->textureID = LoadTGA("Image//alienUV.tga");
-	//meshList[GEO_ALIEN_LEGR]->position = Vector3(0, 0, -480);
-	//meshList[GEO_ALIEN_LEGL] = MeshBuilder::GenerateOBJ("Alien Left Leg", "OBJ//LeftLeg.obj");
-	//meshList[GEO_ALIEN_LEGL]->textureID = LoadTGA("Image//alienUV.tga");
-	//meshList[GEO_ALIEN_LEGL]->position = Vector3(0, 0, -480);
-
-	//alien.m_Head = meshList[GEO_ALIEN_HEAD];
-	//alien.m_Body = meshList[GEO_ALIEN_BODY];
-	//alien.m_HandL = meshList[GEO_ALIEN_HANDL];
-	//alien.m_HandR = meshList[GEO_ALIEN_HANDR];
-	//alien.m_LegL = meshList[GEO_ALIEN_LEGL];
-	//alien.m_LegR = meshList[GEO_ALIEN_LEGR];
-	//alien.move(alien.m_Body->position, camera.position, camera, meshList, GEO_LEFTWALL1, GEO_TEXT, time);
-	//alien.transparency = 1;
-//	temp.health = 100;
 
 	meshList[GEO_FUEL1] = MeshBuilder::GenerateQuad("fuel1", Color(0.2, 0.2, 0.2));
 	meshList[GEO_FUEL2] = MeshBuilder::GenerateQuad("fuel2", Color(0.4, 0.4, 0.4));
@@ -225,7 +197,6 @@ void SP2::Init()
 
 		temp.transparency = 1;
 		temp.position = coordinates[i];
-		cout << temp.position << endl;
 		temp.temp = temp.position;
 		allAliens.push_back(temp);
 	}
@@ -254,8 +225,10 @@ void SP2::Init()
 	player.inv.GunSelected = &player.inv.Rifle;
 	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
 	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("Rifle", "OBJ//Rifle.obj");
-//	meshList[GEO_THICK2]->position.Set(0, 3, -50);
 	meshList[GEO_RIFLE]->textureID = LoadTGA("Image//Rifle.tga");
+	meshList[GEO_BLACKSCREEN] = MeshBuilder::GenerateQuad("UI", Color(0, 0, 0));
+	//TriggerBox temp(Vector3(-14, 260, -420), Vector3(14, 300, -390), "test");
+	//events.push_back(temp);
 }
 
 void SP2::ScenarioArenaInit()
@@ -775,6 +748,11 @@ void SP2::ScenarioRunnerInit()
 
 void SP2::Update(double dt)
 {
+	if (Application::IsKeyPressed(VK_NUMPAD1))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
+	if (Application::IsKeyPressed(VK_NUMPAD2))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+
 	glfwGetCursorPos(Application::m_window, &Application::mouseX, &Application::mouseY);
 	if (!player.isDead())
 	{
@@ -804,14 +782,12 @@ void SP2::Update(double dt)
 			allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt, player);
 		}
 	}
-	else
-	{
 
-	}
-	if (!Application::IsKeyPressed('V'))
+	for (int i = 0; i < events.size(); ++i)
 	{
-		glfwSetCursorPos(Application::m_window, 800 / 2, 600 / 2);
+		events[i].TriggerEvent(dt, camera, Vector3(), time);
 	}
+	glfwSetCursorPos(Application::m_window, 800 / 2, 600 / 2);
 }
 
 Mesh* SP2::Interaction(double dt)
@@ -1111,6 +1087,31 @@ void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float 
 
 }
 
+void SP2::RenderOBJonScreen(Mesh* mesh, float sizex, float sizey, float x, float y, MS ms, MS vs, MS ps, unsigned int m_parameters[U_TOTAL])
+{
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -500, 500); //size of screen UI
+	//Mtx44 projection;
+	//ortho.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
+
+	ps.PushMatrix();
+	ps.LoadMatrix(ortho);
+	vs.PushMatrix();
+	vs.LoadIdentity(); //No need camera for ortho mode
+	ms.PushMatrix();
+	ms.LoadIdentity(); //Reset modelStack
+	ms.Translate(x, y, 0);
+	ms.Scale(sizex, sizey, 1);
+	ms.Rotate(90, 1, 0, 0);
+	Mtx44 MVP = ps.Top() * vs.Top() * ms.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+	RenderMesh(mesh, false, ms, vs, ps, m_parameters);
+	ps.PopMatrix();
+	vs.PopMatrix();
+	ms.PopMatrix();
+
+}
+
 void SP2::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
 {
 	if (!mesh || mesh->textureID <= 0) //Proper error check
@@ -1168,8 +1169,8 @@ void SP2::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float si
 	vs.LoadIdentity(); //No need camera for ortho mode
 	ms.PushMatrix();
 	ms.LoadIdentity(); //Reset modelStack
-	ms.Scale(size, size, size);
 	ms.Translate(x, y, 0);
+	ms.Scale(size, size, size);
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
 	glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
 	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
@@ -1800,6 +1801,132 @@ void SP2::ScenarioRunnerRender()
 	modelStack.PopMatrix();
 }
 
+void SP2::RenderUI()
+{
+	//////////////////////////////////
+	//			JetFuel             //
+	/////////////////////////////////
+	if (move.jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 1, 7);
+	}
+	if (move.jetPack.getFuel() > 15)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_FUEL1], 30, 1, 6, 4);
+		modelStack.PopMatrix();
+	}
+
+	if (move.jetPack.getFuel() > 40)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_FUEL2], 25, 1, 8.5, 6);
+		modelStack.PopMatrix();
+	}
+
+	if (move.jetPack.getFuel() > 60)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_FUEL3], 20, 1, 11, 8);
+		modelStack.PopMatrix();
+	}
+
+	if (move.jetPack.getFuel() >80)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_FUEL4], 15, 1, 13.5, 10);
+		modelStack.PopMatrix();
+	}
+
+	if (move.jetPack.getFuel() > 95)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_FUEL5], 20, 1, 11, 12);
+		modelStack.PopMatrix();
+	}
+
+
+	//////////////////////////////////
+	//			Time               //
+	/////////////////////////////////
+	RenderTextOnScreen(meshList[GEO_TEXT], "Time: ", Color(1, 0, 0), 2, 2, 25);
+	std::ostringstream timeString;
+	timeString << std::setprecision(3) << time;
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 3, 24);
+
+	timeString.str("");
+	timeString << "X: " << static_cast<int>(camera.position.x);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 10.4);
+	timeString.str("");
+	timeString << "Y: " << static_cast<int>(camera.position.y);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 9.4);
+	timeString.str("");
+	timeString << "Z: " << static_cast<int>(camera.position.z);
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 8.4);
+
+
+	//////////////////////////////////
+	//			Gun                //
+	/////////////////////////////////
+	RenderTextOnScreen(meshList[GEO_TEXT], "Gun Mode: ", Color(0, 1, 0), 2, 30, 6);
+	if (player.inv.GunSelected->semiAuto == false)
+	{
+		//RenderTextOnScreen(meshList[GEO_TEXT], "|||", Color(0, 1, 0), 3, 21 , 3);
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11);
+		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 63, 11);
+		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 65, 11);
+		modelStack.PopMatrix();
+	}
+	else if (player.inv.GunSelected->semiAuto == true)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11);
+		modelStack.PopMatrix();
+	}
+	timeString.str("");
+	timeString << "FPS: " << fps;
+	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 11);
+
+	//UI Background Panal
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_UIBG], 25, 19, 72, 3.5);
+	modelStack.PopMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	//Player's Health
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_PLAYERHEALTH], 30 * player.getScaleHealth(), 1, 40, 55);
+	modelStack.PopMatrix();
+
+	//Crosshair
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_CROSSHAIR], 10, 10, 40.2, 29.8);
+	modelStack.PopMatrix();
+
+	if (player.inv.GunSelected == &player.inv.Rifle)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_RIFLE], 0.8, 0.8, 70, 20);
+		modelStack.PopMatrix();
+	}
+	else if (player.inv.GunSelected == &player.inv.SMG)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_SMG], 0.8, 0.8, 70, 20);
+		modelStack.PopMatrix();
+	}
+	else if (player.inv.GunSelected = &player.inv.Pistol)
+	{
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_PISTOL], 0.8, 0.8, 70, 17);
+		modelStack.PopMatrix();
+	}
+	modelStack.PushMatrix();
+	RenderOBJonScreen(meshList[GEO_HELMET], 80, 60, 40, 30);
+	modelStack.PopMatrix();
+}
+
 void SP2::Render()
 {
 	// Render VBO here
@@ -1838,19 +1965,7 @@ void SP2::Render()
 
 	//Skybox
 	RenderSkybox(camera.position);
-
-	/*if (object)
-	{
-		object->light = false;
-	}
-	else
-	{
-		for (int i = GEO_LEFTWALL1; i < GEO_TEXT; i++)
-		{
-			meshList[i]->light = true;
-		}
-	}*/
-
+	
 	for (int a = 0; a <shoot.bullets.size(); a++)
 	{
 		modelStack.PushMatrix();
@@ -1870,145 +1985,25 @@ void SP2::Render()
 		allAliens[i].renderAlien(true, modelStack, viewStack, projectionStack, m_parameters, meshList, player);
 	}
 
-
+	for (int i = 0; i < events.size(); ++i)
+	{
+		events[i].renderTransition(modelStack, viewStack, projectionStack, m_parameters, meshList[GEO_TEXT], meshList[GEO_BLACKSCREEN]);
+	}
 	//Render Scenario3
 	ScenarioParkourRender();
 
 	//Render ScenarioRunner
 	ScenarioRunnerRender();
 
-
-
-	//////////////////////////////////
-	//			JetFuel             //
-	/////////////////////////////////
-	if (move.jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 1, 7);
-	}
-	if (move.jetPack.getFuel() > 15)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL1], 30, 1, 6, 4);
-		modelStack.PopMatrix();
-	}
-	
-	if (move.jetPack.getFuel() > 40)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL2], 25, 1, 8.5, 6);
-		modelStack.PopMatrix();
-	}
-	
-	if (move.jetPack.getFuel() > 60)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL3], 20, 1, 11, 8);
-		modelStack.PopMatrix();
-	}
-	
-	if (move.jetPack.getFuel() >80)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL4], 15, 1, 13.5, 10);
-		modelStack.PopMatrix();
-	}
-
-	if (move.jetPack.getFuel() > 95)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL5], 20, 1, 11, 12);
-		modelStack.PopMatrix();
-	}
-
-
-	//////////////////////////////////
-	//			Time               //
-	/////////////////////////////////
-	
-	RenderTextOnScreen(meshList[GEO_TEXT],"Time: ", Color(1, 0, 0), 2, 2, 25);
-	std::ostringstream timeString;
-	timeString << std::setprecision(3) << time;
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 3, 24);
-
-	timeString.str("");
-	timeString << "X: " << static_cast<int>(camera.position.x);
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 10.4);
-	timeString.str("");
-	timeString << "Y: " << static_cast<int>(camera.position.y);
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 9.4);
-	timeString.str("");
-	timeString << "Z: " << static_cast<int>(camera.position.z);
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 8.4);
-
-
-	//////////////////////////////////
-	//			Gun                //
-	/////////////////////////////////
-	RenderTextOnScreen(meshList[GEO_TEXT], "Gun Mode: ", Color(0, 1, 0), 2, 30, 6);
-	if (player.inv.GunSelected->semiAuto==false)
-	{
-		//RenderTextOnScreen(meshList[GEO_TEXT], "|||", Color(0, 1, 0), 3, 21 , 3);
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11);
-		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 63, 11);
-		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 65, 11);
-		modelStack.PopMatrix();
-	}
-	else if (player.inv.GunSelected->semiAuto == true)
-	{
-		modelStack.PushMatrix();						   
-		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11); 
-		modelStack.PopMatrix();
-	}
-	timeString.str("");
-	timeString << "FPS: " << fps;
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 11);
-	
-	//UI Background Panal
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_UIBG], 25, 19, 72, 3.5);
-	modelStack.PopMatrix();
-
 	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_STORE]->position.x, meshList[GEO_STORE]->position.y, meshList[GEO_STORE]->position.z);
 	RenderMesh(meshList[GEO_STORE], false);
 	modelStack.PopMatrix();
 
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	//Player's Health
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_PLAYERHEALTH], 30 * player.getScaleHealth(), 1, 40, 55);
-	modelStack.PopMatrix();
-
-	//Crosshair
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_CROSSHAIR], 10, 10, 40.2, 29.8);
-	modelStack.PopMatrix();
-
-
-if (player.inv.GunSelected == &player.inv.Rifle)
+	if (!TriggerBox::render)
 	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_RIFLE], 0.8, 0.8, 70, 20);
-		modelStack.PopMatrix();
+		RenderUI();
 	}
-else if (player.inv.GunSelected == &player.inv.SMG)
-{
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_SMG], 0.8, 0.8, 70, 20);
-	modelStack.PopMatrix();
-}
-else if (player.inv.GunSelected = &player.inv.Pistol)
-{
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_PISTOL], 0.8, 0.8, 70, 17);
-	modelStack.PopMatrix();
-}
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_HELMET], 80, 60, 40 , 30);
-	modelStack.PopMatrix();
 }
 
 void SP2::Exit()

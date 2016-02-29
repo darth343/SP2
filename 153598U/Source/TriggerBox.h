@@ -9,17 +9,29 @@ using std::string;
 
 class TriggerBox
 {
-	TriggerBox(Vector3 minimum, Vector3 maximum, string text) : min(minimum), max(maximum), displayText(text)
-	{};
-	~TriggerBox() {};
+public:
+	TriggerBox(){};
+	TriggerBox(Vector3 mini, Vector3 maxi, string text) : minimum(mini), maximum(maxi), displayText(text) 
+	{
+		textSize = 1;
+		x = 40;
+		y = 30;
+	};
+	~TriggerBox(){};
 
-	Vector3 min;
-	Vector3 max;
+	void TriggerEvent(double dt, Camera5 &camera, Vector3 teleportLocation, double time);
+	void renderTransition(MS ms, MS vs, MS ps, unsigned int m_parameters[25], Mesh * text, Mesh * screen);
+	static bool render;
+private:
+	Vector3 minimum;
+	Vector3 maximum;
+	float x;
+	float y;
+	float textSize;
 	string displayText;
 	bool triggered;
 	double endTime;
 	double runTime;
-	void TriggerEvent(double dt, Camera5 &camera, Vector3 teleportLocation, double time);
 };
 
 #endif
