@@ -6,6 +6,7 @@ const unsigned int frameTime = 1000 / FPS; // time for each frame
 double Application::mouseX = 0;
 double Application::mouseY = 0;
 GLFWwindow* Application::m_window;
+bool Application::run = true;
 
 //Define an error callback
 static void error_callback(int error, const char* description)
@@ -78,7 +79,7 @@ void Application::Init()
 	//m_window = glfwCreateWindow(800, 600, "Computer Graphics", glfwGetPrimaryMonitor(), NULL);
 	m_window = glfwCreateWindow(800, 600, "SP2 Team 1 [ LOLICONS ]", NULL, NULL);
 	glfwSetWindowSizeCallback(m_window, resize_callback);
-	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPos(m_window, 800 / 2, 600 / 2);
 
 	//glfwSetCursorPosCallback(m_window, cursorPositionCallback);
@@ -117,7 +118,7 @@ void Application::Run()
 
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
 
-	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
+	while (!glfwWindowShouldClose(m_window) && run && !Application::IsKeyPressed(VK_ESCAPE))
 	{
 		scene->Update(m_timer.getElapsedTime());
 		scene->Render();

@@ -7,6 +7,7 @@
 #include "LoadTGA.h"
 #include "Application.h"
 #include "Camera2.h"
+
 #include "Utility.h"
 #include <iostream>
 #include <sstream>
@@ -164,6 +165,12 @@ void SP2::Init()
 	meshList[GEO_FUEL5] = MeshBuilder::GenerateQuad("fuel5", Color(1, 1, 1));
 	meshList[GEO_JETPACKUI] = MeshBuilder::GenerateQuad("Jetpack UI", Color(1, 2, 1));
 
+	//MainMenu
+	meshList[GEO_MAINMENU] = MeshBuilder::GenerateQuad("UI", Color(0, 0, 0));
+	meshList[GEO_MAINMENU]->textureID = LoadTGA("Image//MainMenu.tga");
+	meshList[GEO_MAINMENUBOX1] = MeshBuilder::GenerateQuad("Box Around Text", Color(1, 0, 0));
+	meshList[GEO_MAINMENUBOX2] = MeshBuilder::GenerateQuad("Box Around Text", Color(1, 0, 0));
+
 
 	//Aliens
 	Vector3 coordinates[9] =
@@ -227,8 +234,12 @@ void SP2::Init()
 	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("Rifle", "OBJ//Rifle.obj");
 	meshList[GEO_RIFLE]->textureID = LoadTGA("Image//Rifle.tga");
 	meshList[GEO_BLACKSCREEN] = MeshBuilder::GenerateQuad("UI", Color(0, 0, 0));
-	//TriggerBox temp(Vector3(-14, 260, -420), Vector3(14, 300, -390), "test");
-	//events.push_back(temp);
+
+	Start.mini = Vector3(290, 324, 0);
+	Start.maxi = Vector3(590, 373, 0);
+
+	Quit.mini = Vector3(290, 404, 0);
+	Quit.maxi = Vector3(590, 455, 0);
 }
 
 void SP2::ScenarioArenaInit()
@@ -746,48 +757,74 @@ void SP2::ScenarioRunnerInit()
 
 }
 
+void SP2::ButtonPress(double mouseX, double mouseY)
+{
+	if (mouseX > Start.mini.x && mouseX < Start.maxi.x &&
+		mouseY > Start.mini.y && mouseY < Start.maxi.y)
+	{
+		meshList[GEO_MAINMENUBOX1] = MeshBuilder::GenerateQuad("Box Around Text", Color(1, 1, 0));
+		if (Application::IsKeyPressed(VK_LBUTTON))
+		{
+			state = DISABLE_MOUSE;
+		}
+	}
+	else
+	{
+		meshList[GEO_MAINMENUBOX1] = MeshBuilder::GenerateQuad("Box Around Text", Color(1, 0, 0));
+	}
+	if (mouseX > Quit.mini.x && mouseX < Quit.maxi.x &&
+		mouseY > Quit.mini.y && mouseY < Quit.maxi.y)
+	{
+		meshList[GEO_MAINMENUBOX2] = MeshBuilder::GenerateQuad("Box Around Text", Color(1, 1, 0));
+		if (Application::IsKeyPressed(VK_LBUTTON))
+		{
+			Application::run = false;
+		}
+	}
+	else
+	{
+		meshList[GEO_MAINMENUBOX2] = MeshBuilder::GenerateQuad("Box Around Text", Color(1, 0, 0));
+	}
+}
+
 void SP2::Update(double dt)
 {
-	if (Application::IsKeyPressed(VK_NUMPAD1))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //default fill mode
-	if (Application::IsKeyPressed(VK_NUMPAD2))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
-
 	glfwGetCursorPos(Application::m_window, &Application::mouseX, &Application::mouseY);
-	if (!player.isDead())
+	switch (state)
 	{
-		player.currentItems(dt, camera, meshList, player.object);
-		//if (Application::IsKeyPressed('4'))
-		//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
-
-		time += dt;
-		fps = 1 / dt;
-		if (move.allowInput == true)
+	case MAIN_MENU:
+		ButtonPress(Application::mouseX, Application::mouseY);
+		break;
+	case DISABLE_MOUSE:
+		glfwSetInputMode(Application::m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		state = GAME_START;
+		break;
+	case GAME_START:
+		if (!player.isDead())
 		{
-			move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
-			camera.Update(dt);
-		}
-		else if (move.allowInput == false)
-		{
-			move.MovementRunner(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
-			camera.Update(dt);
-		}
-		//move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
-		//camera.Update(dt);
-		Vector3 bulletSpeed = (0.1, 0.1, 0.1);
-		shoot.ShootingBullets(camera, dt, time, meshList, player);
-		shoot.bulletHitDetection(allAliens, dt, camera);
-		for (int i = 0; i < allAliens.size(); i++)
-		{
-			allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt, player);
+			player.currentItems(dt, camera, meshList, player.object);
+			time += dt;
+			fps = 1 / dt;
+			if (move.allowInput == true)
+			{
+				move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
+				camera.Update(dt);
+			}
+			else if (move.allowInput == false)
+			{
+				move.MovementRunner(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
+				camera.Update(dt);
+			}
+			shoot.ShootingBullets(camera, dt, time, meshList, player);
+			shoot.bulletHitDetection(allAliens, dt, camera);
+			for (int i = 0; i < allAliens.size(); i++)
+			{
+				allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt, player);
+			}
+			glfwSetCursorPos(Application::m_window, 800 / 2, 600 / 2);
+			break;
 		}
 	}
-
-	for (int i = 0; i < events.size(); ++i)
-	{
-		events[i].TriggerEvent(dt, camera, Vector3(), time);
-	}
-	glfwSetCursorPos(Application::m_window, 800 / 2, 600 / 2);
 }
 
 Mesh* SP2::Interaction(double dt)
@@ -814,7 +851,6 @@ Mesh* SP2::Interaction(double dt)
 					else
 					{
 						return meshList[i];
-						//return tempAI[i];
 						break;
 					}
 				}
@@ -1075,6 +1111,10 @@ void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float 
 		modelStack.Rotate(-90, 0, 1, 0);
 	}
 	
+	if (mesh == meshList[GEO_MAINMENU])
+	{
+		modelStack.Rotate(-90, 0, 1, 0);
+	}
 	
 	////modelStack.Translate(camera.position.x + camera.view.x, camera.position.y + camera.view.y, camera.position.z + camera.view.z);
 	//modelStack.Translate(camera.view.x, camera.view.y + camera.position.y, camera.view.z);
@@ -1942,6 +1982,8 @@ void SP2::RenderUI()
 	modelStack.PushMatrix();
 	RenderOBJonScreen(meshList[GEO_HELMET], 80, 60, 40, 30);
 	modelStack.PopMatrix();
+
+
 }
 
 void SP2::Render()
@@ -1977,49 +2019,69 @@ void SP2::Render()
 		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 	}
 
-	//Axes
-	RenderMesh(meshList[GEO_AXES], false);
-
-	//Skybox
-	RenderSkybox(camera.position);
-	
-	for (int a = 0; a <shoot.bullets.size(); a++)
+	switch (state)
 	{
+	case MAIN_MENU:
 		modelStack.PushMatrix();
-		modelStack.Translate(shoot.bullets[a].Position.x, shoot.bullets[a].Position.y, shoot.bullets[a].Position.z);
-		modelStack.Scale(0.5, 0.5,0.5);
-		RenderMesh(meshList[GEO_BULLET], true);
+		RenderOBJonScreen(meshList[GEO_MAINMENUBOX1], 30, 5, 44, 25);
 		modelStack.PopMatrix();
-	}
 
-	//Arun's Wall
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_MAINMENUBOX2], 30, 5, 44, 17);
+		modelStack.PopMatrix();
 
-	//Render Scenario2
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_MAINMENU], 80, 60, 40, 30);
+		modelStack.PopMatrix();
+		RenderTextOnScreen(meshList[GEO_TEXT], "Start Game", Color(0, 0, 0), 3, 10, 8);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Quit Game", Color(0, 0, 0), 3, 10.5, 5.3);
+		break;
+	case GAME_START:
+		//Axes
+		RenderMesh(meshList[GEO_AXES], false);
 
-	ScenarioArenaRender();
-	for (int i = 0; i < allAliens.size(); i++)
-	{
-		allAliens[i].renderAlien(true, modelStack, viewStack, projectionStack, m_parameters, meshList, player);
-	}
+		//Skybox
+		RenderSkybox(camera.position);
 
-	for (int i = 0; i < events.size(); ++i)
-	{
-		events[i].renderTransition(modelStack, viewStack, projectionStack, m_parameters, meshList[GEO_TEXT], meshList[GEO_BLACKSCREEN]);
-	}
-	//Render Scenario3
-	ScenarioParkourRender();
+		for (int a = 0; a <shoot.bullets.size(); a++)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(shoot.bullets[a].Position.x, shoot.bullets[a].Position.y, shoot.bullets[a].Position.z);
+			modelStack.Scale(0.5, 0.5, 0.5);
+			RenderMesh(meshList[GEO_BULLET], true);
+			modelStack.PopMatrix();
+		}
 
-	//Render ScenarioRunner
-	ScenarioRunnerRender();
+		//Arun's Wall
 
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_STORE]->position.x, meshList[GEO_STORE]->position.y, meshList[GEO_STORE]->position.z);
-	RenderMesh(meshList[GEO_STORE], false);
-	modelStack.PopMatrix();
+		//Render Scenario2
 
-	if (!TriggerBox::render)
-	{
-		RenderUI();
+		ScenarioArenaRender();
+		for (int i = 0; i < allAliens.size(); i++)
+		{
+			allAliens[i].renderAlien(true, modelStack, viewStack, projectionStack, m_parameters, meshList, player);
+		}
+
+		for (int i = 0; i < events.size(); ++i)
+		{
+			events[i].renderTransition(modelStack, viewStack, projectionStack, m_parameters, meshList[GEO_TEXT], meshList[GEO_BLACKSCREEN]);
+		}
+		//Render Scenario3
+		ScenarioParkourRender();
+
+		//Render ScenarioRunner
+		ScenarioRunnerRender();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(meshList[GEO_STORE]->position.x, meshList[GEO_STORE]->position.y, meshList[GEO_STORE]->position.z);
+		RenderMesh(meshList[GEO_STORE], false);
+		modelStack.PopMatrix();
+
+		if (!TriggerBox::render)
+		{
+			RenderUI();
+		}
+		break;
 	}
 }
 

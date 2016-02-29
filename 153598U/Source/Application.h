@@ -27,6 +27,7 @@ public:
 	void Run();
 	void Exit();
 	static bool IsKeyPressed(unsigned short key);
+	static bool run;
 	static double mouseX;
 	static double mouseY;
 	static double scrollX;

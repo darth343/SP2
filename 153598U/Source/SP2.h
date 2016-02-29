@@ -21,6 +21,13 @@
 
 using std::vector;
 using std::string;
+
+struct button
+{
+	Vector3 mini;
+	Vector3 maxi;
+};
+
 class SP2 : public Scene
 {
 public:
@@ -56,6 +63,9 @@ public:
 		GEO_HELMET,
 		GEO_CROSSHAIR,
 		GEO_MODEL1,
+		GEO_MAINMENU,
+		GEO_MAINMENUBOX1,
+		GEO_MAINMENUBOX2,
 
 		//Turrets
 		GEO_TURRET1,
@@ -275,6 +285,12 @@ static enum UNIFORM_TYPE
 
 		U_TOTAL,
 	};
+enum gameState
+{
+	MAIN_MENU,
+	GAME_START,
+	DISABLE_MOUSE,
+};
 	SP2();
 	~SP2();
 	void ScenarioParkourInit();
@@ -301,6 +317,7 @@ static enum UNIFORM_TYPE
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderOBJonScreen(Mesh* mesh, float sizex, float sizey, float x, float y);
+	void ButtonPress(double mouseX, double mouseY);
 	Mesh* Interaction(double dt);
 
 	private:
@@ -324,7 +341,9 @@ static enum UNIFORM_TYPE
 	bool shot=false ; // when object get shot
 	bool objectDied = false;//when object is dead
 	bool takeDamage = false;
-
+	gameState state = MAIN_MENU;
+	button Start;
+	button Quit;
 	//AI alien;
 	vector<AI> allAliens;
 	Shop shop;
