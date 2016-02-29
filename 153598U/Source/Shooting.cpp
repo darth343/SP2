@@ -4,7 +4,7 @@
 
 Shooting::Shooting()
 {
-	bulletspeed = 125;
+	bulletspeed = 100;
 	delay = 0;
 }
 Shooting::~Shooting()
