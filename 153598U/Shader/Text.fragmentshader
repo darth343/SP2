@@ -128,6 +128,6 @@ void main(){
 				color = texture2D( colorTexture, texCoord );
 		}
 		else
-			color = vec4( fragmentColor, 1 );
+			color = vec4( fragmentColor, material.transparency );
 	}
 }

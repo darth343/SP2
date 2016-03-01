@@ -5,7 +5,7 @@
 Flying::Flying()
 {
 	activated = true;
-	fuel = 100000;
+	fuel = 100;
 	speed = 15;
 }
 Flying::~Flying()

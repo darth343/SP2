@@ -20,6 +20,7 @@ using std::endl;
 
 SP2::SP2()
 {
+	state = MAIN_MENU;
 }
 
 SP2::~SP2()
@@ -31,7 +32,7 @@ void SP2::Init()
 	move.allowInput = true;
 	// Init VBO here
 	// Set background color to dark blue
-	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	//Enable depth buffer and depth testing
 	glEnable(GL_DEPTH_TEST);
@@ -82,10 +83,10 @@ void SP2::Init()
 
 	glUseProgram(m_programID);
 
-	light[0].type = Light::LIGHT_SPOT;
-	light[0].position.Set(7, 7.4, 39);
+	light[0].type = Light::LIGHT_DIRECTIONAL;
+	light[0].position.Set(100, 100, 100);
 	light[0].color.Set(1, 1, 1);
-	light[0].power = 3;
+	light[0].power = 0.8;
 	light[0].kC = 1.f;
 	light[0].kL = 0.01f;
 	light[0].kQ = 0.001f;
@@ -111,7 +112,7 @@ void SP2::Init()
 	rotateAngle = 0;
 
 	//Initialize camera settings
-	camera.Init(Vector3(14, 15, -245), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(18, 15, -243), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
@@ -234,6 +235,7 @@ void SP2::Init()
 	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("Rifle", "OBJ//Rifle.obj");
 	meshList[GEO_RIFLE]->textureID = LoadTGA("Image//Rifle.tga");
 	meshList[GEO_BLACKSCREEN] = MeshBuilder::GenerateQuad("UI", Color(0, 0, 0));
+	meshList[GEO_RUNNERSCREEN] = MeshBuilder::GenerateQuad("RUNSCREEN", Color(0, 0, 0));
 
 	coin.init();
 	//TriggerBox temp(Vector3(-14, 260, -420), Vector3(14, 300, -390), "test");
@@ -252,7 +254,8 @@ void SP2::Init()
 	TriggerBox temp2(Vector3(-14, -500, -9), Vector3(12, -480, 17), Vector3(0, 260, -443), "Reinforcements Inbound for Extraction", "GET TO THE SHIPPAA", 2, 2, 4, 30, 20, 27);
 	events.push_back(temp2);
 
-
+	TriggerBox temp3(Vector3(-15, 240, 413), Vector3(15, 310, 450), Vector3(0, 0, 0), "SWEET VICTORY! You will be remembered", "(Congratulations on Winning!)", 2, 2, 4, 30, 20, 27);
+	events.push_back(temp3);
 }
 
 void SP2::ScenarioArenaInit()
@@ -764,32 +767,51 @@ void SP2::ButtonPress(double mouseX, double mouseY)
 		if (Application::IsKeyPressed(VK_LBUTTON))
 		{
 			Application::run = false;
-=======
-		else if (move.allowInput == false)
-		{
-			move.MovementRunner(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
-			camera.Update(dt);
 		}
-		
-		for (int i = 0; i < 5; ++i)
-		{
-			shoot.ShootingBullets(camera, dt, time, meshList, player);
-			shoot.bulletHitDetection(allAliens, dt, camera);
-		}
-		for (int i = 0; i < allAliens.size(); i++)
-		{
-			for (int j = 0; j < 3; ++j)
-			{
-				allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt, player);
-			}
-
-		}
-		coin.pickup(camera);
 	}
 	else
 	{
 		meshList[GEO_MAINMENUBOX2] = MeshBuilder::GenerateQuad("Box Around Text", Color(1, 0, 0));
 	}
+}
+
+Color SP2::colorRun(Vector3 position)
+{
+	if (15 > position.x && position.x > 10)
+	{
+		//red (1, 0, 0)
+		//pink (1, 0, 1)
+		//red and pink
+		Color color(1, 0, 1 / (position.x - 10));
+		return color;
+	}
+	else if (10 > position.x && position.x > 3)
+	{
+		Color color(position.x / 10, 0, 1);
+		return color; 
+	}
+	else if (3 > position.x && position.x > -1)
+	{
+		Color color(0, 1 / abs(position.x), 1);
+		return color;
+	}
+	else if (-1 > position.x && position.x > -5)
+	{
+		Color color(0, 1, (5 + position.x)/5);
+		return color;
+	}
+	else if (-5 > position.x && position.x > -10)
+	{
+		Color color((abs(position.x)-5)/5, 1, 0);
+		return color;
+	}
+	else if (-10 > position.x && position.x > -15)
+	{
+		Color color(1, 1 / (abs(position.x)-10), 0);
+		return color;
+	}
+
+	return Color(1, 0, 0);
 }
 
 void SP2::Update(double dt)
@@ -803,36 +825,87 @@ void SP2::Update(double dt)
 		break;
 	case DISABLE_MOUSE:
 		glfwSetInputMode(Application::m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		state = GAME_START;
+		state = SCENARIO1;
 		break;
-	case GAME_START:
+	case SCENARIO1:
 		if (!player.isDead())
 		{
 			player.currentItems(dt, camera, meshList, player.object);
 			time += dt;
 			fps = 1 / dt;
-			if (move.allowInput == true)
+			move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
+			camera.Update(dt);
+			shoot.ShootingBullets(camera, dt, time, meshList, player);
+			shoot.bulletHitDetection(allAliens, dt, camera);
+			coin.pickup(camera);
+			if (events[0].TriggerEvent(dt, camera, time))
 			{
-				move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
-				camera.Update(dt);
+				state = TRANSITION1;
 			}
-			else if (move.allowInput == false)
-			{
-				move.MovementRunner(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
-				camera.Update(dt);
-			}
+			glfwSetCursorPos(Application::m_window, 800 / 2, 600 / 2);
+		}
+		break;
+	case TRANSITION1:
+		time += dt;
+		break;
+	case SCENARIO2:
+		if (!player.isDead())
+		{
+			player.currentItems(dt, camera, meshList, player.object);
+			time += dt;
+			fps = 1 / dt;
+			move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
+			camera.Update(dt);
 			shoot.ShootingBullets(camera, dt, time, meshList, player);
 			shoot.bulletHitDetection(allAliens, dt, camera);
 			for (int i = 0; i < allAliens.size(); i++)
 			{
 				allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt, player);
 			}
+			coin.pickup(camera);
+			if (Application::IsKeyPressed('Q'))
+			{
+				AI::deathCount = 9;
+			}
+			if (AI::deathCount == 9)
+			{
+				//subs.init(time);
+				//subs.run(dt);
+				if (events[1].TriggerEvent(dt, camera, time))
+				{
+					state = TRANSITION2;
+				}
+			}
 			glfwSetCursorPos(Application::m_window, 800 / 2, 600 / 2);
 			break;
 		}
-
-		events[i].TriggerEvent(dt, camera, time);
-
+	case TRANSITION2:
+		time += dt;
+		break;
+	case SCENARIO3:
+		if (!player.isDead())
+		{
+			cout << camera.position << endl;
+			player.currentItems(dt, camera, meshList, player.object);
+			time += dt;
+			fps = 1 / dt;
+			move.MovementRunner(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
+			camera.Update(dt, true);
+			meshList[GEO_RUNNERSCREEN] = MeshBuilder::GenerateQuad("RUNSCREEN", colorRun(camera.position));
+			shoot.ShootingBullets(camera, dt, time, meshList, player);
+			shoot.bulletHitDetection(allAliens, dt, camera);
+			coin.pickup(camera);
+			if (events[2].TriggerEvent(dt, camera, time))
+			{
+				state = ENDING;
+			}
+			glfwSetCursorPos(Application::m_window, 800 / 2, 600 / 2);
+			break;
+	case ENDING:
+		time += dt;
+		Application::run = false;
+		break;
+		}
 	}
 }
 
@@ -1124,9 +1197,7 @@ void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float 
 	{
 		modelStack.Rotate(-90, 0, 1, 0);
 	}
-	
-	////modelStack.Translate(camera.position.x + camera.view.x, camera.position.y + camera.view.y, camera.position.z + camera.view.z);
-	//modelStack.Translate(camera.view.x, camera.view.y + camera.position.y, camera.view.z);
+
 	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
 	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 	RenderMesh(mesh, false);
@@ -1855,11 +1926,7 @@ void SP2::RenderCoins()
 
 void SP2::PlayerPoints()
 {
-
 	points = (AI::deathCount * 50) + (coin.acquired * 10);
-
-	points =(coins * 10) + (AI::deathCount * 50);
-
 }
 
 
@@ -2051,14 +2118,11 @@ void SP2::Render()
 		RenderTextOnScreen(meshList[GEO_TEXT], "Start Game", Color(0, 0, 0), 3, 10, 8);
 		RenderTextOnScreen(meshList[GEO_TEXT], "Quit Game", Color(0, 0, 0), 3, 10.5, 5.3);
 		break;
-	case GAME_START:
-		//Axes
-		RenderMesh(meshList[GEO_AXES], false);
-
+	case SCENARIO1:
 		//Skybox
 		RenderSkybox(camera.position);
 
-		for (int a = 0; a <shoot.bullets.size(); a++)
+		for (int a = 0; a < shoot.bullets.size(); a++)
 		{
 			modelStack.PushMatrix();
 			modelStack.Translate(shoot.bullets[a].Position.x, shoot.bullets[a].Position.y, shoot.bullets[a].Position.z);
@@ -2070,48 +2134,67 @@ void SP2::Render()
 		//Arun's Wall
 
 
-	//RenderCoins
-	RenderCoins();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_STORE]->position.x, meshList[GEO_STORE]->position.y, meshList[GEO_STORE]->position.z);
-	RenderMesh(meshList[GEO_STORE], false);
-	modelStack.PopMatrix();
-
-		//Render Scenario2
-
-
-		ScenarioArenaRender();
-		for (int i = 0; i < allAliens.size(); i++)
-		{
-			allAliens[i].renderAlien(true, modelStack, viewStack, projectionStack, m_parameters, meshList, player);
-		}
-
-		for (int i = 0; i < events.size(); ++i)
-		{
-			events[i].renderTransition(modelStack, viewStack, projectionStack, m_parameters, meshList[GEO_TEXT], meshList[GEO_BLACKSCREEN]);
-		}
-		//Render Scenario3
-		ScenarioParkourRender();
-
-		//Render ScenarioRunner
-		ScenarioRunnerRender();
+		//RenderCoins
+		RenderCoins();
 
 		modelStack.PushMatrix();
 		modelStack.Translate(meshList[GEO_STORE]->position.x, meshList[GEO_STORE]->position.y, meshList[GEO_STORE]->position.z);
 		RenderMesh(meshList[GEO_STORE], false);
 		modelStack.PopMatrix();
 
-		if (!TriggerBox::render)
+		//Render Scenario3
+		ScenarioParkourRender();
+		//Render ScenarioRunner
+		//ScenarioRunnerRender();
+		RenderUI();
+		break;
+	case TRANSITION1:
+		if (!events[0].renderTransition(time, camera, modelStack, viewStack, projectionStack, m_parameters, meshList[GEO_TEXT], meshList[GEO_BLACKSCREEN]))
 		{
-			RenderUI();
+			state = SCENARIO2;
 		}
 		break;
-
-	if (!TriggerBox::rendering)
-	{
+	case SCENARIO2:
+		ScenarioArenaRender();
+		for (int i = 0; i < allAliens.size(); i++)
+		{
+			allAliens[i].renderAlien(true, modelStack, viewStack, projectionStack, m_parameters, meshList, player);
+		}
+		for (int a = 0; a < shoot.bullets.size(); a++)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(shoot.bullets[a].Position.x, shoot.bullets[a].Position.y, shoot.bullets[a].Position.z);
+			modelStack.Scale(0.5, 0.5, 0.5);
+			RenderMesh(meshList[GEO_BULLET], true);
+			modelStack.PopMatrix();
+		}
+		RenderCoins();
+		//if (subs.render == true)
+		//{
+		//	if (subs.allSubs.size() > 0)
+		//	{
+		//		RenderTextOnScreen(meshList[GEO_TEXT], subs.allSubs[0].sub, Color(1, 1, 1), 2, 1, 1);
+		//	}
+		//}
 		RenderUI();
-
+		break;
+	case TRANSITION2:
+		if (!events[1].renderTransition(time, camera, modelStack, viewStack, projectionStack, m_parameters, meshList[GEO_TEXT], meshList[GEO_BLACKSCREEN]))
+		{
+			state = SCENARIO3;
+		}
+		break;
+	case SCENARIO3:
+		//Skybox
+		RenderSkybox(camera.position);
+		ScenarioRunnerRender();
+		RenderCoins();
+		glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 0.2);
+		RenderOBJonScreen(meshList[GEO_RUNNERSCREEN], 100, 100, 40, 30);
+		glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
+		break;
+	case ENDING:
+		events[2].renderTransition(time, camera, modelStack, viewStack, projectionStack, m_parameters, meshList[GEO_TEXT], meshList[GEO_BLACKSCREEN]);
 	}
 }
 
@@ -2121,3 +2204,4 @@ void SP2::Exit()
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 	glDeleteProgram(m_programID);
 }
+

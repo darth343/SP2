@@ -22,6 +22,7 @@ public:
 	static Vector3 right;
 	virtual void Init(const Vector3& pos, const Vector3& target, const Vector3& up);
 	virtual void Update(double dt);
+	void Update(double dt, bool disableControls);
 	virtual void Reset();
 };
 

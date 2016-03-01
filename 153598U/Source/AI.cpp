@@ -264,7 +264,7 @@ void AI::renderAlien(bool enableLight, MS modelStack, MS viewStack, MS projectio
 		modelStack.PushMatrix();
 		modelStack.Translate(position.x, position.y + 10, position.z);
 		modelStack.Rotate(getAngle(), 0, 1, 0);
-		SP2::RenderText(meshlist[143], hpDp.str(), Color(1, 0.5, 0.5), modelStack, viewStack, projectionStack, m_parameters);
+		SP2::RenderText(meshlist[145], hpDp.str(), Color(1, 0.5, 0.5), modelStack, viewStack, projectionStack, m_parameters);
 		modelStack.PopMatrix();
 
 		glUniform1f(m_parameters[7], transparency);

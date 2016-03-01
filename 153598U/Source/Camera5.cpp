@@ -66,7 +66,27 @@ void Camera5::Update(double dt)
 
 	up = right.Cross(view);
 }
+void Camera5::Update(double dt, bool disableControls)
+{
+	view = Vector3(
 
+		cos(Math::DegreeToRadian(0)) * sin(Math::DegreeToRadian(0)),
+
+		sin(Math::DegreeToRadian(0)),
+
+		cos(Math::DegreeToRadian(0)) * cos(Math::DegreeToRadian(0))
+
+		);
+	target = position + view;
+
+	// Right vector
+	right = Vector3(
+		sin(Math::DegreeToRadian(horiRot - 90)),
+		0,
+		cos(Math::DegreeToRadian(horiRot - 90)));
+
+	up = right.Cross(view);
+}
 void Camera5::Reset()
 {
 	position = defaultPosition;

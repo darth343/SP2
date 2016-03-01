@@ -19,6 +19,7 @@
 #include "Player.h"
 #include "TriggerBox.h"
 #include "Coins.h"
+#include "Scenario2Subs.h"
 
 using std::vector;
 using std::string;
@@ -207,6 +208,7 @@ public:
 		GEO_PISTOL,
 		GEO_SMG,
 		GEO_BLACKSCREEN, 
+		GEO_RUNNERSCREEN,
 		NUM_GEOMETRY,
 	};
 static enum UNIFORM_TYPE
@@ -248,7 +250,12 @@ static enum UNIFORM_TYPE
 enum gameState
 {
 	MAIN_MENU,
-	GAME_START,
+	SCENARIO1,
+	TRANSITION1,
+	SCENARIO2,
+	TRANSITION2,
+	SCENARIO3,
+	ENDING,
 	DISABLE_MOUSE,
 };
 	SP2();
@@ -280,6 +287,7 @@ enum gameState
 	void RenderOBJonScreen(Mesh* mesh, float sizex, float sizey, float x, float y);
 	void ButtonPress(double mouseX, double mouseY);
 	Mesh* Interaction(double dt);
+	Color colorRun(Vector3 position);
 
 	private:
 	unsigned m_programID;
@@ -294,6 +302,7 @@ enum gameState
 	Movement move;
 	Camera5 camera;
 	string timeDisplay="Time : ";
+	Scenario2_Subtitles subs;
 	float time = 0;
 	float delay = 0;
 	int points = 0;
@@ -304,10 +313,7 @@ enum gameState
 	//Coins
 	coins coin;
 	int coins = 0;
-	bool shot=false ; // when object get shot
-	bool objectDied = false;//when object is dead
-	bool takeDamage = false;
-	gameState state = MAIN_MENU;
+	gameState state;
 	button Start;
 	button Quit;
 	//AI alien;
