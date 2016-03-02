@@ -236,6 +236,8 @@ void SP2::Init()
 	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("Rifle", "OBJ//Rifle.obj");
 	meshList[GEO_RIFLE]->textureID = LoadTGA("Image//Rifle.tga");
 	meshList[GEO_BLACKSCREEN] = MeshBuilder::GenerateQuad("UI", Color(0, 0, 0));
+	meshList[GEO_GAMEOVER] = MeshBuilder::GenerateQuad("UI", Color(0, 0, 0));
+	meshList[GEO_GAMEOVER]->textureID = LoadTGA("Image//GameOver.tga");
 	meshList[GEO_RUNNERSCREEN] = MeshBuilder::GenerateQuad("RUNSCREEN", Color(0, 0, 0));
 
 	coin.init();
@@ -1239,6 +1241,11 @@ void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float 
 		modelStack.Rotate(-90, 0, 1, 0);
 	}
 
+	if (mesh == meshList[GEO_GAMEOVER])
+	{
+		modelStack.Rotate(-90, 0, 1, 0);
+	}
+
 	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
 	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 	RenderMesh(mesh, false);
@@ -2236,7 +2243,12 @@ void SP2::Render()
 		glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
 		break;
 	case ENDING:
+		RenderOBJonScreen(meshList[GEO_GAMEOVER], 80, 60, 40, 30);
 		events[2].renderTransition(time, camera, modelStack, viewStack, projectionStack, m_parameters, meshList[GEO_TEXT], meshList[GEO_BLACKSCREEN]);
+		std::ostringstream pointsDisplay;
+		pointsDisplay << "Total Points Earned: " << points;
+		RenderTextOnScreen(meshList[GEO_TEXT], pointsDisplay.str(), Color(1, 0, 0), 3, 0, 0);
+
 	}
 }
 
