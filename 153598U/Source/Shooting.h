@@ -31,6 +31,8 @@ public:
 	vector<Bullet> bullets;
 	float bulletspeed;
 	float delay;
+	bool shooting = false;
+	float flashTime = 0;
 	//bool GunFiring;
 	//bool JetFiring;
 };

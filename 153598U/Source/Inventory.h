@@ -15,8 +15,8 @@ public:
 		Rifle.ammo = 100;
 		SMG.ammo = 100;
 		Pistol.ammo = 1000;
+		Pistol.semiAuto = true;
 		SMG.delayMultiplier = 0.1;
-		Pistol.delayMultiplier = 0.7;
 	};
 	~Inventory(){};
 	

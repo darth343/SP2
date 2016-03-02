@@ -20,6 +20,7 @@ public:
 	};
 	~TriggerBox(){};
 
+	double getRunTime() { return runTime; };
 	bool TriggerEvent(double dt, Camera5 camera, double time);
 	bool renderTransition(double dt, Camera5 &camera, MS ms, MS vs, MS ps, unsigned int m_parameters[25], Mesh * text, Mesh * screen);
 	bool render;

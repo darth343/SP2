@@ -42,47 +42,26 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 			temp.trajectory = Vector3(Vector3(camera.view * 500) - camera.right);
 			bullets.push_back(temp);
 			delay = time + player.inv.GunSelected->delayMultiplier;
-
 			player.inv.GunSelected->ammo--;
+			if (shooting == false)
+			{
+				flashTime = time + 0.02;
+				shooting = true;
 			}
-
+			}
 		}
 	}
-	if (Application::IsKeyPressed(VK_LBUTTON) && player.inv.GunSelected->semiAuto == true && player.inv.GunSelected->stopFiring == false)
+	if (time >= flashTime)
 	{
-			if (player.inv.GunSelected->ammo > 0)
-			{
-				Bullet temp;
-				temp.Position = camera.right + camera.position;
-				temp.start = camera.right + camera.position;
-				if (player.inv.GunSelected == &player.inv.Rifle)
-				{
-					temp.Position.y -= 0.4;
-					temp.Position.x += 0.3;
-				}
-				else if (player.inv.GunSelected == &player.inv.Pistol)
-				{
-					temp.Position.y -= 0.5;
-					temp.Position.x -= 0.2;
-				}
-				else if (player.inv.GunSelected == &player.inv.SMG)
-				{
-					temp.Position.y -= 0.6;
-					temp.Position.x += 0.1;
-				}
-				temp.trajectory = Vector3(Vector3(camera.view * 500) - camera.right);
-				bullets.push_back(temp);
-				delay = time + player.inv.GunSelected->delayMultiplier;
-
-				player.inv.GunSelected->ammo--;
-				player.inv.GunSelected->stopFiring = true;
-			}
+		shooting = false;
 	}
-	else if (!Application::IsKeyPressed(VK_LBUTTON))
+	if (Application::IsKeyPressed(VK_LBUTTON) && player.inv.GunSelected->semiAuto == true && shooting == false)
 	{
-	player.inv.GunSelected->stopFiring = false;
 	}
+}
 
+void Shooting::bulletHitDetection(vector<AI> &mobs, double dt, Camera5 camera)
+{
 	if (bullets.size() > 0)
 	{
 		for (int i = 0; i < bullets.size(); i++)
@@ -92,10 +71,6 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 			bullets[i].Position.z += bullets[i].trajectory.Normalized().z * dt * bulletspeed;
 		}
 	}
-}
-
-void Shooting::bulletHitDetection(vector<AI> &mobs, double dt, Camera5 camera)
-{
 	for (int i = 0; i < bullets.size(); ++i)
 	{
 		for (int j = 0; j < mobs.size(); ++j)
