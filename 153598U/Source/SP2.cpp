@@ -34,7 +34,7 @@ void SP2::Init()
 	// Set background color to dark blue
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-	//Enable depth buffer and depth testing
+	//Enable depth buffer and depth testinge
 	glEnable(GL_DEPTH_TEST);
 
 	//Enable back face culling
@@ -86,7 +86,7 @@ void SP2::Init()
 	light[0].type = Light::LIGHT_DIRECTIONAL;
 	light[0].position.Set(100, 100, 100);
 	light[0].color.Set(1, 1, 1);
-	light[0].power = 0.8;
+	light[0].power = 1;
 	light[0].kC = 1.f;
 	light[0].kL = 0.01f;
 	light[0].kQ = 0.001f;
@@ -113,9 +113,10 @@ void SP2::Init()
 
 	//Initialize camera settings
 	camera.Init(Vector3(18, 15, -243), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	//camera.Init(Vector3(0, 270, -443), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	Mtx44 projection;
-	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
+	projection.SetToPerspective(45.f, 16.f / 9.f, 0.1f, 10000.f);
 	projectionStack.LoadMatrix(projection);
 
 	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("reference", 1000, 1000, 1000);
@@ -142,7 +143,7 @@ void SP2::Init()
 	ScenarioRunnerInit();
 	
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text",16,16);
-	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_TEXT]->textureID = LoadTGA("Image//alienText.tga");
 
 	meshList[GEO_FLASH] = MeshBuilder::GenerateQuad("flash",Color(0,0,0));
 	meshList[GEO_FLASH]->textureID = LoadTGA("Image//flash.tga");
@@ -242,11 +243,11 @@ void SP2::Init()
 	//events.push_back(temp);
 
 
-	Start.mini = Vector3(290, 324, 0);
-	Start.maxi = Vector3(590, 373, 0);
+	Start.mini = Vector3(462, 389, 0);
+	Start.maxi = Vector3(942, 450, 0);
 
-	Quit.mini = Vector3(290, 404, 0);
-	Quit.maxi = Vector3(590, 455, 0);
+	Quit.mini = Vector3(462, 486, 0);
+	Quit.maxi = Vector3(943, 547, 0);
 
 	TriggerBox temp(Vector3(-35, 10, -250), Vector3(-4, 50, -228), Vector3(160, -492, -250), "Your Ship is under Attack!", "Kill All Aliens", 3, 2.5, 2, 30, 20, 27);
 	events.push_back(temp);
@@ -254,8 +255,14 @@ void SP2::Init()
 	TriggerBox temp2(Vector3(-14, -500, -9), Vector3(12, -480, 17), Vector3(0, 260, -443), "Reinforcements Inbound for Extraction", "GET TO THE SHIPPAA", 2, 2, 4, 30, 20, 27);
 	events.push_back(temp2);
 
-	TriggerBox temp3(Vector3(-15, 240, 413), Vector3(15, 310, 450), Vector3(0, 0, 0), "SWEET VICTORY! You will be remembered", "(Congratulations on Winning!)", 2, 2, 4, 30, 20, 27);
+	TriggerBox temp3(Vector3(-15, 240, 413), Vector3(15, 310, 450), Vector3(0, 0, 0), "SWEET VICTORY! You made it back safely!", "(Congratulations on Winning!)", 2, 2, 4, 30, 20, 27);
 	events.push_back(temp3);
+
+	TriggerBox temp4(Vector3(-100, -40, -260), Vector3(42, -15, 327), Vector3(0, 0, 0), "", "", 2, 2, 4, 30, 20, 27);
+	events.push_back(temp4);
+
+	TriggerBox temp5(Vector3(-100, 230, -450), Vector3(100, 250, 450), Vector3(0, 260, -443), "", "", 2, 2, 4, 30, 20, 27);
+	events.push_back(temp5);
 }
 
 void SP2::ScenarioArenaInit()
@@ -838,11 +845,19 @@ void SP2::Update(double dt)
 			shoot.ShootingBullets(camera, dt, time, meshList, player);
 			shoot.bulletHitDetection(allAliens, dt, camera);
 			coin.pickup(camera);
+			if (events[3].TriggerEvent(dt, camera, time))
+			{
+				camera.position = Vector3(18, 15, -243);
+				camera.horiRot = 0;
+				camera.vertRot = 0;
+				camera.target = camera.view + camera.position;
+				events[3].triggered = false;
+			}
 			if (events[0].TriggerEvent(dt, camera, time))
 			{
 				state = TRANSITION1;
 			}
-			glfwSetCursorPos(Application::m_window, 800 / 2, 600 / 2);
+			glfwSetCursorPos(Application::m_window, 1280 / 2, 720 / 2);
 		}
 		break;
 	case TRANSITION1:
@@ -856,11 +871,17 @@ void SP2::Update(double dt)
 			fps = 1 / dt;
 			move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
 			camera.Update(dt);
-			shoot.ShootingBullets(camera, dt, time, meshList, player);
-			shoot.bulletHitDetection(allAliens, dt, camera);
-			for (int i = 0; i < allAliens.size(); i++)
+			for (int i = 0; i < 3; ++i)
 			{
-				allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt, player);
+				shoot.ShootingBullets(camera, dt, time, meshList, player);
+				shoot.bulletHitDetection(allAliens, dt, camera);
+			}
+			for (int i = 0; i < 3; ++i)
+			{
+				for (int i = 0; i < allAliens.size(); i++)
+				{
+					allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt, player);
+				}
 			}
 			coin.pickup(camera);
 			if (Application::IsKeyPressed('Q'))
@@ -876,9 +897,18 @@ void SP2::Update(double dt)
 					state = TRANSITION2;
 				}
 			}
-			glfwSetCursorPos(Application::m_window, 800 / 2, 600 / 2);
-			break;
+			glfwSetCursorPos(Application::m_window, 1280 / 2, 720 / 2);
 		}
+		else
+		{
+			camera.position = Vector3(160, -492, -250);
+			player.inv.Rifle.ammo = 100;
+			player.inv.SMG.ammo = 100;
+			player.inv.Pistol.ammo = 100;
+			player.Health = 100;
+
+		}
+		break;
 	case TRANSITION2:
 		time += dt;
 		break;
@@ -895,15 +925,26 @@ void SP2::Update(double dt)
 			shoot.ShootingBullets(camera, dt, time, meshList, player);
 			shoot.bulletHitDetection(allAliens, dt, camera);
 			coin.pickup(camera);
+			if (events[4].TriggerEvent(dt, camera, time))
+			{
+				camera.position = Vector3(0, 270, -443);
+				camera.horiRot = 0;
+				camera.vertRot = 0;
+				camera.target = camera.view + camera.position;
+				events[4].triggered = false;
+			}
 			if (events[2].TriggerEvent(dt, camera, time))
 			{
 				state = ENDING;
 			}
-			glfwSetCursorPos(Application::m_window, 800 / 2, 600 / 2);
+			glfwSetCursorPos(Application::m_window, 1280 / 2, 720 / 2);
 			break;
 	case ENDING:
 		time += dt;
-		Application::run = false;
+		if (!events[2].rendering)
+		{
+			Application::run = false;
+		}
 		break;
 		}
 	}
@@ -1917,10 +1958,11 @@ void SP2::RenderCoins()
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(coin.allCoins[i]->position.x, coin.allCoins[i]->position.y, coin.allCoins[i]->position.z);
-		modelStack.Rotate(coin.rotateAngle++, 0, 1, 0);
+		modelStack.Rotate(coin.rotateAngle, 0, 1, 0);
 		RenderMesh(coin.allCoins[i], true);
 		modelStack.PopMatrix();
 	}
+	coin.rotateAngle+=2;
 }
 
 
@@ -2203,5 +2245,10 @@ void SP2::Exit()
 	// Cleanup VBO here
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 	glDeleteProgram(m_programID);
+}
+
+void SP2::Reset()
+{
+	Init();
 }
 

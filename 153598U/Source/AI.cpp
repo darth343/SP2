@@ -492,7 +492,7 @@ void AI::damagePlayer(Player & player)
 {
 	if (distance.Length() < 13)
 	{
-		player.Health -= 3;
+		player.Health -= 5;
 	}
 }
 

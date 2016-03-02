@@ -44,9 +44,9 @@ void Camera5::Update(double dt)
 
 	const int yFOV = 85;
 
-	horiRot += mouseSpeed * dt * float(800 / 2 - Application::mouseX);
-	if (vertRot + mouseSpeed * dt * float(600 / 2 - Application::mouseY) < yFOV && vertRot + mouseSpeed * dt * float(600 / 2 - Application::mouseY) > -yFOV)
-		vertRot += mouseSpeed * dt * float(600 / 2 - Application::mouseY);
+	horiRot += mouseSpeed * dt * float(1280 / 2 - Application::mouseX);
+	if (vertRot + mouseSpeed * dt * float(720 / 2 - Application::mouseY) < yFOV && vertRot + mouseSpeed * dt * float(720 / 2 - Application::mouseY) > -yFOV)
+		vertRot += mouseSpeed * dt * float(720 / 2 - Application::mouseY);
 
 	view = Vector3(
 

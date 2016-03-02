@@ -286,6 +286,7 @@ enum gameState
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderOBJonScreen(Mesh* mesh, float sizex, float sizey, float x, float y);
 	void ButtonPress(double mouseX, double mouseY);
+	void Reset();
 	Mesh* Interaction(double dt);
 	Color colorRun(Vector3 position);
 
