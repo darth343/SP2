@@ -13,10 +13,13 @@
 #include <sstream>
 #include <string>
 #include <iomanip>
-
+#include <fstream>
+#include <strstream>
+#include <stdio.h>
 
 using std::cout;
 using std::endl;
+
 
 SP2::SP2()
 {
@@ -113,6 +116,7 @@ void SP2::Init()
 
 	//Initialize camera settings
 	camera.Init(Vector3(18, 15, -243), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	//camera.Init(Vector3(0, 260, -443), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
@@ -258,6 +262,8 @@ void SP2::Init()
 
 	TriggerBox temp3(Vector3(-15, 240, 413), Vector3(15, 310, 450), Vector3(0, 0, 0), "SWEET VICTORY! You will be remembered", "(Congratulations on Winning!)", 2, 2, 4, 30, 20, 27);
 	events.push_back(temp3);
+
+	highscore.init();
 }
 
 void SP2::ScenarioArenaInit()
@@ -2141,9 +2147,6 @@ void SP2::Render()
 			modelStack.PopMatrix();
 		}
 
-		//Arun's Wall
-
-
 		//RenderCoins
 		RenderCoins();
 
@@ -2179,13 +2182,7 @@ void SP2::Render()
 			modelStack.PopMatrix();
 		}
 		RenderCoins();
-		//if (subs.render == true)
-		//{
-		//	if (subs.allSubs.size() > 0)
-		//	{
-		//		RenderTextOnScreen(meshList[GEO_TEXT], subs.allSubs[0].sub, Color(1, 1, 1), 2, 1, 1);
-		//	}
-		//}
+
 		RenderUI();
 		break;
 	case TRANSITION2:
@@ -2194,6 +2191,7 @@ void SP2::Render()
 			state = SCENARIO3;
 		}
 		break;
+
 	case SCENARIO3:
 		//Skybox
 		RenderSkybox(camera.position);
@@ -2209,6 +2207,42 @@ void SP2::Render()
 		std::ostringstream pointsDisplay;
 		pointsDisplay << "Total Points Earned: " << points;
 		RenderTextOnScreen(meshList[GEO_TEXT], pointsDisplay.str(), Color(1, 0, 0), 3, 0, 0);
+		highscore.data.push_back(points);
+		std::ofstream OutputFile("Scores//HighScore.txt");
+		vector<int> temp(highscore.data);
+		highscore.data.clear();
+		int highestscore = 0;
+		int slot = 0;
+		while (temp.size() > 0)
+		{
+			for (int i = 0; i < temp.size(); ++i)
+			{
+				if (temp[i] > highestscore)
+				{
+					highestscore = temp[i];
+					slot = i;
+				}
+			}
+			cout << temp.size() << endl;
+			temp.erase(temp.begin() + slot);
+			highscore.data.push_back(highestscore);
+			highestscore = 0;
+			if (slot <= 0)
+			{
+				break;
+			}
+		}
+		for (int i = 0; i < highscore.data.size(); ++i)
+		{
+			OutputFile << highscore.data[i] << '\n';
+		}
+		OutputFile.close();
+		for (int i = 0; i < highscore.data.size(); ++i)
+		{
+			pointsDisplay.str("");
+			pointsDisplay << highscore.data[i];
+			RenderTextOnScreen(meshList[GEO_TEXT], pointsDisplay.str(), Color(1, 0, 0), 3, 10, 5-i);
+		}
 
 	}
 }

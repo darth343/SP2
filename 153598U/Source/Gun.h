@@ -6,7 +6,7 @@
 struct Gun
 {
 public:
-	Gun(){delayMultiplier = 0.3; semiAuto = false;};
+    Gun(){delayMultiplier = 0.3; semiAuto = false;};
 	~Gun(){};
 
 	bool semiAuto;
