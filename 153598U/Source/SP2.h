@@ -20,6 +20,7 @@
 #include "TriggerBox.h"
 #include "Coins.h"
 #include "Scenario2Subs.h"
+#include "HighScore.h"
 
 using std::vector;
 using std::string;
@@ -399,6 +400,7 @@ enum gameState
 	Player player;
 	Vector3 pivot;
 	vector<TriggerBox> events;
+	HighScore highscore;
 };
 
 #endif

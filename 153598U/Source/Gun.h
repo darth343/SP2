@@ -6,18 +6,14 @@
 struct Gun
 {
 public:
-	Gun()
-	{
-		delayMultiplier = 0.3; semiAuto = false;
-		stopFiring = false;
-	};
+    Gun(){delayMultiplier = 0.3; semiAuto = false;};
 	~Gun(){};
 
 	bool semiAuto;
 	float delayMultiplier;
-	bool stopFiring;
 	bool  shotOne;
 	bool  shotTwo;
+	bool  stopFiring;
 	int ammo = 0;
 
 };
