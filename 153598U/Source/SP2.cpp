@@ -697,16 +697,10 @@ void SP2::ScenarioParkourInit()
 	meshList[GEO_MODEL1]->interactable = true;
 
 	//TEXT
-	meshList[GEO_TIMEDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TIMEDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_JETPACKUI] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_JETPACKUI]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_TIME] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TIME]->textureID = LoadTGA("Image//calibri.tga");
+
+
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//alienText.tga");
-
-
 }
 
 void SP2::ScenarioRunnerInit()

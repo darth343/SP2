@@ -1,17 +1,48 @@
+/****************************************************************************/
+/*!
+\file FlyingClass.cpp
+\author Kenzo-Hari
+\par email: 155113m\@mymail.nyp.edu.sg
+\brief
+Definition of all methods declared in FlyingClass.h
+*/
+/****************************************************************************/
 #include "FlyingClass.h"
 #include "Application.h"
 #include <iostream>
 
+/****************************************************************************/
+/*!
+\brief
+Flying Constructor
+Construct Flying Class by initializing boolean, fuel and speed
+*/
+/****************************************************************************/
 Flying::Flying()
 {
 	activated = true;
 	fuel = 100;
 	speed = 15;
 }
+
+/****************************************************************************/
+/*!
+\brief
+Flying deconstructor
+Deconstructs Flying Class
+*/
+/****************************************************************************/
 Flying::~Flying()
 {
 }
 
+/****************************************************************************/
+/*!
+\brief
+Method for using jetpacks
+Method to take in min and max so that it cheks if the player is able to move or not
+*/
+/****************************************************************************/
 void Flying::Fly(double dt, Camera5 &camera, Mesh** meshList, int start, int end, int height)
 {
 	float fuelrate = 0.8;

@@ -2,20 +2,59 @@
 #include "Application.h"
 
 #include <iostream>
+/**************************************************************************************************/
+/*!
+\file     Shop.cpp
+\author   Jeffrey Low Zheng Long
+\par
+\brief
+Functions for the shop
+*/
+/**************************************************************************************************/
+
+
+
+
+
+
+/************************************************************************/
+/*!
+\brief A constructor for the Shop and for initialising
+*/
+/***********************************************************************/
 Shop::Shop()
 {
 	openShop = false;
 }
+/************************************************************************/
+/*!
+\brief A destructor for the shop
+*/
+/***********************************************************************/
 Shop::~Shop()
 {
 
 }
+
+/************************************************************************/
+/*!
+\brief A function for handling shopping purchases
+\param takes in a reference to the inv and points
+*/
+/***********************************************************************/
 void Shop::shopping(Inventory &inv, int &points)
 {
 	buyRifle(inv,points);
 	buySMG(inv,points);
 	buyPistol(inv,points);
 }
+
+/************************************************************************/
+/*!
+\brief A function that identify a shop mesh
+\param takes in delta time,camera and mesh list
+*/
+/***********************************************************************/
 Mesh* Shop::ShopInteraction(double dt, Camera5 camera, Mesh** meshList)
 {
 
@@ -50,7 +89,12 @@ Mesh* Shop::ShopInteraction(double dt, Camera5 camera, Mesh** meshList)
 	//meshList[SP2::GEO_STORE]->lookAtShop = false;
 	return nullptr;
 }
-
+/************************************************************************/
+/*!
+\brief A boolean function that buys Rifle Ammo
+\param takes in a reference to inventory and points
+*/
+/***********************************************************************/
 bool Shop::buyRifle(Inventory &inv, int &points)
 {
 
@@ -65,6 +109,13 @@ bool Shop::buyRifle(Inventory &inv, int &points)
 	else
 		return false;
 }
+/************************************************************************/
+/*!
+\brief A boolean function that buys SMG ammo
+\param takes in a reference to inventory and points
+*/
+/***********************************************************************/
+
 bool Shop::buySMG(Inventory &inv, int &points)
 {
 	if (Application::IsKeyPressed('2') && inv.SMG.ammo < 600 && points>=35)
@@ -78,9 +129,16 @@ bool Shop::buySMG(Inventory &inv, int &points)
 	else
 		return false;
 }
+
+/************************************************************************/
+/*!
+\brief A boolean function that buys Pistol ammo
+\param takes in a reference to inventory and points
+*/
+/***********************************************************************/
 bool Shop::buyPistol(Inventory &inv, int &points)
 {
-	if (Application::IsKeyPressed('3') && inv.Pistol.ammo < 90 &&  points>=20)
+	if (Application::IsKeyPressed('3') && inv.Pistol.ammo < 90 && points>=20)
 	{
 		inv.Pistol.ammo = 90;
 		cout << "bought Pistol,ammo: "<<inv.Pistol.ammo << endl;
