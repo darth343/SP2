@@ -582,6 +582,8 @@ void SP2::ScenarioParkourInit()
 	meshList[GEO_ENEMYHEALTHDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
+
+
 }
 
 void SP2::ScenarioRunnerInit()
@@ -1343,6 +1345,10 @@ void SP2::ScenarioArenaRender()
 {
 	//FloorShip
 
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_STORE]->position.x, meshList[GEO_STORE]->position.y, meshList[GEO_STORE]->position.z);
+	RenderMesh(meshList[GEO_STORE], false);
+	modelStack.PopMatrix();
 
 
 	modelStack.PushMatrix();
@@ -1593,10 +1599,6 @@ void SP2::ScenarioArenaRender()
 	RenderMesh(meshList[GEO_4THMAZEWALL8], true);
 	modelStack.PopMatrix();
 
-	modelStack.PushMatrix();
-	modelStack.Translate(meshList[GEO_STORE]->position.x, meshList[GEO_STORE]->position.y, meshList[GEO_STORE]->position.z);
-	RenderMesh(meshList[GEO_STORE], false);
-	modelStack.PopMatrix();
 	
 
 }

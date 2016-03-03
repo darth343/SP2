@@ -13,7 +13,7 @@ public:
 	void currentItems(double dt,Camera5 camera,Mesh** meshList);
 	bool isDead();
 	float getScaleHealth();
-	int points=50;	
+	int points=0;	
 	Inventory inv;
 	float Health;
 	Mesh* object;
