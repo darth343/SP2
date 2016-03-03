@@ -6,8 +6,6 @@
 #include "MeshBuilder.h"
 #include "LoadTGA.h"
 #include "Application.h"
-#include "Camera2.h"
-
 #include "Utility.h"
 #include <iostream>
 #include <sstream>
@@ -251,9 +249,6 @@ void SP2::Init()
 	
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text",16,16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//alienText.tga");
-
-	meshList[GEO_FLASH] = MeshBuilder::GenerateQuad("flash",Color(0,0,0));
-	meshList[GEO_FLASH]->textureID = LoadTGA("Image//flash.tga");
 
 	//UI
 	meshList[GEO_HELMET] = MeshBuilder::GenerateQuad("UI", Color(0,0,0));
@@ -1038,7 +1033,7 @@ void SP2::Update(double dt)
 					allAliens[i].move(camera, meshList, dt, player);
 				}
 			}
-			for (int i = 0; i < allAliens.size(); i++)
+			for (int i = 0; i < allAliens.size(); ++i)
 			{
 				allAliens[i].findPath(camera, meshList, GEO_ARENAFRONTWALL1, GEO_RAINBOW);
 			}

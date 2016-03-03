@@ -2,7 +2,6 @@
 #define SP2_H
 
 #include "Scene.h"
-#include "Camera4.h"
 #include "Camera5.h"
 #include "Mesh.h"
 #include "MatrixStack.h"
@@ -198,7 +197,6 @@ public:
 		//RunnerEnd
 		GEO_TEXT,
 		GEO_RIFLE,
-		GEO_FLASH,
 		GEO_PATH_F,
 		GEO_PATH_V,
 		GEO_PATH_O,

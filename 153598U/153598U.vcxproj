@@ -85,7 +85,6 @@
     <ClCompile Include="Source\AI.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Coins.cpp" />
-    <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\FlyingClass.cpp" />
     <ClCompile Include="Source\HighScore.cpp" />
     <ClCompile Include="Source\Inventory.cpp" />
@@ -97,7 +96,6 @@
     <ClCompile Include="Source\Shop.cpp" />
     <ClCompile Include="Source\SP2.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
-    <ClCompile Include="Source\Camera4.cpp" />
     <ClCompile Include="Source\Camera5.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />

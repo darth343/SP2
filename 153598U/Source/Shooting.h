@@ -17,7 +17,6 @@ using std::vector;
 /*!
 \file     Shooting.h
 \author   Jeffrey Low Zheng Long
-\par
 \brief
 class for Shooting stuff
 */

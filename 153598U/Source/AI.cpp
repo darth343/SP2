@@ -88,6 +88,10 @@ Finds a path from current position to player
 /****************************************************************************/
 void AI::findPath(Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd)
 {
+	if (distance.Length() >= 30)
+	{
+		return;
+	}
 	if (m_path.getPath().size() <= 1 && (distance.Length() < 30 && distance.Length() > 13))
 	{
 		if (camera.position != prevPos)
@@ -97,10 +101,6 @@ void AI::findPath(Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd
 			m_path.FindPath(position, camera.position, meshList, modelStart, modelEnd);
 			prevPos = camera.position;
 		}
-	}
-	else
-	{
-		return;
 	}
 }
 /****************************************************************************/

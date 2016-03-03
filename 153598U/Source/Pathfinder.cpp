@@ -1,7 +1,23 @@
+/****************************************************************************/
+/*!
+\file PathFinder.cpp
+\author Arun Ezekiel
+\par email: 153598U\@mymail.nyp.edu.sg
+\brief
+Definition of all methods declared in Pathfinder.h
+*/
+/****************************************************************************/
 #include "Pathfinder.h"
 #include "SP2.h"
 #include "fstream"
 #include <iostream>
+/****************************************************************************/
+/*!
+\brief
+PathFinding Constructor
+Construct PathFinding class with booleans set to false
+*/
+/****************************************************************************/
 PathFinding::PathFinding()
 {
 	m_initializedStartGoal = false;
@@ -11,9 +27,17 @@ PathFinding::PathFinding()
 PathFinding::~PathFinding()
 {
 }
+/****************************************************************************/
+/*!
+\brief
+Find Path towards goal
+\param currentPos, targetPos, meshList, modelStart, modelEnd
+Finds a path from current position to target position
+*/
+/****************************************************************************/
 void PathFinding::FindPath(Vector3 currentPos, Vector3 targetPos, Mesh ** meshList, int modelStart, int modelEnd)
 {
-		for (int i = 0; i < 75; i++)
+		for (int i = 0; i < 50; i++)
 		{
 			if (!m_initializedStartGoal)
 			{
@@ -60,7 +84,14 @@ void PathFinding::FindPath(Vector3 currentPos, Vector3 targetPos, Mesh ** meshLi
 			}
 		}
 }
-
+/****************************************************************************/
+/*!
+\brief
+Start and Goal Node setter
+\param start and goal
+Sets variables  Start and Goal node
+*/
+/****************************************************************************/
 void PathFinding::SetStartAndGoal(Node start, Node goal)
 {
 	start.m_X = start.m_X - (fmod(start.m_X, 2));
@@ -75,7 +106,14 @@ void PathFinding::SetStartAndGoal(Node start, Node goal)
 	m_start->parent = 0;
 	m_openList.push_back(m_start);
 }
-
+/****************************************************************************/
+/*!
+\brief
+Start and Goal Node setter
+\param start and goal
+Sets variables  Start and Goal node
+*/
+/****************************************************************************/
 Node * PathFinding::getNextCell()
 {
 	float bestF = 999999;
@@ -100,7 +138,14 @@ Node * PathFinding::getNextCell()
 	}
 	return nextNode;
 }
-
+/****************************************************************************/
+/*!
+\brief
+Opens Coordinates to process
+\param x, z, newCost, parent, meshList
+Checks Coordinates and pushes them into m_openList if coordinates are available
+*/
+/****************************************************************************/
 void PathFinding::PathOpened(int x, int z, float newCost, Node * parent, Mesh ** meshList)
 {
 	int offset = 1;
@@ -154,7 +199,14 @@ void PathFinding::PathOpened(int x, int z, float newCost, Node * parent, Mesh **
 	}
 	m_openList.push_back(newChild);
 }
-
+/****************************************************************************/
+/*!
+\brief
+Continues Path
+\param meshList
+Checks all coordinates around the current node and finds path to goal
+*/
+/****************************************************************************/
 void PathFinding::ContinuePath(Mesh ** meshList)
 {
 	if (m_openList.empty())
@@ -217,7 +269,14 @@ void PathFinding::ContinuePath(Mesh ** meshList)
 		}
 	}
 }
-
+/****************************************************************************/
+/*!
+\brief
+Returns next position in path
+\param theMesh
+Returns the next position in the path
+*/
+/****************************************************************************/
 Vector3 PathFinding::NextPathPos(Mesh * theMesh)
 {
 	int index = 1;
