@@ -2548,10 +2548,6 @@ void SP2::Render()
 		break;
 	case SCENARIO2:
 		ScenarioArenaRender();
-		for (int i = 0; i < allAliens.size(); i++)
-		{
-			allAliens[i].renderAlien(true, modelStack, viewStack, projectionStack, m_parameters, meshList, player);
-		}
 		for (int a = 0; a < shoot.bullets.size(); a++)
 		{
 			modelStack.PushMatrix();
@@ -2561,6 +2557,10 @@ void SP2::Render()
 			modelStack.PopMatrix();
 		}
 		RenderCoins();
+		for (int i = 0; i < allAliens.size(); i++)
+		{
+			allAliens[i].renderAlien(true, modelStack, viewStack, projectionStack, m_parameters, meshList, player);
+		}
 
 		RenderUI();
 		break;
