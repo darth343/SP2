@@ -1,5 +1,22 @@
+/****************************************************************************/
+/*!
+\file Movement.cpp
+\author Kenzo-Hari
+\par email: 155113m\@mymail.nyp.edu.sg
+\brief
+Definition of all methods declared in Movement.h
+*/
+/****************************************************************************/
 #include "Movement.h"
 #include "Application.h"
+
+/*!
+\brief
+Character Movement Method
+\param dt, camera, meshList, Start, End
+Method to get min and max of objs so that player will be able to move in free space
+*/
+/****************************************************************************/
 void Movement::MovementCharac(double dt, Camera5 &camera, Mesh ** meshList, int Start, int End)
 {
 	int speed = 50;
@@ -254,53 +271,92 @@ void Movement::MovementCharac(double dt, Camera5 &camera, Mesh ** meshList, int 
 	jetPack.Fly(dt, camera, meshList, Start, End, cameraHeight);
 	Gravity(dt, camera, meshList, Start, End);
 }
+
+/****************************************************************************/
+/*!
+\brief
+Character's movement for Rainbow Dash Scenario
+\param dt, camera, meshList, Start, End
+Method to get min and max of obj so that player stops when camera moves
+*/
+/****************************************************************************/
 void Movement::MovementRunner(double dt, Camera5 &camera, Mesh ** meshList, int Start, int End)
 {
 	int speed = 70;
 	float offset = 2;
 
-		if (camera.position.x + camera.view.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.view.Normalized().x * dt * speed - 1 > -498)
+	if (camera.position.x + camera.view.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.view.Normalized().x * dt * speed - 1 > -498)
+	{
+		bool move = false;
+		for (int i = Start; i < End; i++)
 		{
-			bool move = false;
-			for (int i = Start; i < End; i++)
+			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 			{
-				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-				{
-					if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||  //Check min and max for z axis. If bigger than min, smaller than max, walk = false 
-						camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset || //Check max for z axis. If bigger than min, smaller than max, walk = false 
-						camera.position.x + camera.view.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset || //Check min for x axis. If bigger than min, smaller than max, walk = false 
-						camera.position.x + camera.view.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset || //Check max for x axis. If bigger than min, smaller than max, walk = false 
-						camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
-						camera.position.y - 5 + offset >= meshList[i]->max->y + meshList[i]->position.y + offset)
-					{
-						move = true;
-					}
-					else
-					{
-						move = false;
-						break;
-					}
-				}
-				else
+				if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||  //Check min and max for z axis. If bigger than min, smaller than max, walk = false 
+					camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset || //Check max for z axis. If bigger than min, smaller than max, walk = false 
+					camera.position.x + camera.view.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset || //Check min for x axis. If bigger than min, smaller than max, walk = false 
+					camera.position.x + camera.view.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset || //Check max for x axis. If bigger than min, smaller than max, walk = false 
+					camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
+					camera.position.y - 5 + offset >= meshList[i]->max->y + meshList[i]->position.y + offset)
 				{
 					move = true;
 				}
+				else
+				{
+					move = false;
+					break;
+				}
 			}
-			if (move)
-				camera.position.x += camera.view.Normalized().x * dt * speed;
+			else
+			{
+				move = true;
+			}
 		}
+		if (move)
+			camera.position.x += camera.view.Normalized().x * dt * speed;
+	}
 
-		if (camera.position.z + camera.view.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.view.Normalized().z * dt * speed - 1 > -498)
+	if (camera.position.z + camera.view.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.view.Normalized().z * dt * speed - 1 > -498)
+	{
+		bool move = false;
+		for (int i = Start; i < End; i++)
+		{
+			if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+			{
+				if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
+					camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
+					camera.position.z + camera.view.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
+					camera.position.z + camera.view.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
+					camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
+					camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
+					move = true;
+				else
+				{
+					move = false;
+					break;
+				}
+			}
+			else
+			{
+				move = true;
+			}
+		}
+		if (move)
+			camera.position.z += camera.view.Normalized().z * dt * speed;
+	}
+	if (Application::IsKeyPressed('A'))
+	{
+		if (camera.position.x - camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x - camera.right.Normalized().x * dt * speed - 1 > -498)
 		{
 			bool move = false;
 			for (int i = Start; i < End; i++)
 			{
 				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
-					if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
-						camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
-						camera.position.z + camera.view.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
-						camera.position.z + camera.view.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
+					if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
+						camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
+						camera.position.x - camera.right.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
+						camera.position.x - camera.right.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
 						camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
 						camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
 						move = true;
@@ -316,130 +372,109 @@ void Movement::MovementRunner(double dt, Camera5 &camera, Mesh ** meshList, int 
 				}
 			}
 			if (move)
-				camera.position.z += camera.view.Normalized().z * dt * speed;
+				camera.position.x -= camera.right.Normalized().x * dt * speed;
 		}
-		if (Application::IsKeyPressed('A'))
-		{
-			if (camera.position.x - camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x - camera.right.Normalized().x * dt * speed - 1 > -498)
-			{
-				bool move = false;
-				for (int i = Start; i < End; i++)
-				{
-					if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-					{
-						if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
-							camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
-							camera.position.x - camera.right.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
-							camera.position.x - camera.right.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
-							camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
-							camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
-							move = true;
-						else
-						{
-							move = false;
-							break;
-						}
-					}
-					else
-					{
-						move = true;
-					}
-				}
-				if (move)
-					camera.position.x -= camera.right.Normalized().x * dt * speed;
-			}
 
-			if (camera.position.z - camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.right.Normalized().z * dt * speed - 1 > -498)
-			{
-				bool move = false;
-				for (int i = Start; i < End; i++)
-				{
-					if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-					{
-						if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
-							camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
-							camera.position.z - camera.right.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
-							camera.position.z - camera.right.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
-							camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
-							camera.position.y - 5 + offset> meshList[i]->max->y + meshList[i]->position.y + offset)
-							move = true;
-						else
-						{
-							move = false;
-							break;
-						}
-					}
-					else
-					{
-						move = true;
-					}
-				}
-				if (move)
-					camera.position.z -= camera.right.Normalized().z * dt * speed;
-			}
-		}
-		if (Application::IsKeyPressed('D'))
+		if (camera.position.z - camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z - camera.right.Normalized().z * dt * speed - 1 > -498)
 		{
-			if (camera.position.x + camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.right.Normalized().x * dt * speed - 1 > -498)
+			bool move = false;
+			for (int i = Start; i < End; i++)
 			{
-				bool move = false;
-				for (int i = Start; i < End; i++)
+				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
 				{
-					if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-					{
-						if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
-							camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
-							camera.position.x + camera.right.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
-							camera.position.x + camera.right.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
-							camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
-							camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
-							move = true;
-						else
-						{
-							move = false;
-							break;
-						}
-					}
+					if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
+						camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
+						camera.position.z - camera.right.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
+						camera.position.z - camera.right.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
+						camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
+						camera.position.y - 5 + offset> meshList[i]->max->y + meshList[i]->position.y + offset)
+						move = true;
 					else
 					{
-						move = true;
+						move = false;
+						break;
 					}
 				}
-				if (move)
-					camera.position.x += camera.right.Normalized().x * dt * speed;
-			}
-
-			if (camera.position.z + camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.right.Normalized().z * dt * speed - 1 > -498)
-			{
-				bool move = false;
-				for (int i = Start; i < End; i++)
+				else
 				{
-					if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
-					{
-						if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
-							camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
-							camera.position.z + camera.right.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
-							camera.position.z + camera.right.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
-							camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
-							camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
-							move = true;
-						else
-						{
-							move = false;
-							break;
-						}
-					}
-					else
-					{
-						move = true;
-					}
+					move = true;
 				}
-				if (move)
-					camera.position.z += camera.right.Normalized().z * dt * speed;
 			}
+			if (move)
+				camera.position.z -= camera.right.Normalized().z * dt * speed;
 		}
-		Gravity(dt, camera, meshList, Start, End);
 	}
+	if (Application::IsKeyPressed('D'))
+	{
+		if (camera.position.x + camera.right.Normalized().x * dt * speed + 1 < 498 && camera.position.x + camera.right.Normalized().x * dt * speed - 1 > -498)
+		{
+			bool move = false;
+			for (int i = Start; i < End; i++)
+			{
+				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+				{
+					if (camera.position.z < meshList[i]->min->z + meshList[i]->position.z - offset ||
+						camera.position.z > meshList[i]->max->z + meshList[i]->position.z + offset ||
+						camera.position.x + camera.right.Normalized().x * dt * speed < meshList[i]->min->x + meshList[i]->position.x - offset ||
+						camera.position.x + camera.right.Normalized().x * dt * speed > meshList[i]->max->x + meshList[i]->position.x + offset ||
+						camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
+						camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
+						move = true;
+					else
+					{
+						move = false;
+						break;
+					}
+				}
+				else
+				{
+					move = true;
+				}
+			}
+			if (move)
+				camera.position.x += camera.right.Normalized().x * dt * speed;
+		}
+
+		if (camera.position.z + camera.right.Normalized().z * dt * speed + 1 < 498 && camera.position.z + camera.right.Normalized().z * dt * speed - 1 > -498)
+		{
+			bool move = false;
+			for (int i = Start; i < End; i++)
+			{
+				if (meshList[i]->min != nullptr && meshList[i]->max != nullptr)
+				{
+					if (camera.position.x < meshList[i]->min->x + meshList[i]->position.x - offset ||
+						camera.position.x > meshList[i]->max->x + meshList[i]->position.x + offset ||
+						camera.position.z + camera.right.Normalized().z * dt * speed > meshList[i]->max->z + meshList[i]->position.z + offset ||
+						camera.position.z + camera.right.Normalized().z * dt * speed < meshList[i]->min->z + meshList[i]->position.z - offset ||
+						camera.position.y < meshList[i]->min->y + meshList[i]->position.y - offset ||
+						camera.position.y - 5 + offset > meshList[i]->max->y + meshList[i]->position.y + offset)
+						move = true;
+					else
+					{
+						move = false;
+						break;
+					}
+				}
+				else
+				{
+					move = true;
+				}
+			}
+			if (move)
+				camera.position.z += camera.right.Normalized().z * dt * speed;
+		}
+	}
+	Gravity(dt, camera, meshList, Start, End);
+}
+
+/****************************************************************************/
+/*!
+\brief
+Method for Gravity
+\param dt, camera, meshList, Start, End
+Change of gravity for player
+*/
+/****************************************************************************/
 void Movement::Gravity(double dt, Camera5 &camera, Mesh ** meshList, int Start, int End)
 {
 	float fuelrate = 0.8;
@@ -522,7 +557,7 @@ void Movement::Gravity(double dt, Camera5 &camera, Mesh ** meshList, int Start, 
 		}
 		if (jetPack.fuel < 100)
 		{
-			jetPack.fuel += rechargeRate;	
+			jetPack.fuel += rechargeRate;
 			if (jetPack.fuel > 60)
 			{
 				jetPack.activated = true;
