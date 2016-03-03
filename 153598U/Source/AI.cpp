@@ -1,9 +1,26 @@
+/****************************************************************************/
+/*!
+\file AI.cpp
+\author Arun Ezekiel
+\par email: 153598U\@mymail.nyp.edu.sg
+\brief
+Definition of all methods declared in AI.h
+*/
+/****************************************************************************/
 #include "AI.h"
 #include "SP2.h"
 #include <sstream>
 #include "GL\glew.h"
 int AI::deathCount = 0;
-void AI::move(Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd, double time, double dt, Player & player)
+/****************************************************************************/
+/*!
+\brief
+Alien Movement Function
+\param camera, meshList, dt, player
+Updates all Alien position based on next position in path
+*/
+/****************************************************************************/
+void AI::move(Camera5 camera, Mesh ** meshList, double dt, Player & player)
 {
 	if (!isDead())
 	{
@@ -16,12 +33,12 @@ void AI::move(Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd, do
 		{
 			int speed = 20;
 			Vector3 move(0, 0, 0);
-			if ((static_cast<int>(position.x) >= temp.x - 1 &&
-				static_cast<int>(position.x) <= temp.x + 1) &&
-				(static_cast<int>(position.z) >= temp.z - 1 &&
-				static_cast<int>(position.z) <= temp.z + 1))
+			if ((static_cast<int>(position.x) >= tempPos.x - 1 &&
+				static_cast<int>(position.x) <= tempPos.x + 1) &&
+				(static_cast<int>(position.z) >= tempPos.z - 1 &&
+				static_cast<int>(position.z) <= tempPos.z + 1))
 			{
-				temp = m_path.NextPathPos(m_Body);
+				tempPos = m_path.NextPathPos(m_Body);
 			}
 			else
 
@@ -29,10 +46,10 @@ void AI::move(Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd, do
 				if (distance.Length() > 12)
 				{
 					animate = true;
-					move = temp - position;
+					move = tempPos - position;
 					move.y = 0;
 					position += move.Normalized() * dt * speed;
-					inBetween = temp - position; // vector in between enemy and next path
+					inBetween = tempPos - position; // vector in between enemy and next path
 					angleRad = atan(inBetween.z / inBetween.x);
 				}
 				else
@@ -61,6 +78,14 @@ void AI::move(Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd, do
 	}
 }
 
+/****************************************************************************/
+/*!
+\brief
+Path Finder for Alien
+\param camera, meshList, modelStart, modelEnd
+Finds a path from current position to player
+*/
+/****************************************************************************/
 void AI::findPath(Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd)
 {
 	if (m_path.getPath().size() <= 1 && (distance.Length() < 30 && distance.Length() > 13))
@@ -78,6 +103,13 @@ void AI::findPath(Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd
 		return;
 	}
 }
+/****************************************************************************/
+/*!
+\brief
+Get Angle of Rotation
+Gets angle to be rotated and updates previous rotation
+*/
+/****************************************************************************/
 float AI::getAngle()
 {
 	if (!isDead())
@@ -262,7 +294,14 @@ float AI::getAngle()
 	prevAngle = nextAngle;
 	return nextAngle;
 }
-
+/****************************************************************************/
+/*!
+\brief
+Alien Render Function
+\param enableLight, modelStack, viewStack, projectionStack, m_parameters[25], meshList, player
+Renders all Alien meshes (Head to Legs)
+*/
+/****************************************************************************/
 void AI::renderAlien(bool enableLight, MS modelStack, MS viewStack, MS projectionStack, unsigned int m_parameters[25], Mesh ** meshlist, Player &player)
 {
 	if (!isDead())
@@ -347,6 +386,14 @@ void AI::renderAlien(bool enableLight, MS modelStack, MS viewStack, MS projectio
 		modelStack.PopMatrix();
 	}
 }
+/****************************************************************************/
+/*!
+\brief
+Animation Function to rotate all Angles
+\param dt, player
+Increases Angle Rotations for Joints and calls damage player when attacking
+*/
+/****************************************************************************/
 
 void AI::animation(double dt, Player & player)
 {
@@ -495,7 +542,14 @@ void AI::animation(double dt, Player & player)
 		}
 	}
 }
-
+/****************************************************************************/
+/*!
+\brief
+Damage Player Function
+\param player
+Reduces health of player
+*/
+/****************************************************************************/
 void AI::damagePlayer(Player & player)
 {
 	if (distance.Length() < 13)
@@ -503,7 +557,14 @@ void AI::damagePlayer(Player & player)
 		player.Health -= 5;
 	}
 }
-
+/****************************************************************************/
+/*!
+\brief
+Death Animation Function
+\param dt, camera
+Calculates pivot to rotate Alien for Death Animation
+*/
+/****************************************************************************/
 void AI::deathAnimation(double dt, Camera5 camera)
 {
 	Vector3 temporary = camera.position - position;

@@ -32,6 +32,7 @@ SP2::~SP2()
 
 void SP2::Init()
 {
+	player.points = 300;
 	move.allowInput = true;
 	// Init VBO here
 	// Set background color to dark blue
@@ -326,7 +327,7 @@ void SP2::Init()
 		temp.position = coordinates[slot];
 		coordinates.erase(coordinates.begin() + slot);
 		++i;
-		temp.temp = temp.position;
+		temp.tempPos = temp.position;
 		allAliens.push_back(temp);
 		cout << temp.position << endl;
 	}
@@ -959,6 +960,7 @@ void SP2::Update(double dt)
 		ButtonPress(Application::mouseX, Application::mouseY);
 		break;
 	case DISABLE_MOUSE:
+		cout << "hi" << endl;
 		glfwSetInputMode(Application::m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		state = SCENARIO1;
 		break;
@@ -1029,7 +1031,7 @@ void SP2::Update(double dt)
 			{
 				for (int i = 0; i < allAliens.size(); i++)
 				{
-					allAliens[i].move(camera, meshList, GEO_ARENAFRONTWALL1, GEO_RAINBOW, time, dt, player);
+					allAliens[i].move(camera, meshList, dt, player);
 				}
 			}
 			for (int i = 0; i < allAliens.size(); i++)
@@ -1043,8 +1045,6 @@ void SP2::Update(double dt)
 			}
 			if (AI::deathCount >= 9)
 			{
-				//subs.init(time);
-				//subs.run(dt);
 				if (events[1].TriggerEvent(dt, camera, time))
 				{
 					state = TRANSITION2;
@@ -2387,6 +2387,7 @@ void SP2::Render()
 		modelStack.PushMatrix();
 		RenderOBJonScreen(meshList[GEO_MAINMENU], 80, 60, 40, 30);
 		modelStack.PopMatrix();
+
 		RenderTextOnScreen(meshList[GEO_TEXT], "Start Game", Color(0, 0, 0), 3, 10, 8);
 		RenderTextOnScreen(meshList[GEO_TEXT], "Quit Game", Color(0, 0, 0), 3, 10.5, 5.3);
 		break;
@@ -2419,6 +2420,7 @@ void SP2::Render()
 		break;
 	case SCENARIO2:
 		ScenarioArenaRender();
+		RenderSkybox(camera.position);
 		for (int a = 0; a < shoot.bullets.size(); a++)
 		{
 			modelStack.PushMatrix();

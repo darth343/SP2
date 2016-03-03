@@ -1,3 +1,12 @@
+/****************************************************************************/
+/*!
+\file Camera5.cpp
+\author Arun Ezekiel
+\par email: 153598U\@mymail.nyp.edu.sg
+\brief
+Definition of all methods declared in Camera5.h
+*/
+/****************************************************************************/
 #include "Camera5.h"
 #include "Application.h"
 #include "Mtx44.h"
@@ -7,17 +16,32 @@
 using std::cout;
 using std::endl;
 
-Vector3 Camera5::view = Vector3(0, 0, 0);
-Vector3 Camera5::right = Vector3(0, 0, 0);
-
+/****************************************************************************/
+/*!
+\brief
+Camera Constructor
+*/
+/****************************************************************************/
 Camera5::Camera5()
 {
 }
-
+/****************************************************************************/
+/*!
+\brief
+Camera Destructor
+*/
+/****************************************************************************/
 Camera5::~Camera5()
 {
 }
-
+/****************************************************************************/
+/*!
+\brief
+Camera5 Initializer
+\param pos, target, up
+Initialize Camera with a position, target, up
+*/
+/****************************************************************************/
 void Camera5::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 {
 	this->position = defaultPosition = pos;
@@ -35,7 +59,14 @@ void Camera5::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	right.Normalize();
 	this->up = defaultUp = right.Cross(view).Normalized();
 }
-
+/****************************************************************************/
+/*!
+\brief
+Camera5 Update Function
+\param dt
+Updates Camera with dt
+*/
+/****************************************************************************/
 void Camera5::Update(double dt)
 {
 	static const float CAMERA_SPEED = 100.f;
@@ -66,6 +97,14 @@ void Camera5::Update(double dt)
 
 	up = right.Cross(view);
 }
+/****************************************************************************/
+/*!
+\brief
+Overloaded Camera Update Function
+\param dt, disableControls
+Updates Camera Position with dt
+*/
+/****************************************************************************/
 void Camera5::Update(double dt, bool disableControls)
 {
 	view = Vector3(
@@ -87,6 +126,14 @@ void Camera5::Update(double dt, bool disableControls)
 
 	up = right.Cross(view);
 }
+
+/****************************************************************************/
+/*!
+\brief
+Camera Reset Function
+Resets Position, target and up to default Values
+*/
+/****************************************************************************/
 void Camera5::Reset()
 {
 	position = defaultPosition;

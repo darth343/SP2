@@ -80,7 +80,7 @@ bool Shop::buySMG(Inventory &inv, int &points)
 }
 bool Shop::buyPistol(Inventory &inv, int &points)
 {
-	if (Application::IsKeyPressed('3') && inv.Pistol.ammo < 90 && inv.TotalCash >= 100 && points>=20)
+	if (Application::IsKeyPressed('3') && inv.Pistol.ammo < 90 &&  points>=20)
 	{
 		inv.Pistol.ammo = 90;
 		cout << "bought Pistol,ammo: "<<inv.Pistol.ammo << endl;
