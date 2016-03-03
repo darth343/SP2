@@ -197,6 +197,8 @@ public:
 		GEO_ROCK36,
 		GEO_ROCK37,
 		GEO_ROCK38,
+
+		GEO_FINALSHIP,
 		//RunnerEnd
 		GEO_TEXT,
 		GEO_RIFLE,

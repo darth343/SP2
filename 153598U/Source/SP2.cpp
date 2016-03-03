@@ -749,6 +749,10 @@ void SP2::ScenarioRunnerInit()
 	meshList[GEO_ROCK38]->position.Set(0, 256, 385);
 	meshList[GEO_ROCK38]->textureID = LoadTGA("Image//Rock.tga");
 
+	meshList[GEO_FINALSHIP] = MeshBuilder::GenerateOBJ("Final Ship", "OBJ//FinalShip.obj");
+	meshList[GEO_FINALSHIP]->position.Set(0, 256, 440);
+	meshList[GEO_FINALSHIP]->textureID = LoadTGA("Image//FinalShip.tga");
+
 
 }
 
@@ -1924,6 +1928,12 @@ void SP2::ScenarioRunnerRender()
 	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_ROCK38]->position.x, meshList[GEO_ROCK38]->position.y, meshList[GEO_ROCK38]->position.z);
 	RenderMesh(meshList[GEO_ROCK38], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_FINALSHIP]->position.x, meshList[GEO_FINALSHIP]->position.y, meshList[GEO_FINALSHIP]->position.z);
+	modelStack.Scale(10, 10, 10);
+	RenderMesh(meshList[GEO_FINALSHIP], true);
 	modelStack.PopMatrix();
 }
 
