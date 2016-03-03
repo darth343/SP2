@@ -12,18 +12,13 @@ struct Shop
 public:
 	Shop();
 	~Shop();
-	void shopping(Inventory &inv);
+	void shopping(Inventory &inv ,int &points);
 	bool openShop;
-	bool buyRifle(Inventory &inv);
-	bool buySMG(Inventory &inv);
-	bool buyPistol(Inventory &inv);
+	bool buyRifle(Inventory &inv, int &points);
+	bool buySMG(Inventory &inv,  int &points);
+	bool buyPistol(Inventory &inv, int &points);
 //	bool lookAtShop;
 	Mesh* ShopInteraction(double dt, Camera5 camera, Mesh** meshList);
-
-	string shopChoices1;
-	string shopChoices2;
-	string shopChoices3;
-
 
 	
 };

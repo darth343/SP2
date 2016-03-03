@@ -127,18 +127,6 @@ void Application::Run()
 		//Get and organize events, like keyboard and mouse input, window resizing, etc...
 		glfwPollEvents();
         m_timer.waitUntil(frameTime);       // Frame rate limiter. Limits each frame to a specified time in ms.
-
-		//if (!IsKeyPressed('Y'))
-		//{
-			//glfwGetCursorPos(m_window, &mouseX, &mouseY);
-			//glfwSetCursorPos(m_window, 800 / 2, 600 / 2);
-		//}
-		//else
-		//{
-		//	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		//}
-
-
 	} //Check if the ESC key had been pressed or if the window had been closed
 	scene->Exit();
 	delete scene;

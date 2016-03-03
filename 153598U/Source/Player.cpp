@@ -1,7 +1,7 @@
 #include "Player.h"
 #include  "Application.h"
 
-void Player::currentItems(double dt, Camera5 camera, Mesh** meshList, Mesh* object)
+void Player::currentItems(double dt, Camera5 camera, Mesh** meshList)
 {
 	time += dt;
 	object = shop.ShopInteraction(dt, camera, meshList);
@@ -33,7 +33,7 @@ void Player::currentItems(double dt, Camera5 camera, Mesh** meshList, Mesh* obje
 	}
 	if (shop.openShop == true && object == meshList[SP2::GEO_STORE])
 	{
-		shop.shopping(inv);
+		shop.shopping(inv,points);
 	}
 	if (Application::IsKeyPressed('1') && shop.openShop == false && time > delay)
 	{
@@ -48,6 +48,7 @@ void Player::currentItems(double dt, Camera5 camera, Mesh** meshList, Mesh* obje
 	if (Application::IsKeyPressed('3') && shop.openShop == false && time > delay)
 	{
 		inv.GunSelected = &inv.Pistol;
+		inv.GunSelected->semiAuto = true;
 		delay = time + 0.5;
 	}
 }

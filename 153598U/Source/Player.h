@@ -6,22 +6,26 @@
 #include "Shop.h"
 struct Player
 {
-
-
-
 public:
-	Player(){ Health = 100; };
+	Player(){
+	Health = 100;
+	points = 0;
+	delay = 0;
+	time = 0;
+	};
 	~Player(){};
 
-	void currentItems(double dt,Camera5 camera,Mesh** meshList,Mesh* object);
+	void currentItems(double dt,Camera5 camera,Mesh** meshList);
 	bool isDead();
 	float getScaleHealth();
+	int points;	
 	Inventory inv;
 	float Health;
 	Mesh* object;
 	Shop shop;
-	float delay = 0;
-	float time = 0;
+	float delay;
+	float time;
+	//int points=0;
 	
 
 };

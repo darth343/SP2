@@ -37,7 +37,7 @@ void SP2::Init()
 	// Set background color to dark blue
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-	//Enable depth buffer and depth testinge
+	//Enable depth buffer and depth testing
 	glEnable(GL_DEPTH_TEST);
 
 	//Enable back face culling
@@ -112,54 +112,6 @@ void SP2::Init()
 	m_parameters[U_LIGHT3_COSINNER] = glGetUniformLocation(m_programID, "lights[3].cosInner");
 	m_parameters[U_LIGHT3_EXPONENT] = glGetUniformLocation(m_programID, "lights[3].exponent");
 
-	m_parameters[U_LIGHT4_POSITION] = glGetUniformLocation(m_programID, "lights[4].position_cameraspace");
-	m_parameters[U_LIGHT4_COLOR] = glGetUniformLocation(m_programID, "lights[4].color");
-	m_parameters[U_LIGHT4_POWER] = glGetUniformLocation(m_programID, "lights[4].power");
-	m_parameters[U_LIGHT4_KC] = glGetUniformLocation(m_programID, "lights[4].kC");
-	m_parameters[U_LIGHT4_KL] = glGetUniformLocation(m_programID, "lights[4].kL");
-	m_parameters[U_LIGHT4_KQ] = glGetUniformLocation(m_programID, "lights[4].kQ");
-	m_parameters[U_LIGHT4_TYPE] = glGetUniformLocation(m_programID, "lights[4].type");
-	m_parameters[U_LIGHT4_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[4].spotDirection");
-	m_parameters[U_LIGHT4_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[4].cosCutoff");
-	m_parameters[U_LIGHT4_COSINNER] = glGetUniformLocation(m_programID, "lights[4].cosInner");
-	m_parameters[U_LIGHT4_EXPONENT] = glGetUniformLocation(m_programID, "lights[4].exponent");
-
-	m_parameters[U_LIGHT5_POSITION] = glGetUniformLocation(m_programID, "lights[5].position_cameraspace");
-	m_parameters[U_LIGHT5_COLOR] = glGetUniformLocation(m_programID, "lights[5].color");
-	m_parameters[U_LIGHT5_POWER] = glGetUniformLocation(m_programID, "lights[5].power");
-	m_parameters[U_LIGHT5_KC] = glGetUniformLocation(m_programID, "lights[5].kC");
-	m_parameters[U_LIGHT5_KL] = glGetUniformLocation(m_programID, "lights[5].kL");
-	m_parameters[U_LIGHT5_KQ] = glGetUniformLocation(m_programID, "lights[5].kQ");
-	m_parameters[U_LIGHT5_TYPE] = glGetUniformLocation(m_programID, "lights[5].type");
-	m_parameters[U_LIGHT5_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[5].spotDirection");
-	m_parameters[U_LIGHT5_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[5].cosCutoff");
-	m_parameters[U_LIGHT5_COSINNER] = glGetUniformLocation(m_programID, "lights[5].cosInner");
-	m_parameters[U_LIGHT5_EXPONENT] = glGetUniformLocation(m_programID, "lights[5].exponent");
-
-	m_parameters[U_LIGHT6_POSITION] = glGetUniformLocation(m_programID, "lights[6].position_cameraspace");
-	m_parameters[U_LIGHT6_COLOR] = glGetUniformLocation(m_programID, "lights[6].color");
-	m_parameters[U_LIGHT6_POWER] = glGetUniformLocation(m_programID, "lights[6].power");
-	m_parameters[U_LIGHT6_KC] = glGetUniformLocation(m_programID, "lights[6].kC");
-	m_parameters[U_LIGHT6_KL] = glGetUniformLocation(m_programID, "lights[6].kL");
-	m_parameters[U_LIGHT6_KQ] = glGetUniformLocation(m_programID, "lights[6].kQ");
-	m_parameters[U_LIGHT6_TYPE] = glGetUniformLocation(m_programID, "lights[6].type");
-	m_parameters[U_LIGHT6_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[6].spotDirection");
-	m_parameters[U_LIGHT6_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[6].cosCutoff");
-	m_parameters[U_LIGHT6_COSINNER] = glGetUniformLocation(m_programID, "lights[6].cosInner");
-	m_parameters[U_LIGHT6_EXPONENT] = glGetUniformLocation(m_programID, "lights[6].exponent");
-
-	m_parameters[U_LIGHT7_POSITION] = glGetUniformLocation(m_programID, "lights[7].position_cameraspace");
-	m_parameters[U_LIGHT7_COLOR] = glGetUniformLocation(m_programID, "lights[7].color");
-	m_parameters[U_LIGHT7_POWER] = glGetUniformLocation(m_programID, "lights[7].power");
-	m_parameters[U_LIGHT7_KC] = glGetUniformLocation(m_programID, "lights[7].kC");
-	m_parameters[U_LIGHT7_KL] = glGetUniformLocation(m_programID, "lights[7].kL");
-	m_parameters[U_LIGHT7_KQ] = glGetUniformLocation(m_programID, "lights[7].kQ");
-	m_parameters[U_LIGHT7_TYPE] = glGetUniformLocation(m_programID, "lights[7].type");
-	m_parameters[U_LIGHT7_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[7].spotDirection");
-	m_parameters[U_LIGHT7_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[7].cosCutoff");
-	m_parameters[U_LIGHT7_COSINNER] = glGetUniformLocation(m_programID, "lights[7].cosInner");
-	m_parameters[U_LIGHT7_EXPONENT] = glGetUniformLocation(m_programID, "lights[7].exponent");
-
 	// Get a handle for our "colorTexture" uniform
 	m_parameters[U_COLOR_TEXTURE_ENABLED] = glGetUniformLocation(m_programID, "colorTextureEnabled");
 	m_parameters[U_COLOR_TEXTURE] = glGetUniformLocation(m_programID, "colorTexture");
@@ -192,7 +144,6 @@ void SP2::Init()
 	glUniform1f(m_parameters[U_LIGHT0_COSCUTOFF], light[0].cosCutoff);
 	glUniform1f(m_parameters[U_LIGHT0_COSINNER], light[0].cosInner);
 	glUniform1f(m_parameters[U_LIGHT0_EXPONENT], light[0].exponent);
-
 	light[1].type = Light::LIGHT_DIRECTIONAL;
 	light[1].position.Set(100, 100, 100);
 	light[1].color.Set(1, 1, 1);
@@ -261,99 +212,6 @@ void SP2::Init()
 	glUniform1f(m_parameters[U_LIGHT3_COSCUTOFF], light[3].cosCutoff);
 	glUniform1f(m_parameters[U_LIGHT3_COSINNER], light[3].cosInner);
 	glUniform1f(m_parameters[U_LIGHT3_EXPONENT], light[3].exponent);
-
-	//light[4].type = Light::LIGHT_DIRECTIONAL;
-	//light[4].position.Set(100, 100, 100);
-	//light[4].color.Set(1, 1, 1);
-	//light[4].power = 0;
-	//light[4].kC = 1.f;
-	//light[4].kL = 0.01f;
-	//light[4].kQ = 0.001f;
-	//light[4].cosCutoff = cos(Math::DegreeToRadian(45));
-	//light[4].cosInner = cos(Math::DegreeToRadian(30));
-	//light[4].exponent = 3.f;
-	//light[4].spotDirection.Set(0.f, 1.f, 0.f);
-
-	//// Make sure you pass uniform parameters after glUseProgram()
-	//glUniform1i(m_parameters[U_LIGHT4_TYPE], light[4].type);
-	//glUniform3fv(m_parameters[U_LIGHT4_COLOR], 1, &light[4].color.r);
-	//glUniform1f(m_parameters[U_LIGHT4_POWER], light[4].power);
-	//glUniform1f(m_parameters[U_LIGHT4_KC], light[4].kC);
-	//glUniform1f(m_parameters[U_LIGHT4_KL], light[4].kL);
-	//glUniform1f(m_parameters[U_LIGHT4_KQ], light[4].kQ);
-	//glUniform1f(m_parameters[U_LIGHT4_COSCUTOFF], light[4].cosCutoff);
-	//glUniform1f(m_parameters[U_LIGHT4_COSINNER], light[4].cosInner);
-	//glUniform1f(m_parameters[U_LIGHT4_EXPONENT], light[4].exponent);
-
-	//light[5].type = Light::LIGHT_DIRECTIONAL;
-	//light[5].position.Set(100, 100, 100);
-	//light[5].color.Set(1, 1, 1);
-	//light[5].power = 0;
-	//light[5].kC = 1.f;
-	//light[5].kL = 0.01f;
-	//light[5].kQ = 0.001f;
-	//light[5].cosCutoff = cos(Math::DegreeToRadian(45));
-	//light[5].cosInner = cos(Math::DegreeToRadian(30));
-	//light[5].exponent = 3.f;
-	//light[5].spotDirection.Set(0.f, 1.f, 0.f);
-
-	//// Make sure you pass uniform parameters after glUseProgram()
-	//glUniform1i(m_parameters[U_LIGHT5_TYPE], light[5].type);
-	//glUniform3fv(m_parameters[U_LIGHT5_COLOR], 1, &light[5].color.r);
-	//glUniform1f(m_parameters[U_LIGHT5_POWER], light[5].power);
-	//glUniform1f(m_parameters[U_LIGHT5_KC], light[5].kC);
-	//glUniform1f(m_parameters[U_LIGHT5_KL], light[5].kL);
-	//glUniform1f(m_parameters[U_LIGHT5_KQ], light[5].kQ);
-	//glUniform1f(m_parameters[U_LIGHT5_COSCUTOFF], light[5].cosCutoff);
-	//glUniform1f(m_parameters[U_LIGHT5_COSINNER], light[5].cosInner);
-	//glUniform1f(m_parameters[U_LIGHT5_EXPONENT], light[5].exponent);
-
-	//light[6].type = Light::LIGHT_DIRECTIONAL;
-	//light[6].position.Set(100, 100, 100);5
-	//light[6].color.Set(1, 1, 1);
-	//light[6].power = 0;
-	//light[6].kC = 1.f;
-	//light[6].kL = 0.01f;
-	//light[6].kQ = 0.001f;
-	//light[6].cosCutoff = cos(Math::DegreeToRadian(45));
-	//light[6].cosInner = cos(Math::DegreeToRadian(30));
-	//light[6].exponent = 3.f;
-	//light[6].spotDirection.Set(0.f, 1.f, 0.f);
-
-	//// Make sure you pass uniform parameters after glUseProgram()
-	//glUniform1i(m_parameters[U_LIGHT6_TYPE], light[6].type);
-	//glUniform3fv(m_parameters[U_LIGHT6_COLOR], 1, &light[6].color.r);
-	//glUniform1f(m_parameters[U_LIGHT6_POWER], light[6].power);
-	//glUniform1f(m_parameters[U_LIGHT6_KC], light[6].kC);
-	//glUniform1f(m_parameters[U_LIGHT6_KL], light[6].kL);
-	//glUniform1f(m_parameters[U_LIGHT6_KQ], light[6].kQ);
-	//glUniform1f(m_parameters[U_LIGHT6_COSCUTOFF], light[6].cosCutoff);
-	//glUniform1f(m_parameters[U_LIGHT6_COSINNER], light[6].cosInner);
-	//glUniform1f(m_parameters[U_LIGHT6_EXPONENT], light[6].exponent);
-
-	//light[7].type = Light::LIGHT_SPOT;
-	//light[7].position.Set(100, 100, 100);
-	//light[7].color.Set(1, 1, 1);
-	//light[7].power = 0;
-	//light[7].kC = 1.f;
-	//light[7].kL = 0.01f;
-	//light[7].kQ = 0.001f;
-	//light[7].cosCutoff = cos(Math::DegreeToRadian(45));
-	//light[7].cosInner = cos(Math::DegreeToRadian(10));
-	//light[7].exponent = 3.f;
-	//light[7].spotDirection.Set(0.f, 1.f, 0.f);
-
-	//// Make sure you pass uniform parameters after glUseProgram()
-	//glUniform1i(m_parameters[U_LIGHT7_TYPE], light[7].type);
-	//glUniform3fv(m_parameters[U_LIGHT7_COLOR], 1, &light[7].color.r);
-	//glUniform1f(m_parameters[U_LIGHT7_POWER], light[7].power);
-	//glUniform1f(m_parameters[U_LIGHT7_KC], light[7].kC);
-	//glUniform1f(m_parameters[U_LIGHT7_KL], light[7].kL);
-	//glUniform1f(m_parameters[U_LIGHT7_KQ], light[7].kQ);
-	//glUniform1f(m_parameters[U_LIGHT7_COSCUTOFF], light[7].cosCutoff);
-	//glUniform1f(m_parameters[U_LIGHT7_COSINNER], light[7].cosInner);
-	//glUniform1f(m_parameters[U_LIGHT7_EXPONENT], light[7].exponent);
-
 
 	glUniform1i(m_parameters[U_NUMLIGHTS], 4);
 
@@ -445,18 +303,7 @@ void SP2::Init()
 		Vector3(-110, -501, -61),
 		Vector3(162, -501, 93),
 	};
-	//Vector3 coordinates[9] =
-	//{
-	//	Vector3(110, -501, 55),
-	//	Vector3(59, -501, 55),
-	//	Vector3(84, -501, 152),
-	//	Vector3(0, -501, 21),
-	//	Vector3(12, -501, -160),
-	//	Vector3(-160, -501, -39),
-	//	Vector3(-170, -501, 18),
-	//	Vector3(-130, -501, 162),
-	//	Vector3(70, -501, 153)
-	//};
+
 	int i = 0;
 	while (i <= 9)
 	{
@@ -490,15 +337,16 @@ void SP2::Init()
 	//UI Background
 	meshList[GEO_UIBG] = MeshBuilder::GenerateQuad("UI Background Panal", Color(0.37, 0.37, 0.37));
 	meshList[GEO_GUNMODE] = MeshBuilder::GenerateQuad("Gun Mode", Color(0.25, 0.25, 0.25));
+
 	meshList[GEO_PISTOL] = MeshBuilder::GenerateOBJ("apple", "OBJ//Pistol.obj");
 	meshList[GEO_PISTOL]->textureID = LoadTGA("Image//Pistol.tga");
 	meshList[GEO_SMG] = MeshBuilder::GenerateOBJ("apple", "OBJ//SMG.obj");
 	meshList[GEO_SMG]->textureID = LoadTGA("Image//SMG.tga");
-	meshList[GEO_STORE] = MeshBuilder::GenerateOBJ("apple", "OBJ//Store.obj");
-	meshList[GEO_STORE]->textureID = LoadTGA("Image//Store.tga");
-	meshList[GEO_STORE]->position = (0, -5, -480);
+	
+	player.object = nullptr;
 	player.inv.Rifle.delayMultiplier = 0.3;
 	player.inv.Rifle.semiAuto = false;
+	player.inv.Rifle.stopFiring = false;
 	player.inv.GunSelected = &player.inv.Rifle;
 	glUniform1f(m_parameters[U_MATERIAL_TRANSPARENCY], 1);
 	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("Rifle", "OBJ//Rifle.obj");
@@ -507,7 +355,8 @@ void SP2::Init()
 	meshList[GEO_GAMEOVER] = MeshBuilder::GenerateQuad("UI", Color(0, 0, 0));
 	meshList[GEO_GAMEOVER]->textureID = LoadTGA("Image//GameOver.tga");
 	meshList[GEO_RUNNERSCREEN] = MeshBuilder::GenerateQuad("RUNSCREEN", Color(0, 0, 0));
-
+	meshList[GEO_SHOPMENU] = MeshBuilder::GenerateQuad("Shop", Color(0, 0, 0));
+	meshList[GEO_SHOPMENU]->textureID = LoadTGA("Image//ShopMenu.tga");
 	coin.init();
 	//TriggerBox temp(Vector3(-14, 260, -420), Vector3(14, 300, -390), "test");
 	//events.push_back(temp);
@@ -689,6 +538,11 @@ void SP2::ScenarioArenaInit()
 	meshList[GEO_4THMAZEWALL8] = MeshBuilder::GenerateOBJ("ground", "OBJ//4thMazeWall7.obj");
 	meshList[GEO_4THMAZEWALL8]->position.Set(0, -500, 0);
 	meshList[GEO_4THMAZEWALL8]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+
+
+	meshList[GEO_STORE] = MeshBuilder::GenerateOBJ("store", "OBJ//Store.obj");
+	meshList[GEO_STORE]->textureID = LoadTGA("Image//Store.tga");
+	meshList[GEO_STORE]->position.Set(130, -500, -79);
 }
 
 void SP2::ScenarioParkourInit()
@@ -849,7 +703,9 @@ void SP2::ScenarioParkourInit()
 	meshList[GEO_TIME] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TIME]->textureID = LoadTGA("Image//calibri.tga");
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
+	meshList[GEO_TEXT]->textureID = LoadTGA("Image//alienText.tga");
+
+
 }
 
 void SP2::ScenarioRunnerInit()
@@ -1016,6 +872,10 @@ void SP2::ScenarioRunnerInit()
 	meshList[GEO_ROCK38]->position.Set(0, 256, 385);
 	meshList[GEO_ROCK38]->textureID = LoadTGA("Image//Rock.tga");
 
+	meshList[GEO_FINALSHIP] = MeshBuilder::GenerateOBJ("Final Ship", "OBJ//FinalShip.obj");
+	meshList[GEO_FINALSHIP]->position.Set(0, 256, 440);
+	meshList[GEO_FINALSHIP]->textureID = LoadTGA("Image//FinalShip.tga");
+
 
 }
 
@@ -1105,14 +965,20 @@ void SP2::Update(double dt)
 	case SCENARIO1:
 		if (!player.isDead())
 		{
-			player.currentItems(dt, camera, meshList, player.object);
+			player.currentItems(dt, camera, meshList);
 			time += dt;
 			fps = 1 / dt;
-			move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
-			camera.Update(dt);
+			if (player.shop.openShop == false)
+			{
+				move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
+				camera.Update(dt);
+			}
 			shoot.ShootingBullets(camera, dt, time, meshList, player);
-			shoot.bulletHitDetection(allAliens, dt, camera);
-			coin.pickup(camera);
+			for (int i = 0; i < 3; ++i)
+			{
+				shoot.bulletHitDetection(allAliens, dt, camera);
+			}
+			coin.pickup(camera, player);
 			if (events[3].TriggerEvent(dt, camera, time))
 			{
 				camera.position = Vector3(18, 15, -243);
@@ -1121,6 +987,8 @@ void SP2::Update(double dt)
 				camera.target = camera.view + camera.position;
 				events[3].triggered = false;
 			}
+			shoot.reloadClip(player, dt, time);
+			coin.pickup(camera, player);
 			if (events[0].TriggerEvent(dt, camera, time))
 			{
 				state = TRANSITION1;
@@ -1146,30 +1014,34 @@ void SP2::Update(double dt)
 				light[3].power = 0;
 				glUniform1f(m_parameters[U_LIGHT3_POWER], light[3].power);
 			}
-			player.currentItems(dt, camera, meshList, player.object);
+			player.currentItems(dt, camera, meshList);
 			time += dt;
 			fps = 1 / dt;
-			move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
+			move.MovementCharac(dt, camera, meshList, GEO_ARENAFRONTWALL1, GEO_RAINBOW);
 			camera.Update(dt);
 			shoot.ShootingBullets(camera, dt, time, meshList, player);
 			for (int i = 0; i < 3; ++i)
 			{
 				shoot.bulletHitDetection(allAliens, dt, camera);
 			}
-			for (int i = 0; i < 3; ++i)
+			shoot.reloadClip(player, dt, time);	
+			for (int i = 0; i < 2; ++i)
 			{
 				for (int i = 0; i < allAliens.size(); i++)
 				{
-					allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt, player);
+					allAliens[i].move(camera, meshList, GEO_ARENAFRONTWALL1, GEO_RAINBOW, time, dt, player);
 				}
 			}
-			coin.pickup(camera);
-			cout << AI::deathCount << endl;
+			for (int i = 0; i < allAliens.size(); i++)
+			{
+				allAliens[i].findPath(camera, meshList, GEO_ARENAFRONTWALL1, GEO_RAINBOW);
+			}
+			coin.pickup(camera, player);
 			if (Application::IsKeyPressed('Q'))
 			{
 				AI::deathCount = 9;
 			}
-			if (AI::deathCount <= 9)
+			if (AI::deathCount >= 9)
 			{
 				//subs.init(time);
 				//subs.run(dt);
@@ -1179,17 +1051,8 @@ void SP2::Update(double dt)
 				}
 			}
 			glfwSetCursorPos(Application::m_window, 1280 / 2, 720 / 2);
+			break;
 		}
-		else
-		{
-			camera.position = Vector3(160, -492, -250);
-			player.inv.Rifle.ammo = 100;
-			player.inv.SMG.ammo = 100;
-			player.inv.Pistol.ammo = 100;
-			player.Health = 100;
-
-		}
-		break;
 	case TRANSITION2:
 		time += dt;
 		break;
@@ -1197,15 +1060,13 @@ void SP2::Update(double dt)
 		if (!player.isDead())
 		{
 			cout << camera.position << endl;
-			player.currentItems(dt, camera, meshList, player.object);
+			player.currentItems(dt, camera, meshList);
 			time += dt;
 			fps = 1 / dt;
 			move.MovementRunner(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
 			camera.Update(dt, true);
 			meshList[GEO_RUNNERSCREEN] = MeshBuilder::GenerateQuad("RUNSCREEN", colorRun(camera.position));
-			shoot.ShootingBullets(camera, dt, time, meshList, player);
-			shoot.bulletHitDetection(allAliens, dt, camera);
-			coin.pickup(camera);
+			coin.pickup(camera, player);
 			if (events[4].TriggerEvent(dt, camera, time))
 			{
 				camera.position = Vector3(0, 350, -443);
@@ -1492,7 +1353,10 @@ void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float 
 	{
 		modelStack.Rotate(-90, 0, 1, 0);
 	}
-
+	if (mesh == meshList[GEO_SHOPMENU])
+	{
+		modelStack.Rotate(-90, 0, 1, 0);
+	}
 	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
 	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 	RenderMesh(mesh, false);
@@ -1614,8 +1478,14 @@ void SP2::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float si
 void SP2::ScenarioArenaRender()
 {
 	//FloorShip
-	modelStack.PushMatrix();
 
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_STORE]->position.x, meshList[GEO_STORE]->position.y, meshList[GEO_STORE]->position.z);
+	RenderMesh(meshList[GEO_STORE], false);
+	modelStack.PopMatrix();
+
+
+	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_GROUND]->position.x, meshList[GEO_GROUND]->position.y, meshList[GEO_GROUND]->position.z);
 	RenderMesh(meshList[GEO_GROUND], true);
 	modelStack.PopMatrix();
@@ -1814,9 +1684,6 @@ void SP2::ScenarioArenaRender()
 	modelStack.PopMatrix();
 
 
-
-
-
 	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_4THMAZEWALL1]->position.x, meshList[GEO_4THMAZEWALL1]->position.y, meshList[GEO_4THMAZEWALL1]->position.z);
 	RenderMesh(meshList[GEO_4THMAZEWALL1], true);
@@ -1857,6 +1724,9 @@ void SP2::ScenarioArenaRender()
 	modelStack.Translate(meshList[GEO_4THMAZEWALL8]->position.x, meshList[GEO_4THMAZEWALL8]->position.y, meshList[GEO_4THMAZEWALL8]->position.z);
 	RenderMesh(meshList[GEO_4THMAZEWALL8], true);
 	modelStack.PopMatrix();
+
+	
+
 }
 
 void SP2::ScenarioParkourRender()
@@ -2196,6 +2066,12 @@ void SP2::ScenarioRunnerRender()
 	modelStack.Translate(meshList[GEO_ROCK38]->position.x, meshList[GEO_ROCK38]->position.y, meshList[GEO_ROCK38]->position.z);
 	RenderMesh(meshList[GEO_ROCK38], true);
 	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_FINALSHIP]->position.x, meshList[GEO_FINALSHIP]->position.y, meshList[GEO_FINALSHIP]->position.z);
+	modelStack.Scale(10, 10, 10);
+	RenderMesh(meshList[GEO_FINALSHIP], true);
+	modelStack.PopMatrix();
 }
 
 void SP2::RenderCoins()
@@ -2208,152 +2084,203 @@ void SP2::RenderCoins()
 		RenderMesh(coin.allCoins[i], true);
 		modelStack.PopMatrix();
 	}
-	coin.rotateAngle+=2;
+	coin.rotateAngle++;
 }
 
 
 void SP2::PlayerPoints()
 {
-	points = (AI::deathCount * 50) + (coin.acquired * 10);
+	//points = (AI::deathCount * 50) + (coin.acquired * 10);
 }
 
 
 void SP2::RenderUI()
-
-{
-	//////////////////////////////////
-	//			JetFuel             //
-	/////////////////////////////////
-	if (move.jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 1, 7);
-	}
-	if (move.jetPack.getFuel() > 15)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL1], 30, 1, 6, 4);
-		modelStack.PopMatrix();
-	}
-
-	if (move.jetPack.getFuel() > 40)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL2], 25, 1, 8.5, 6);
-		modelStack.PopMatrix();
-	}
-
-	if (move.jetPack.getFuel() > 60)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL3], 20, 1, 11, 8);
-		modelStack.PopMatrix();
-	}
-
-	if (move.jetPack.getFuel() >80)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL4], 15, 1, 13.5, 10);
-		modelStack.PopMatrix();
-	}
-
-	if (move.jetPack.getFuel() > 95)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL5], 20, 1, 11, 12);
-		modelStack.PopMatrix();
-	}
-
-
-	//////////////////////////////////
-	//			Time               //
-	/////////////////////////////////
-	RenderTextOnScreen(meshList[GEO_TEXT], "Time: ", Color(1, 0, 0), 2, 2, 25);
+{	
 	std::ostringstream timeString;
-	timeString << std::setprecision(3) << time;
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 3, 24);
-
+	
 	timeString.str("");
-	timeString << "X: " << static_cast<int>(camera.position.x);
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 10.4);
-	timeString.str("");
-	timeString << "Y: " << static_cast<int>(camera.position.y);
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 9.4);
-	timeString.str("");
-	timeString << "Z: " << static_cast<int>(camera.position.z);
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 8.4);
-
-
-	PlayerPoints();
-
-	timeString.str("");
-	timeString << "Points: " << static_cast<int>(points);
+	timeString << "Points: " << static_cast<int>(player.points);
 	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 20);
+
+	if (player.object)
+	{
+		if (player.object->name == meshList[GEO_STORE]->name)
+		{
+			if (player.shop.openShop == true)
+			{
+				RenderOBJonScreen(meshList[GEO_SHOPMENU], 80, 60, 40, 30);
+
+				timeString.str("");
+				timeString << "Points: " << static_cast<int>(player.points);
+				RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 20);
+
+				timeString.str("");
+				timeString << "Rifle Ammo : " << player.inv.Rifle.clip << "/" << player.inv.Rifle.ammo;
+				RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 12, 18);
+				timeString.str("");
+				timeString << "SMG Ammo : " << player.inv.SMG.clip << "/" << player.inv.SMG.ammo;
+				RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 12, 15);
+				timeString.str("");
+				timeString << "Pistol Ammo : " << player.inv.Pistol.clip << "/" << player.inv.Pistol.ammo;
+				RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 12, 12);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press 1 to buy Rifle ammo (50 points)", Color(0, 1, 0), 2, 1, 19);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press 2 to buy SMG ammo (35 points)", Color(0, 1, 0), 2, 1, 16);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press 3 to buy Pistol ammo (20 points)", Color(0, 1, 0), 2, 1, 13);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press E to close Shop", Color(0, 1, 0), 2, 1, 10);
+
+			}
+			else
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press E to Open Shop", Color(0, 1, 0), 2, 15, 15);
+			}
+		}
+	}
+	else
+	{ //////////////////////////////////
+		//			JetFuel             //
+		/////////////////////////////////
+		if (move.jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 1, 7);
+		}
+		if (move.jetPack.getFuel() > 15)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_FUEL1], 30, 1, 6, 4);
+			modelStack.PopMatrix();
+		}
+
+		if (move.jetPack.getFuel() > 40)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_FUEL2], 25, 1, 8.5, 6);
+			modelStack.PopMatrix();
+		}
+
+		if (move.jetPack.getFuel() > 60)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_FUEL3], 20, 1, 11, 8);
+			modelStack.PopMatrix();
+		}
+
+		if (move.jetPack.getFuel() > 80)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_FUEL4], 15, 1, 13.5, 10);
+			modelStack.PopMatrix();
+		}
+
+		if (move.jetPack.getFuel() > 95)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_FUEL5], 20, 1, 11, 12);
+			modelStack.PopMatrix();
+		}
+
+
+		//////////////////////////////////
+		//			Time               //
+		/////////////////////////////////
+		timeString.str("");
+		RenderTextOnScreen(meshList[GEO_TEXT], "Time: ", Color(1, 0, 0), 2, 2, 25);
+		
+		timeString << std::setprecision(3) << time;
+		RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 3, 24);
+
+		timeString.str("");
+		timeString << "X: " << static_cast<int>(camera.position.x);
+		RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 10.4);
+		timeString.str("");
+		timeString << "Y: " << static_cast<int>(camera.position.y);
+		RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 9.4);
+		timeString.str("");
+		timeString << "Z: " << static_cast<int>(camera.position.z);
+		RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 8.4);
+
+
+		//PlayerPoints();
 
 	
 
 
-	//////////////////////////////////
-	//			Gun                //
-	/////////////////////////////////
-	RenderTextOnScreen(meshList[GEO_TEXT], "Gun Mode: ", Color(0, 1, 0), 2, 30, 6);
-	if (player.inv.GunSelected->semiAuto == false)
-	{
-		//RenderTextOnScreen(meshList[GEO_TEXT], "|||", Color(0, 1, 0), 3, 21 , 3);
+
+
+		//////////////////////////////////
+		//			Gun                //
+		/////////////////////////////////
+		RenderTextOnScreen(meshList[GEO_TEXT], "Gun Mode: ", Color(0, 1, 0), 2, 30, 6);
+		if (player.inv.GunSelected->semiAuto == false)
+		{
+			//RenderTextOnScreen(meshList[GEO_TEXT], "|||", Color(0, 1, 0), 3, 21 , 3);
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11);
+			RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 63, 11);
+			RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 65, 11);
+			modelStack.PopMatrix();
+		}
+		else if (player.inv.GunSelected->semiAuto == true)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11);
+			modelStack.PopMatrix();
+		}
+		timeString.str("");
+		timeString << "FPS: " << fps;
+		RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 11);
+
+
+		/*RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: ", Color(0, 1, 0), 2, 28,20);*/
+
+		/*timeString.str("");
+		timeString << player.inv.GunSelected->ammo;
+		RenderTextOnScreen(meshList[GEO_TEXT], timeString.str() ,Color(0,1,0), 2, 35, 20);*/
+		//UI Background Panal
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11);
-		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 63, 11);
-		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 65, 11);
+		RenderOBJonScreen(meshList[GEO_UIBG], 25, 19, 72, 3.5);
 		modelStack.PopMatrix();
-	}
-	else if (player.inv.GunSelected->semiAuto == true)
-	{
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		//Player's Health
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11);
+		RenderOBJonScreen(meshList[GEO_PLAYERHEALTH], 30 * player.getScaleHealth(), 1, 40, 55);
 		modelStack.PopMatrix();
-	}
-	timeString.str("");
-	timeString << "FPS: " << fps;
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 11);
 
-	//UI Background Panal
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_UIBG], 25, 19, 72, 3.5);
-	modelStack.PopMatrix();
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	//Player's Health
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_PLAYERHEALTH], 30 * player.getScaleHealth(), 1, 40, 55);
-	modelStack.PopMatrix();
-
-	//Crosshair
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_CROSSHAIR], 10, 10, 40.2, 29.8);
-	modelStack.PopMatrix();
-
-	if (player.inv.GunSelected == &player.inv.Rifle)
-	{
+		//Crosshair
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_RIFLE], 0.8, 0.8, 70, 20);
+		RenderOBJonScreen(meshList[GEO_CROSSHAIR], 10, 10, 40.2, 29.8);
 		modelStack.PopMatrix();
-	}
-	else if (player.inv.GunSelected == &player.inv.SMG)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_SMG], 0.8, 0.8, 70, 20);
-		modelStack.PopMatrix();
-	}
-	else if (player.inv.GunSelected = &player.inv.Pistol)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_PISTOL], 0.8, 0.8, 70, 17);
-		modelStack.PopMatrix();
-	}
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_HELMET], 80, 60, 40, 30);
-	modelStack.PopMatrix();
 
+		if (player.inv.GunSelected == &player.inv.Rifle)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_RIFLE], 0.8, 0.8, 70, 20);
+			modelStack.PopMatrix();
+		}
+		else if (player.inv.GunSelected == &player.inv.SMG)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_SMG], 0.8, 0.8, 70, 20);
+			modelStack.PopMatrix();
+		}
+		else if (player.inv.GunSelected = &player.inv.Pistol)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_PISTOL], 0.8, 0.8, 70, 17);
+			modelStack.PopMatrix();
+		}
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_HELMET], 80, 60, 40, 30);
+		modelStack.PopMatrix();
+		timeString.str("");
+		timeString << "Ammo : " << player.inv.GunSelected->clip << "/" << player.inv.GunSelected->ammo;
+		RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 19, 8);
+		if (player.inv.GunSelected->clip == 0)
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], "Reload Needed, Press R to Reload", Color(0, 1, 0), 2, 1, 15);
+		}
 
+	}
 }
 
 void SP2::Render()
@@ -2445,83 +2372,7 @@ void SP2::Render()
 		Position lightPosition_cameraspace = viewStack.Top() * light[3].position;
 		glUniform3fv(m_parameters[U_LIGHT3_POSITION], 1, &lightPosition_cameraspace.x);
 	}
-
-	//if (light[4].type == Light::LIGHT_DIRECTIONAL)
-	//{
-	//	Vector3 lightDir(light[4].position.x, light[4].position.y, light[4].position.z);
-	//	Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
-	//	glUniform3fv(m_parameters[U_LIGHT4_POSITION], 1, &lightDirection_cameraspace.x);
-	//}
-	//else if (light[4].type == Light::LIGHT_SPOT)
-	//{
-	//	Position lightPosition_cameraspace = viewStack.Top() * light[4].position;
-	//	glUniform3fv(m_parameters[U_LIGHT4_POSITION], 1, &lightPosition_cameraspace.x);
-	//	Vector3 spotDirection_cameraspace = viewStack.Top() * light[4].spotDirection;
-	//	glUniform3fv(m_parameters[U_LIGHT4_SPOTDIRECTION], 1, &spotDirection_cameraspace.x);
-	//}
-	//else
-	//{
-	//	Position lightPosition_cameraspace = viewStack.Top() * light[4].position;
-	//	glUniform3fv(m_parameters[U_LIGHT4_POSITION], 1, &lightPosition_cameraspace.x);
-	//}
-
-	//if (light[5].type == Light::LIGHT_DIRECTIONAL)
-	//{
-	//	Vector3 lightDir(light[5].position.x, light[5].position.y, light[5].position.z);
-	//	Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
-	//	glUniform3fv(m_parameters[U_LIGHT5_POSITION], 1, &lightDirection_cameraspace.x);
-	//}
-	//else if (light[5].type == Light::LIGHT_SPOT)
-	//{
-	//	Position lightPosition_cameraspace = viewStack.Top() * light[5].position;
-	//	glUniform3fv(m_parameters[U_LIGHT5_POSITION], 1, &lightPosition_cameraspace.x);
-	//	Vector3 spotDirection_cameraspace = viewStack.Top() * light[5].spotDirection;
-	//	glUniform3fv(m_parameters[U_LIGHT5_SPOTDIRECTION], 1, &spotDirection_cameraspace.x);
-	//}
-	//else
-	//{
-	//	Position lightPosition_cameraspace = viewStack.Top() * light[5].position;
-	//	glUniform3fv(m_parameters[U_LIGHT5_POSITION], 1, &lightPosition_cameraspace.x);
-	//}
-
-	//if (light[6].type == Light::LIGHT_DIRECTIONAL)
-	//{
-	//	Vector3 lightDir(light[6].position.x, light[6].position.y, light[6].position.z);
-	//	Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
-	//	glUniform3fv(m_parameters[U_LIGHT6_POSITION], 1, &lightDirection_cameraspace.x);
-	//}
-	//else if (light[6].type == Light::LIGHT_SPOT)
-	//{
-	//	Position lightPosition_cameraspace = viewStack.Top() * light[6].position;
-	//	glUniform3fv(m_parameters[U_LIGHT6_POSITION], 1, &lightPosition_cameraspace.x);
-	//	Vector3 spotDirection_cameraspace = viewStack.Top() * light[6].spotDirection;
-	//	glUniform3fv(m_parameters[U_LIGHT6_SPOTDIRECTION], 1, &spotDirection_cameraspace.x);
-	//}
-	//else
-	//{
-	//	Position lightPosition_cameraspace = viewStack.Top() * light[6].position;
-	//	glUniform3fv(m_parameters[U_LIGHT6_POSITION], 1, &lightPosition_cameraspace.x);
-	//}
-
-	//if (light[7].type == Light::LIGHT_DIRECTIONAL)
-	//{
-	//	Vector3 lightDir(light[7].position.x, light[7].position.y, light[7].position.z);
-	//	Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
-	//	glUniform3fv(m_parameters[U_LIGHT7_POSITION], 1, &lightDirection_cameraspace.x);
-	//}
-	//else if (light[7].type == Light::LIGHT_SPOT)
-	//{
-	//	Position lightPosition_cameraspace = viewStack.Top() * light[7].position;
-	//	glUniform3fv(m_parameters[U_LIGHT7_POSITION], 1, &lightPosition_cameraspace.x);
-	//	Vector3 spotDirection_cameraspace = viewStack.Top() * light[7].spotDirection;
-	//	glUniform3fv(m_parameters[U_LIGHT7_SPOTDIRECTION], 1, &spotDirection_cameraspace.x);
-	//}
-	//else
-	//{
-	//	Position lightPosition_cameraspace = viewStack.Top() * light[7].position;
-	//	glUniform3fv(m_parameters[U_LIGHT7_POSITION], 1, &lightPosition_cameraspace.x);
-	//}
-
+	
 	switch (state)
 	{
 	case MAIN_MENU:
@@ -2554,12 +2405,6 @@ void SP2::Render()
 
 		//RenderCoins
 		RenderCoins();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(meshList[GEO_STORE]->position.x, meshList[GEO_STORE]->position.y, meshList[GEO_STORE]->position.z);
-		RenderMesh(meshList[GEO_STORE], false);
-		modelStack.PopMatrix();
-
 		//Render Scenario3
 		ScenarioParkourRender();
 		//Render ScenarioRunner
@@ -2610,9 +2455,9 @@ void SP2::Render()
 		RenderOBJonScreen(meshList[GEO_GAMEOVER], 80, 60, 40, 30);
 		events[2].renderTransition(time, camera, modelStack, viewStack, projectionStack, m_parameters, meshList[GEO_TEXT], meshList[GEO_BLACKSCREEN]);
 		std::ostringstream pointsDisplay;
-		pointsDisplay << "Total Points Earned: " << points;
+		pointsDisplay << "Total Points Earned: " << player.points;
 		RenderTextOnScreen(meshList[GEO_TEXT], pointsDisplay.str(), Color(1, 0, 0), 3, 0, 0);
-		highscore.data.push_back(points);
+		highscore.data.push_back(player.points);
 		std::ofstream OutputFile("Scores//HighScore.txt");
 		vector<int> temp(highscore.data);
 		highscore.data.clear();
@@ -2657,10 +2502,5 @@ void SP2::Exit()
 	// Cleanup VBO here
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 	glDeleteProgram(m_programID);
-}
-
-void SP2::Reset()
-{
-	Init();
 }
 

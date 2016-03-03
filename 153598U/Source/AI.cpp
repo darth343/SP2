@@ -3,7 +3,7 @@
 #include <sstream>
 #include "GL\glew.h"
 int AI::deathCount = 0;
-void AI::move(Vector3 targetPos, Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd, double time, double dt, Player & player)
+void AI::move(Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd, double time, double dt, Player & player)
 {
 	if (!isDead())
 	{
@@ -14,7 +14,6 @@ void AI::move(Vector3 targetPos, Camera5 camera, Mesh ** meshList, int modelStar
 		}
 		if (m_path.getPath().size() > 0)
 		{
-			cout << "" << endl;
 			int speed = 20;
 			Vector3 move(0, 0, 0);
 			if ((static_cast<int>(position.x) >= temp.x - 1 &&
@@ -25,6 +24,7 @@ void AI::move(Vector3 targetPos, Camera5 camera, Mesh ** meshList, int modelStar
 				temp = m_path.NextPathPos(m_Body);
 			}
 			else
+
 			{
 				if (distance.Length() > 12)
 				{
@@ -40,16 +40,6 @@ void AI::move(Vector3 targetPos, Camera5 camera, Mesh ** meshList, int modelStar
 					inBetween = camera.position - position; // vector in between enemy and next path
 					angleRad = atan(inBetween.z / inBetween.x);
 				}
-			}
-		}
-		if (m_path.getPath().size() <= 1 && (distance.Length() < 30 && distance.Length() > 13))
-		{
-			if (camera.position != prevPos)
-			{
-				m_path.m_initializedStartGoal = false;
-				m_path.m_found = false;;
-				m_path.FindPath(position, camera.position, meshList, modelStart, modelEnd);
-				prevPos = camera.position;
 			}
 		}
 		if (m_path.getPath().size() <= 1)
@@ -71,6 +61,23 @@ void AI::move(Vector3 targetPos, Camera5 camera, Mesh ** meshList, int modelStar
 	}
 }
 
+void AI::findPath(Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd)
+{
+	if (m_path.getPath().size() <= 1 && (distance.Length() < 30 && distance.Length() > 13))
+	{
+		if (camera.position != prevPos)
+		{
+			m_path.m_initializedStartGoal = false;
+			m_path.m_found = false;
+			m_path.FindPath(position, camera.position, meshList, modelStart, modelEnd);
+			prevPos = camera.position;
+		}
+	}
+	else
+	{
+		return;
+	}
+}
 float AI::getAngle()
 {
 	if (!isDead())
@@ -265,7 +272,7 @@ void AI::renderAlien(bool enableLight, MS modelStack, MS viewStack, MS projectio
 		modelStack.PushMatrix();
 		modelStack.Translate(position.x, position.y + 10, position.z);
 		modelStack.Rotate(getAngle(), 0, 1, 0);
-		SP2::RenderText(meshlist[143], hpDp.str(), Color(1, 0.5, 0.5), modelStack, viewStack, projectionStack, m_parameters);
+		SP2::RenderText(meshlist[SP2::GEO_TEXT], hpDp.str(), Color(1, 0.5, 0.5), modelStack, viewStack, projectionStack, m_parameters);
 		modelStack.PopMatrix();
 
 		glUniform1f(m_parameters[7], transparency);

@@ -68,7 +68,7 @@ void coins::init()
 	return;
 }
 
-void coins::pickup(Camera5 camera)
+void coins::pickup(Camera5 camera, Player & player)
 {
 	int offset = 1;
 	for (int i = 0; i < allCoins.size(); ++i)
@@ -83,6 +83,7 @@ void coins::pickup(Camera5 camera)
 			)
 		{
 			acquired++;
+			player.points += 10;
 			allCoins.erase(allCoins.begin() + i);
 			break;
 		}

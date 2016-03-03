@@ -47,7 +47,8 @@ public:
 	~AI(){};
 	float getAngle();
 	void renderAlien(bool enableLight, MS modelStack, MS viewStack, MS projectionStack, unsigned int m_parameters[25], Mesh ** meshlist, Player & player);
-	void move(Vector3 targetPos, Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd, double time, double dt, Player & player);
+	void move(Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd, double time, double dt, Player & player);
+	void findPath(Camera5 camera, Mesh ** meshList, int modelStart, int modelEnd);
 	void attack();
 	void animation(double dt, Player & player);
 	void deathAnimation(double dt, Camera5 camera);

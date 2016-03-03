@@ -150,7 +150,7 @@ public:
 		GEO_4THMAZEWALL6,
 		GEO_4THMAZEWALL7,
 		GEO_4THMAZEWALL8,
-
+		GEO_STORE,
 		GEO_DOOR,
 
 		GEO_GROUND,
@@ -195,17 +195,17 @@ public:
 		GEO_ROCK36,
 		GEO_ROCK37,
 		GEO_ROCK38,
+		GEO_FINALSHIP,
 		//RunnerEnd
 		GEO_TEXT,
 		GEO_RIFLE,
-		GEO_ENEMY,
 		GEO_FLASH,
 		GEO_PATH_F,
 		GEO_PATH_V,
 		GEO_PATH_O,
-		GEO_STORE,
 		GEO_PISTOL,
 		GEO_SMG,
+		GEO_SHOPMENU,
 		GEO_BLACKSCREEN, 
 		GEO_RUNNERSCREEN,
 		GEO_GAMEOVER,
@@ -270,55 +270,7 @@ static enum UNIFORM_TYPE
 		U_LIGHT3_COSCUTOFF,
 		U_LIGHT3_COSINNER,
 		U_LIGHT3_EXPONENT,
-
-		U_LIGHT4_POSITION,
-		U_LIGHT4_COLOR,
-		U_LIGHT4_POWER,
-		U_LIGHT4_KC,
-		U_LIGHT4_KL,
-		U_LIGHT4_KQ,
-		U_LIGHT4_TYPE,
-		U_LIGHT4_SPOTDIRECTION,
-		U_LIGHT4_COSCUTOFF,
-		U_LIGHT4_COSINNER,
-		U_LIGHT4_EXPONENT,
-
-		U_LIGHT5_POSITION,
-		U_LIGHT5_COLOR,
-		U_LIGHT5_POWER,
-		U_LIGHT5_KC,
-		U_LIGHT5_KL,
-		U_LIGHT5_KQ,
-		U_LIGHT5_TYPE,
-		U_LIGHT5_SPOTDIRECTION,
-		U_LIGHT5_COSCUTOFF,
-		U_LIGHT5_COSINNER,
-		U_LIGHT5_EXPONENT,
-
-		U_LIGHT6_POSITION,
-		U_LIGHT6_COLOR,
-		U_LIGHT6_POWER,
-		U_LIGHT6_KC,
-		U_LIGHT6_KL,
-		U_LIGHT6_KQ,
-		U_LIGHT6_TYPE,
-		U_LIGHT6_SPOTDIRECTION,
-		U_LIGHT6_COSCUTOFF,
-		U_LIGHT6_COSINNER,
-		U_LIGHT6_EXPONENT,
-
-		U_LIGHT7_POSITION,
-		U_LIGHT7_COLOR,
-		U_LIGHT7_POWER,
-		U_LIGHT7_KC,
-		U_LIGHT7_KL,
-		U_LIGHT7_KQ,
-		U_LIGHT7_TYPE,
-		U_LIGHT7_SPOTDIRECTION,
-		U_LIGHT7_COSCUTOFF,
-		U_LIGHT7_COSINNER,
-		U_LIGHT7_EXPONENT,
-
+		
 		U_NUMLIGHTS,
 
 		U_COLOR_TEXTURE_ENABLED,
@@ -352,6 +304,7 @@ enum gameState
 	void PlayerPoints();
 	void RenderCoins();
 	void RenderUI();
+	void RenderShop();
 	virtual void Init();
 	virtual void Update(double dt);
 	virtual void Render();
@@ -369,7 +322,6 @@ enum gameState
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderOBJonScreen(Mesh* mesh, float sizex, float sizey, float x, float y);
 	void ButtonPress(double mouseX, double mouseY);
-	void Reset();
 	Color colorRun(Vector3 position);
 
 	private:
