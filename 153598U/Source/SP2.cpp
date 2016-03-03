@@ -422,9 +422,10 @@ void SP2::Init()
 	meshList[GEO_MAINMENUBOX1] = MeshBuilder::GenerateQuad("Box Around Text", Color(1, 0, 0));
 	meshList[GEO_MAINMENUBOX2] = MeshBuilder::GenerateQuad("Box Around Text", Color(1, 0, 0));
 
-
+	Math::InitRNG();
+	srand(Math::RandIntMinMax(0, 500));
 	//Aliens
-	Vector3 coordinates[9] =
+	vector<Vector3> coordinates = 
 	{
 		Vector3(110, -501, 55),
 		Vector3(59, -501, 55),
@@ -434,11 +435,32 @@ void SP2::Init()
 		Vector3(-160, -501, -39),
 		Vector3(-170, -501, 18),
 		Vector3(-130, -501, 162),
-		Vector3(70, -501, 153)
+		Vector3(70, -501, 153),
+		Vector3(95, -501, -33),
+		Vector3(-26, -501, 172),
+		Vector3(-136, -501, 6),
+		Vector3(-169, -501, -152),
+		Vector3(-14, -501, -150),
+		Vector3(-74, -501, -71),
+		Vector3(-110, -501, -61),
+		Vector3(162, -501, 93),
 	};
-
-	for (int i = 0; i < 9; i++)
+	//Vector3 coordinates[9] =
+	//{
+	//	Vector3(110, -501, 55),
+	//	Vector3(59, -501, 55),
+	//	Vector3(84, -501, 152),
+	//	Vector3(0, -501, 21),
+	//	Vector3(12, -501, -160),
+	//	Vector3(-160, -501, -39),
+	//	Vector3(-170, -501, 18),
+	//	Vector3(-130, -501, 162),
+	//	Vector3(70, -501, 153)
+	//};
+	int i = 0;
+	while (i <= 9)
 	{
+		int slot = rand() % coordinates.size();
 		AI temp;
 		temp.m_Head = MeshBuilder::GenerateOBJ("Alien Head", "OBJ//Head.obj");
 		temp.m_Head->textureID = LoadTGA("Image//alienUV.tga");
@@ -454,9 +476,12 @@ void SP2::Init()
 		temp.m_LegL->textureID = LoadTGA("Image//alienUV.tga");
 
 		temp.transparency = 0.01;
-		temp.position = coordinates[i];
+		temp.position = coordinates[slot];
+		coordinates.erase(coordinates.begin() + slot);
+		++i;
 		temp.temp = temp.position;
 		allAliens.push_back(temp);
+		cout << temp.position << endl;
 	}
 
 	//Player Health
@@ -1139,11 +1164,12 @@ void SP2::Update(double dt)
 				}
 			}
 			coin.pickup(camera);
+			cout << AI::deathCount << endl;
 			if (Application::IsKeyPressed('Q'))
 			{
 				AI::deathCount = 9;
 			}
-			if (AI::deathCount == 9)
+			if (AI::deathCount <= 9)
 			{
 				//subs.init(time);
 				//subs.run(dt);

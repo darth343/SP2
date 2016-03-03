@@ -14,6 +14,7 @@ void AI::move(Vector3 targetPos, Camera5 camera, Mesh ** meshList, int modelStar
 		}
 		if (m_path.getPath().size() > 0)
 		{
+			cout << "" << endl;
 			int speed = 20;
 			Vector3 move(0, 0, 0);
 			if ((static_cast<int>(position.x) >= temp.x - 1 &&
