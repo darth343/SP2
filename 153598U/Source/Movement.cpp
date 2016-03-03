@@ -1,5 +1,22 @@
+/****************************************************************************/
+/*!
+\file Movement.cpp
+\author Kenzo-Hari
+\par email: 155113m\@mymail.nyp.edu.sg
+\brief
+Definition of all methods declared in Movement.h
+*/
+/****************************************************************************/
 #include "Movement.h"
 #include "Application.h"
+
+/*!
+\brief
+Character Movement Method
+\param dt, camera, meshList, Start, End
+Method to get min and max of objs so that player will be able to move in free space
+*/
+/****************************************************************************/
 void Movement::MovementCharac(double dt, Camera5 &camera, Mesh ** meshList, int Start, int End)
 {
 	int speed = 50;
@@ -254,6 +271,15 @@ void Movement::MovementCharac(double dt, Camera5 &camera, Mesh ** meshList, int 
 	jetPack.Fly(dt, camera, meshList, Start, End, cameraHeight);
 	Gravity(dt, camera, meshList, Start, End);
 }
+
+/****************************************************************************/
+/*!
+\brief
+Character's movement for Rainbow Dash Scenario
+\param dt, camera, meshList, Start, End
+Method to get min and max of obj so that player stops when camera moves
+*/
+/****************************************************************************/
 void Movement::MovementRunner(double dt, Camera5 &camera, Mesh ** meshList, int Start, int End)
 {
 	int speed = 70;
@@ -440,6 +466,15 @@ void Movement::MovementRunner(double dt, Camera5 &camera, Mesh ** meshList, int 
 		}
 		Gravity(dt, camera, meshList, Start, End);
 	}
+
+/****************************************************************************/
+/*!
+\brief
+Method for Gravity
+\param dt, camera, meshList, Start, End
+Change of gravity for player
+*/
+/****************************************************************************/
 void Movement::Gravity(double dt, Camera5 &camera, Mesh ** meshList, int Start, int End)
 {
 	float fuelrate = 0.8;
