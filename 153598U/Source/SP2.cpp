@@ -385,12 +385,7 @@ void SP2::Init()
 	events.push_back(temp5);
 	highscore.init();
 }
-/******************************************************************************/
-/*!
-\brief
-Initializes environment for Arena Scenario
-*/
-/******************************************************************************/
+
 void SP2::ScenarioArenaInit()
 {
 	//Arena GROUND
@@ -549,12 +544,7 @@ void SP2::ScenarioArenaInit()
 	meshList[GEO_STORE]->textureID = LoadTGA("Image//Store.tga");
 	meshList[GEO_STORE]->position.Set(130, -500, -79);
 }
-/******************************************************************************/
-/*!
-\brief
-Initializes environment for Parkour Scenario
-*/
-/******************************************************************************/
+
 void SP2::ScenarioParkourInit()
 {
 	meshList[GEO_FUEL1] = MeshBuilder::GenerateQuad("fuel1", Color(0.8, 0, 0));
@@ -706,23 +696,12 @@ void SP2::ScenarioParkourInit()
 	meshList[GEO_MODEL1]->interactable = true;
 
 	//TEXT
-	meshList[GEO_TIMEDISPLAY] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TIMEDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_JETPACKUI] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_JETPACKUI]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_TIME] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TIME]->textureID = LoadTGA("Image//calibri.tga");
+
+
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//alienText.tga");
-
-
 }
-/******************************************************************************/
-/*!
-\brief
-Initializes environment for Runner Scenario
-*/
-/******************************************************************************/
+
 void SP2::ScenarioRunnerInit()
 {
 	meshList[GEO_RAINBOW] = MeshBuilder::GenerateOBJ("RainbowRoad", "OBJ//RainbowRoad.obj");
@@ -1489,12 +1468,7 @@ void SP2::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float si
 	ms.PopMatrix();
 	glEnable(GL_DEPTH_TEST);
 }
-/******************************************************************************/
-/*!
-\brief
-Renders environment for Arena Scenario
-*/
-/******************************************************************************/
+
 void SP2::ScenarioArenaRender()
 {
 	//FloorShip
@@ -1748,12 +1722,7 @@ void SP2::ScenarioArenaRender()
 	
 
 }
-/******************************************************************************/
-/*!
-\brief
-Renders environment for Parkour Scenario
-*/
-/******************************************************************************/
+
 void SP2::ScenarioParkourRender()
 {
 
@@ -1894,12 +1863,7 @@ void SP2::ScenarioParkourRender()
 
 
 }
-/******************************************************************************/
-/*!
-\brief
-Renders environment for Runner Scenario
-*/
-/******************************************************************************/
+
 void SP2::ScenarioRunnerRender()
 {
 	modelStack.PushMatrix();
@@ -2103,12 +2067,7 @@ void SP2::ScenarioRunnerRender()
 	RenderMesh(meshList[GEO_FINALSHIP], true);
 	modelStack.PopMatrix();
 }
-/******************************************************************************/
-/*!
-\brief
-Renders coins in all 3 scenarios
-*/
-/******************************************************************************/
+
 void SP2::RenderCoins()
 {
 	for (int i = 0; i < coin.allCoins.size(); ++i)

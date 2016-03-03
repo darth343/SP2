@@ -1,6 +1,27 @@
 #include "Player.h"
 #include  "Application.h"
 
+
+
+
+/**************************************************************************************************/
+/*!
+\file     Player.cpp
+\author   Jeffrey Low Zheng Long
+\par
+\brief
+ All the player functions
+*/
+/**************************************************************************************************/
+
+
+
+/************************************************************************/
+/*!
+\brief function that handles button inputs for other functions
+\param takes in delta time, the camera and the current mesh list
+*/
+/***********************************************************************/
 void Player::currentItems(double dt, Camera5 camera, Mesh** meshList)
 {
 	time += dt;
@@ -52,12 +73,22 @@ void Player::currentItems(double dt, Camera5 camera, Mesh** meshList)
 		delay = time + 0.5;
 	}
 }
-
+/************************************************************************/
+/*!
+\brief returns a multiplier for HP bar
+\return A float multiplier for HP bar
+*/
+/***********************************************************************/
 float Player::getScaleHealth()
 {
 	 return Health / 100;
 }
-
+/************************************************************************/
+/*!
+\brief A boolean function for player death
+\return a boolean
+*/
+/***********************************************************************/
 bool Player::isDead()
 {
 	if (Health <= 0)
