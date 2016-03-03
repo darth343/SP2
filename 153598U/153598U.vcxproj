@@ -86,6 +86,7 @@
     <ClCompile Include="Source\Coins.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\FlyingClass.cpp" />
+    <ClCompile Include="Source\HighScore.cpp" />
     <ClCompile Include="Source\Inventory.cpp" />
     <ClCompile Include="Source\Movement.cpp" />
     <ClCompile Include="Source\Pathfinder.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\FlyingClass.h" />
     <ClInclude Include="Source\Gun.h" />
+    <ClInclude Include="Source\HighScore.h" />
     <ClInclude Include="Source\Inventory.h" />
     <ClInclude Include="Source\Movement.h" />
     <ClInclude Include="Source\Node.h" />

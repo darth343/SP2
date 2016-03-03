@@ -8,13 +8,16 @@ struct Inventory
 {
 public:
 	Inventory(){
-		TotalCash = 1000;
+	//	TotalCash = 1000;
 		ownRifle = true;
 		ownSMG = false;
 		ownPistol = false;
-		Rifle.ammo = 100;
-		SMG.ammo = 100;
-		Pistol.ammo = 1000;
+		Rifle.ammo = 90;
+		Rifle.clip = 30;
+		SMG.ammo = 90;
+		SMG.clip = 30;
+		Pistol.ammo = 100;
+		Pistol.clip = 10;
 		SMG.delayMultiplier = 0.1;
 		Pistol.delayMultiplier = 0.7;
 	};

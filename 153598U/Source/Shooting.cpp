@@ -18,7 +18,7 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 	{
 		if (player.inv.GunSelected->semiAuto == false && time > delay)
 		{
-			if (player.inv.GunSelected->ammo > 0)
+			if (player.inv.GunSelected->clip > 0)
 			{
 			Bullet temp;
 			temp.Position = camera.right + camera.position;
@@ -43,14 +43,18 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 			bullets.push_back(temp);
 			delay = time + player.inv.GunSelected->delayMultiplier;
 
-			player.inv.GunSelected->ammo--;
+			player.inv.GunSelected->clip--;
 			}
+			/*else if (player.inv.Rifle.clip < 30 || player.inv.SMG.clip <30 || player.inv.Pistol.clip <10)
+			{
+				player.inv.GunSelected->reload = true;
+			}*/
 
 		}
 	}
 	if (Application::IsKeyPressed(VK_LBUTTON) && player.inv.GunSelected->semiAuto == true && player.inv.GunSelected->stopFiring == false)
 	{
-			if (player.inv.GunSelected->ammo > 0)
+			if (player.inv.GunSelected->clip > 0)
 			{
 				Bullet temp;
 				temp.Position = camera.right + camera.position;
@@ -74,8 +78,12 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 				bullets.push_back(temp);
 				delay = time + player.inv.GunSelected->delayMultiplier;
 
-				player.inv.GunSelected->ammo--;
+				player.inv.GunSelected->clip--;
 				player.inv.GunSelected->stopFiring = true;
+			}
+			else if (player.inv.GunSelected->clip <= 0)
+			{
+				player.inv.GunSelected->reload = true;
 			}
 	}
 	else if (!Application::IsKeyPressed(VK_LBUTTON))
@@ -260,3 +268,94 @@ void Shooting::bulletHitDetection(vector<AI> &mobs, double dt, Camera5 camera)
 	}
 }
 
+void Shooting::reloadClip(Player &player, double dt, float time)
+{
+	/*if (player.inv.GunSelected->reload==true && time>delay)
+	{ */
+		if (Application::IsKeyPressed('R') && time >delay )
+		{
+			if (player.inv.GunSelected == &player.inv.Rifle)
+			{
+				cout << " HI 1";
+				int bullet = 30 - player.inv.GunSelected->clip;
+				if (player.inv.GunSelected->ammo > 30 && player.inv.GunSelected->clip==0)
+				{
+					player.inv.GunSelected->ammo -= 30;
+					player.inv.GunSelected->clip = 30;
+					player.inv.GunSelected->reload = false;
+				}
+				else if (player.inv.GunSelected->clip < 30 && player.inv.GunSelected->clip>0 &&player.inv.GunSelected->ammo >=bullet)
+				{
+					player.inv.GunSelected->ammo -= bullet;
+					player.inv.GunSelected->clip += bullet;
+				}
+				else if (player.inv.GunSelected->ammo > 0 && player.inv.GunSelected->ammo <= 30)
+				{
+					player.inv.GunSelected->clip = player.inv.GunSelected->ammo;
+					player.inv.GunSelected->ammo = 0;
+					player.inv.GunSelected->reload = false;
+				}
+				else if (player.inv.GunSelected->ammo == 0)
+				{
+					player.inv.GunSelected->needAmmo = true;
+				}
+				delay = 0.5 + time;
+			}
+			else	if (player.inv.GunSelected == &player.inv.SMG)
+			{
+				cout << " HI 2";
+				int bullet = 30 - player.inv.GunSelected->clip;
+				if (player.inv.GunSelected->ammo > 30 && player.inv.GunSelected->clip == 0)
+				{
+					player.inv.GunSelected->ammo -= 30;
+					player.inv.GunSelected->clip = 30;
+					player.inv.GunSelected->reload = false;
+				}
+				else if (player.inv.GunSelected->clip < 30 && player.inv.GunSelected->clip>0 && player.inv.GunSelected->ammo >= bullet)
+				{
+					player.inv.GunSelected->ammo -= bullet;
+					player.inv.GunSelected->clip+= bullet;
+				}
+				else if (player.inv.GunSelected->ammo > 0 && player.inv.GunSelected->ammo <= 30)
+				{
+					player.inv.GunSelected->clip = player.inv.GunSelected->ammo;
+					player.inv.GunSelected->ammo = 0;
+					player.inv.GunSelected->reload = false;
+				}
+				else if (player.inv.GunSelected->ammo == 0)
+				{
+					player.inv.GunSelected->needAmmo = true;
+				}
+				delay = 0.5 + time;
+			}
+			else  if (player.inv.GunSelected == &player.inv.Pistol)
+			{
+				cout << " HI 3";
+				int bullet = 10 - player.inv.GunSelected->clip;
+				if (player.inv.GunSelected->ammo > 10)
+				{
+					player.inv.GunSelected->ammo -= 10;
+					player.inv.GunSelected->clip = 10;
+					player.inv.GunSelected->reload = false;
+				}
+				else if (player.inv.GunSelected->clip < 10 && player.inv.GunSelected->clip>0 && player.inv.GunSelected->ammo >= bullet)
+				{
+					player.inv.GunSelected->ammo -= bullet;
+					player.inv.GunSelected->clip += bullet;
+				}
+				else if (player.inv.GunSelected->ammo > 0 && player.inv.GunSelected->ammo <= 10)
+				{
+					player.inv.GunSelected->clip = player.inv.GunSelected->ammo;
+					player.inv.GunSelected->ammo = 0;
+					player.inv.GunSelected->reload = false;
+				}
+				else if (player.inv.GunSelected->ammo == 0)
+				{
+					player.inv.GunSelected->needAmmo = true;
+				}
+				delay = 0.5 + time;
+			}
+
+		}
+	}
+//}

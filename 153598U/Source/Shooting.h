@@ -28,6 +28,7 @@ public:
 	~Shooting();
 	void ShootingBullets(Camera5 camera, double dt, float time,Mesh** meshList, Player &player);
 	void bulletHitDetection(vector<AI> &mobs, double dt, Camera5 camera);
+	void reloadClip(Player &player, double dt,float time);
 	vector<Bullet> bullets;
 	float bulletspeed;
 	float delay;

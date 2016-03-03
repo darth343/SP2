@@ -5,19 +5,16 @@
 Shop::Shop()
 {
 	openShop = false;
-	shopChoices1 = "Press 1 to buy a Rifle(200 Dollars)";
-	shopChoices2 = "Press 2 to buy a SMG(150 Dollars)";
-	shopChoices3 = "Press 3 to buy a Pistol(50 Dollars)";
 }
 Shop::~Shop()
 {
 
 }
-void Shop::shopping(Inventory &inv)
+void Shop::shopping(Inventory &inv, int &points)
 {
-	buyRifle(inv);
-	buySMG(inv);
-	buyPistol(inv);
+	buyRifle(inv,points);
+	buySMG(inv,points);
+	buyPistol(inv,points);
 }
 Mesh* Shop::ShopInteraction(double dt, Camera5 camera, Mesh** meshList)
 {
@@ -50,44 +47,45 @@ Mesh* Shop::ShopInteraction(double dt, Camera5 camera, Mesh** meshList)
 			}
 		}
 	}
+	//meshList[SP2::GEO_STORE]->lookAtShop = false;
 	return nullptr;
 }
 
-bool Shop::buyRifle(Inventory &inv)
+bool Shop::buyRifle(Inventory &inv, int &points)
 {
 
-	if (Application::IsKeyPressed('1') && inv.Rifle.ammo <400 && inv.TotalCash >= 500)
+	if (Application::IsKeyPressed('1') && inv.Rifle.ammo <400 && points>=50)
 	{
 		inv.Rifle.ammo = 400;
 		cout << "bought Rifle,ammo: "<<inv.Rifle.ammo << endl;
-		inv.TotalCash -= 500;
-		cout << "Total Cash: " << inv.TotalCash << endl;
+		points-= 50;
+		cout << "Total Cash: " << points << endl;
 		return true;
 	}
 	else
 		return false;
 }
-bool Shop::buySMG(Inventory &inv)
+bool Shop::buySMG(Inventory &inv, int &points)
 {
-	if (Application::IsKeyPressed('2') && inv.SMG.ammo < 600 && inv.TotalCash >= 300)
+	if (Application::IsKeyPressed('2') && inv.SMG.ammo < 600 && points>=35)
 	{
 		inv.SMG.ammo = 600;
 		cout << "bought SMG,ammo: " << inv.SMG.ammo << endl;
-		inv.TotalCash -= 100;
-		cout << "Total Cash: " << inv.TotalCash << endl;
+		points -= 35;
+		cout << "Total Cash: " << points << endl;
 		return true;
 	}
 	else
 		return false;
 }
-bool Shop::buyPistol(Inventory &inv)
+bool Shop::buyPistol(Inventory &inv, int &points)
 {
-	if (Application::IsKeyPressed('3') && inv.Pistol.ammo < 90 && inv.TotalCash >= 100)
+	if (Application::IsKeyPressed('3') && inv.Pistol.ammo < 90 && inv.TotalCash >= 100 && points>=20)
 	{
 		inv.Pistol.ammo = 90;
 		cout << "bought Pistol,ammo: "<<inv.Pistol.ammo << endl;
-		inv.TotalCash -= 100;
-		cout << "Total Cash: " << inv.TotalCash << endl;
+		points -= 20;
+		cout << "Total Cash: " << points << endl;
 		return true;
 	}
 	else

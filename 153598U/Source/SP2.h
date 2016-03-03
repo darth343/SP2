@@ -20,7 +20,6 @@
 #include "TriggerBox.h"
 #include "Coins.h"
 #include "Scenario2Subs.h"
-#include "HighScore.h"
 
 using std::vector;
 using std::string;
@@ -152,7 +151,7 @@ public:
 		GEO_4THMAZEWALL6,
 		GEO_4THMAZEWALL7,
 		GEO_4THMAZEWALL8,
-
+		GEO_STORE,
 		GEO_DOOR,
 
 		GEO_GROUND,
@@ -207,9 +206,9 @@ public:
 		GEO_PATH_F,
 		GEO_PATH_V,
 		GEO_PATH_O,
-		GEO_STORE,
 		GEO_PISTOL,
 		GEO_SMG,
+		GEO_SHOPMENU,
 		GEO_BLACKSCREEN, 
 		GEO_RUNNERSCREEN,
 		GEO_GAMEOVER,
@@ -273,6 +272,7 @@ enum gameState
 	void PlayerPoints();
 	void RenderCoins();
 	void RenderUI();
+	void RenderShop();
 	virtual void Init();
 	virtual void Update(double dt);
 	virtual void Render();
@@ -309,14 +309,13 @@ enum gameState
 	Scenario2_Subtitles subs;
 	float time = 0;
 	float delay = 0;
-	int points = 0;
+	//int points = 50;
 	bool shot=false ; // when object get shot
 	bool objectDied = false;//when object is dead
 	bool takeDamage = false;
 
 	//Coins
 	coins coin;
-	int coins = 0;
 	gameState state;
 	button Start;
 	button Quit;
@@ -325,12 +324,9 @@ enum gameState
 	Shop shop;
 	Player player;
 	Vector3 pivot;
-//	Mesh* object;
 	vector<TriggerBox> events;
 
 	bool surviveDone=false;
-
-	HighScore highscore;
 };
 
 #endif

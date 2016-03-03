@@ -13,13 +13,10 @@
 #include <sstream>
 #include <string>
 #include <iomanip>
-#include <fstream>
-#include <strstream>
-#include <stdio.h>
+
 
 using std::cout;
 using std::endl;
-
 
 SP2::SP2()
 {
@@ -116,7 +113,6 @@ void SP2::Init()
 
 	//Initialize camera settings
 	camera.Init(Vector3(18, 15, -243), Vector3(0, 0, 0), Vector3(0, 1, 0));
-	//camera.Init(Vector3(0, 260, -443), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
@@ -228,9 +224,8 @@ void SP2::Init()
 	meshList[GEO_PISTOL]->textureID = LoadTGA("Image//Pistol.tga");
 	meshList[GEO_SMG] = MeshBuilder::GenerateOBJ("apple", "OBJ//SMG.obj");
 	meshList[GEO_SMG]->textureID = LoadTGA("Image//SMG.tga");
-	meshList[GEO_STORE] = MeshBuilder::GenerateOBJ("apple", "OBJ//Store.obj");
-	meshList[GEO_STORE]->textureID = LoadTGA("Image//Store.tga");
-	meshList[GEO_STORE]->position = (0, -5, -480);
+	
+	player.object = nullptr;
 	player.inv.Rifle.delayMultiplier = 0.3;
 	player.inv.Rifle.semiAuto = false;
 	player.inv.Rifle.stopFiring = false;
@@ -242,7 +237,8 @@ void SP2::Init()
 	meshList[GEO_GAMEOVER] = MeshBuilder::GenerateQuad("UI", Color(0, 0, 0));
 	meshList[GEO_GAMEOVER]->textureID = LoadTGA("Image//GameOver.tga");
 	meshList[GEO_RUNNERSCREEN] = MeshBuilder::GenerateQuad("RUNSCREEN", Color(0, 0, 0));
-
+	meshList[GEO_SHOPMENU] = MeshBuilder::GenerateQuad("Shop", Color(0, 0, 0));
+	meshList[GEO_SHOPMENU]->textureID = LoadTGA("Image//ShopMenu.tga");
 	coin.init();
 	//TriggerBox temp(Vector3(-14, 260, -420), Vector3(14, 300, -390), "test");
 	//events.push_back(temp);
@@ -262,8 +258,6 @@ void SP2::Init()
 
 	TriggerBox temp3(Vector3(-15, 240, 413), Vector3(15, 310, 450), Vector3(0, 0, 0), "SWEET VICTORY! You will be remembered", "(Congratulations on Winning!)", 2, 2, 4, 30, 20, 27);
 	events.push_back(temp3);
-
-	highscore.init();
 }
 
 void SP2::ScenarioArenaInit()
@@ -418,6 +412,11 @@ void SP2::ScenarioArenaInit()
 	meshList[GEO_4THMAZEWALL8] = MeshBuilder::GenerateOBJ("ground", "OBJ//4thMazeWall7.obj");
 	meshList[GEO_4THMAZEWALL8]->position.Set(0, -500, 0);
 	meshList[GEO_4THMAZEWALL8]->textureID = LoadTGA("Image//Arena4thMaze.tga");
+
+
+	meshList[GEO_STORE] = MeshBuilder::GenerateOBJ("store", "OBJ//Store.obj");
+	meshList[GEO_STORE]->textureID = LoadTGA("Image//Store.tga");
+	meshList[GEO_STORE]->position.Set(130, -500, -79);
 }
 
 void SP2::ScenarioParkourInit()
@@ -583,6 +582,8 @@ void SP2::ScenarioParkourInit()
 	meshList[GEO_ENEMYHEALTHDISPLAY]->textureID = LoadTGA("Image//calibri.tga");
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
+
+
 }
 
 void SP2::ScenarioRunnerInit()
@@ -842,14 +843,18 @@ void SP2::Update(double dt)
 	case SCENARIO1:
 		if (!player.isDead())
 		{
-			player.currentItems(dt, camera, meshList, player.object);
+			player.currentItems(dt, camera, meshList);
 			time += dt;
 			fps = 1 / dt;
-			move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
-			camera.Update(dt);
+			if (player.shop.openShop == false)
+			{
+				move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
+				camera.Update(dt);
+			}
 			shoot.ShootingBullets(camera, dt, time, meshList, player);
 			shoot.bulletHitDetection(allAliens, dt, camera);
-			coin.pickup(camera);
+			shoot.reloadClip(player, dt, time);
+			coin.pickup(camera, player);
 			if (events[0].TriggerEvent(dt, camera, time))
 			{
 				state = TRANSITION1;
@@ -863,18 +868,19 @@ void SP2::Update(double dt)
 	case SCENARIO2:
 		if (!player.isDead())
 		{
-			player.currentItems(dt, camera, meshList, player.object);
+			player.currentItems(dt, camera, meshList);
 			time += dt;
 			fps = 1 / dt;
 			move.MovementCharac(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
 			camera.Update(dt);
 			shoot.ShootingBullets(camera, dt, time, meshList, player);
 			shoot.bulletHitDetection(allAliens, dt, camera);
+			shoot.reloadClip(player, dt, time);	
 			for (int i = 0; i < allAliens.size(); i++)
 			{
 				allAliens[i].move(camera.position, camera, meshList, GEO_LONGWALL, GEO_TEXT, time, dt, player);
 			}
-			coin.pickup(camera);
+			coin.pickup(camera, player);
 			if (Application::IsKeyPressed('Q'))
 			{
 				AI::deathCount = 9;
@@ -898,7 +904,7 @@ void SP2::Update(double dt)
 		if (!player.isDead())
 		{
 			cout << camera.position << endl;
-			player.currentItems(dt, camera, meshList, player.object);
+			player.currentItems(dt, camera, meshList);
 			time += dt;
 			fps = 1 / dt;
 			move.MovementRunner(dt, camera, meshList, GEO_LONGWALL, GEO_TEXT);
@@ -906,7 +912,7 @@ void SP2::Update(double dt)
 			meshList[GEO_RUNNERSCREEN] = MeshBuilder::GenerateQuad("RUNSCREEN", colorRun(camera.position));
 			shoot.ShootingBullets(camera, dt, time, meshList, player);
 			shoot.bulletHitDetection(allAliens, dt, camera);
-			coin.pickup(camera);
+			coin.pickup(camera, player);
 			if (events[2].TriggerEvent(dt, camera, time))
 			{
 				state = ENDING;
@@ -1217,7 +1223,10 @@ void SP2::RenderOBJonScreen(Mesh* mesh, float sizex,float sizey, float x, float 
 	{
 		modelStack.Rotate(-90, 0, 1, 0);
 	}
-
+	if (mesh == meshList[GEO_SHOPMENU])
+	{
+		modelStack.Rotate(-90, 0, 1, 0);
+	}
 	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
 	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 	RenderMesh(mesh, false);
@@ -1339,8 +1348,14 @@ void SP2::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float si
 void SP2::ScenarioArenaRender()
 {
 	//FloorShip
-	modelStack.PushMatrix();
 
+	modelStack.PushMatrix();
+	modelStack.Translate(meshList[GEO_STORE]->position.x, meshList[GEO_STORE]->position.y, meshList[GEO_STORE]->position.z);
+	RenderMesh(meshList[GEO_STORE], false);
+	modelStack.PopMatrix();
+
+
+	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_GROUND]->position.x, meshList[GEO_GROUND]->position.y, meshList[GEO_GROUND]->position.z);
 	RenderMesh(meshList[GEO_GROUND], true);
 	modelStack.PopMatrix();
@@ -1547,9 +1562,6 @@ void SP2::ScenarioArenaRender()
 	modelStack.PopMatrix();
 
 
-
-
-
 	modelStack.PushMatrix();
 	modelStack.Translate(meshList[GEO_4THMAZEWALL1]->position.x, meshList[GEO_4THMAZEWALL1]->position.y, meshList[GEO_4THMAZEWALL1]->position.z);
 	RenderMesh(meshList[GEO_4THMAZEWALL1], true);
@@ -1590,6 +1602,9 @@ void SP2::ScenarioArenaRender()
 	modelStack.Translate(meshList[GEO_4THMAZEWALL8]->position.x, meshList[GEO_4THMAZEWALL8]->position.y, meshList[GEO_4THMAZEWALL8]->position.z);
 	RenderMesh(meshList[GEO_4THMAZEWALL8], true);
 	modelStack.PopMatrix();
+
+	
+
 }
 
 void SP2::ScenarioParkourRender()
@@ -1952,146 +1967,197 @@ void SP2::RenderCoins()
 
 void SP2::PlayerPoints()
 {
-	points = (AI::deathCount * 50) + (coin.acquired * 10);
+	//points = (AI::deathCount * 50) + (coin.acquired * 10);
 }
 
 
 void SP2::RenderUI()
-
-{
-	//////////////////////////////////
-	//			JetFuel             //
-	/////////////////////////////////
-	if (move.jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 1, 7);
-	}
-	if (move.jetPack.getFuel() > 15)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL1], 30, 1, 6, 4);
-		modelStack.PopMatrix();
-	}
-
-	if (move.jetPack.getFuel() > 40)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL2], 25, 1, 8.5, 6);
-		modelStack.PopMatrix();
-	}
-
-	if (move.jetPack.getFuel() > 60)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL3], 20, 1, 11, 8);
-		modelStack.PopMatrix();
-	}
-
-	if (move.jetPack.getFuel() >80)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL4], 15, 1, 13.5, 10);
-		modelStack.PopMatrix();
-	}
-
-	if (move.jetPack.getFuel() > 95)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_FUEL5], 20, 1, 11, 12);
-		modelStack.PopMatrix();
-	}
-
-
-	//////////////////////////////////
-	//			Time               //
-	/////////////////////////////////
-	RenderTextOnScreen(meshList[GEO_TEXT], "Time: ", Color(1, 0, 0), 2, 2, 25);
+{	
 	std::ostringstream timeString;
-	timeString << std::setprecision(3) << time;
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 3, 24);
-
+	
 	timeString.str("");
-	timeString << "X: " << static_cast<int>(camera.position.x);
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 10.4);
-	timeString.str("");
-	timeString << "Y: " << static_cast<int>(camera.position.y);
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 9.4);
-	timeString.str("");
-	timeString << "Z: " << static_cast<int>(camera.position.z);
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 8.4);
-
-
-	PlayerPoints();
-
-	timeString.str("");
-	timeString << "Points: " << static_cast<int>(points);
+	timeString << "Points: " << static_cast<int>(player.points);
 	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 20);
+
+	if (player.object)
+	{
+		if (player.object->name == meshList[GEO_STORE]->name)
+		{
+			if (player.shop.openShop == true)
+			{
+				RenderOBJonScreen(meshList[GEO_SHOPMENU], 80, 60, 40, 30);
+
+				timeString.str("");
+				timeString << "Points: " << static_cast<int>(player.points);
+				RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 20);
+
+				timeString.str("");
+				timeString << "Rifle Ammo : " << player.inv.Rifle.clip << "/" << player.inv.Rifle.ammo;
+				RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 12, 18);
+				timeString.str("");
+				timeString << "SMG Ammo : " << player.inv.SMG.clip << "/" << player.inv.SMG.ammo;
+				RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 12, 15);
+				timeString.str("");
+				timeString << "Pistol Ammo : " << player.inv.Pistol.clip << "/" << player.inv.Pistol.ammo;
+				RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 12, 12);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press 1 to buy Rifle ammo (50 points)", Color(0, 1, 0), 2, 1, 19);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press 2 to buy SMG ammo (35 points)", Color(0, 1, 0), 2, 1, 16);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press 3 to buy Pistol ammo (20 points)", Color(0, 1, 0), 2, 1, 13);
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press E to close Shop", Color(0, 1, 0), 2, 1, 10);
+
+			}
+			else
+			{
+				RenderTextOnScreen(meshList[GEO_TEXT], "Press E to Open Shop", Color(0, 1, 0), 2, 15, 15);
+			}
+		}
+	}
+	else
+	{ //////////////////////////////////
+		//			JetFuel             //
+		/////////////////////////////////
+		if (move.jetPack.getStatus() == false && (fmod(time, 0.2) < 0.1))
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], "DISABLED !!!", Color(1, 0, 0), 2, 1, 7);
+		}
+		if (move.jetPack.getFuel() > 15)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_FUEL1], 30, 1, 6, 4);
+			modelStack.PopMatrix();
+		}
+
+		if (move.jetPack.getFuel() > 40)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_FUEL2], 25, 1, 8.5, 6);
+			modelStack.PopMatrix();
+		}
+
+		if (move.jetPack.getFuel() > 60)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_FUEL3], 20, 1, 11, 8);
+			modelStack.PopMatrix();
+		}
+
+		if (move.jetPack.getFuel() > 80)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_FUEL4], 15, 1, 13.5, 10);
+			modelStack.PopMatrix();
+		}
+
+		if (move.jetPack.getFuel() > 95)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_FUEL5], 20, 1, 11, 12);
+			modelStack.PopMatrix();
+		}
+
+
+		//////////////////////////////////
+		//			Time               //
+		/////////////////////////////////
+		timeString.str("");
+		RenderTextOnScreen(meshList[GEO_TEXT], "Time: ", Color(1, 0, 0), 2, 2, 25);
+		
+		timeString << std::setprecision(3) << time;
+		RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 3, 24);
+
+		timeString.str("");
+		timeString << "X: " << static_cast<int>(camera.position.x);
+		RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 10.4);
+		timeString.str("");
+		timeString << "Y: " << static_cast<int>(camera.position.y);
+		RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 9.4);
+		timeString.str("");
+		timeString << "Z: " << static_cast<int>(camera.position.z);
+		RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(1, 0, 0), 2, 1, 8.4);
+
+
+		//PlayerPoints();
 
 	
 
 
-	//////////////////////////////////
-	//			Gun                //
-	/////////////////////////////////
-	RenderTextOnScreen(meshList[GEO_TEXT], "Gun Mode: ", Color(0, 1, 0), 2, 30, 6);
-	if (player.inv.GunSelected->semiAuto == false)
-	{
-		//RenderTextOnScreen(meshList[GEO_TEXT], "|||", Color(0, 1, 0), 3, 21 , 3);
+
+
+		//////////////////////////////////
+		//			Gun                //
+		/////////////////////////////////
+		RenderTextOnScreen(meshList[GEO_TEXT], "Gun Mode: ", Color(0, 1, 0), 2, 30, 6);
+		if (player.inv.GunSelected->semiAuto == false)
+		{
+			//RenderTextOnScreen(meshList[GEO_TEXT], "|||", Color(0, 1, 0), 3, 21 , 3);
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11);
+			RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 63, 11);
+			RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 65, 11);
+			modelStack.PopMatrix();
+		}
+		else if (player.inv.GunSelected->semiAuto == true)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11);
+			modelStack.PopMatrix();
+		}
+		timeString.str("");
+		timeString << "FPS: " << fps;
+		RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 11);
+
+
+		/*RenderTextOnScreen(meshList[GEO_TEXT], "Ammo: ", Color(0, 1, 0), 2, 28,20);*/
+
+		/*timeString.str("");
+		timeString << player.inv.GunSelected->ammo;
+		RenderTextOnScreen(meshList[GEO_TEXT], timeString.str() ,Color(0,1,0), 2, 35, 20);*/
+		//UI Background Panal
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11);
-		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 63, 11);
-		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 65, 11);
+		RenderOBJonScreen(meshList[GEO_UIBG], 25, 19, 72, 3.5);
 		modelStack.PopMatrix();
-	}
-	else if (player.inv.GunSelected->semiAuto == true)
-	{
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		//Player's Health
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_GUNMODE], 1, 3, 61, 11);
+		RenderOBJonScreen(meshList[GEO_PLAYERHEALTH], 30 * player.getScaleHealth(), 1, 40, 55);
 		modelStack.PopMatrix();
-	}
-	timeString.str("");
-	timeString << "FPS: " << fps;
-	RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 8, 11);
 
-	//UI Background Panal
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_UIBG], 25, 19, 72, 3.5);
-	modelStack.PopMatrix();
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	//Player's Health
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_PLAYERHEALTH], 30 * player.getScaleHealth(), 1, 40, 55);
-	modelStack.PopMatrix();
-
-	//Crosshair
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_CROSSHAIR], 10, 10, 40.2, 29.8);
-	modelStack.PopMatrix();
-
-	if (player.inv.GunSelected == &player.inv.Rifle)
-	{
+		//Crosshair
 		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_RIFLE], 0.8, 0.8, 70, 20);
+		RenderOBJonScreen(meshList[GEO_CROSSHAIR], 10, 10, 40.2, 29.8);
 		modelStack.PopMatrix();
-	}
-	else if (player.inv.GunSelected == &player.inv.SMG)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_SMG], 0.8, 0.8, 70, 20);
-		modelStack.PopMatrix();
-	}
-	else if (player.inv.GunSelected = &player.inv.Pistol)
-	{
-		modelStack.PushMatrix();
-		RenderOBJonScreen(meshList[GEO_PISTOL], 0.8, 0.8, 70, 17);
-		modelStack.PopMatrix();
-	}
-	modelStack.PushMatrix();
-	RenderOBJonScreen(meshList[GEO_HELMET], 80, 60, 40, 30);
-	modelStack.PopMatrix();
 
+		if (player.inv.GunSelected == &player.inv.Rifle)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_RIFLE], 0.8, 0.8, 70, 20);
+			modelStack.PopMatrix();
+		}
+		else if (player.inv.GunSelected == &player.inv.SMG)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_SMG], 0.8, 0.8, 70, 20);
+			modelStack.PopMatrix();
+		}
+		else if (player.inv.GunSelected = &player.inv.Pistol)
+		{
+			modelStack.PushMatrix();
+			RenderOBJonScreen(meshList[GEO_PISTOL], 0.8, 0.8, 70, 17);
+			modelStack.PopMatrix();
+		}
+		modelStack.PushMatrix();
+		RenderOBJonScreen(meshList[GEO_HELMET], 80, 60, 40, 30);
+		modelStack.PopMatrix();
+		timeString.str("");
+		timeString << "Ammo : " << player.inv.GunSelected->clip << "/" << player.inv.GunSelected->ammo;
+		RenderTextOnScreen(meshList[GEO_TEXT], timeString.str(), Color(0, 1, 0), 2, 19, 8);
+		if (player.inv.GunSelected->clip == 0)
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], "Reload Needed, Press R to Reload", Color(0, 1, 0), 2, 1, 15);
+		}
 
+	}
 }
 
 void SP2::Render()
@@ -2157,13 +2223,13 @@ void SP2::Render()
 			modelStack.PopMatrix();
 		}
 
+		//Arun's Wall
+
+
 		//RenderCoins
 		RenderCoins();
 
-		modelStack.PushMatrix();
-		modelStack.Translate(meshList[GEO_STORE]->position.x, meshList[GEO_STORE]->position.y, meshList[GEO_STORE]->position.z);
-		RenderMesh(meshList[GEO_STORE], false);
-		modelStack.PopMatrix();
+		
 
 		//Render Scenario3
 		ScenarioParkourRender();
@@ -2192,7 +2258,13 @@ void SP2::Render()
 			modelStack.PopMatrix();
 		}
 		RenderCoins();
-
+		//if (subs.render == true)
+		//{
+		//	if (subs.allSubs.size() > 0)
+		//	{
+		//		RenderTextOnScreen(meshList[GEO_TEXT], subs.allSubs[0].sub, Color(1, 1, 1), 2, 1, 1);
+		//	}
+		//}
 		RenderUI();
 		break;
 	case TRANSITION2:
@@ -2201,7 +2273,6 @@ void SP2::Render()
 			state = SCENARIO3;
 		}
 		break;
-
 	case SCENARIO3:
 		//Skybox
 		RenderSkybox(camera.position);
@@ -2215,44 +2286,8 @@ void SP2::Render()
 		RenderOBJonScreen(meshList[GEO_GAMEOVER], 80, 60, 40, 30);
 		events[2].renderTransition(time, camera, modelStack, viewStack, projectionStack, m_parameters, meshList[GEO_TEXT], meshList[GEO_BLACKSCREEN]);
 		std::ostringstream pointsDisplay;
-		pointsDisplay << "Total Points Earned: " << points;
+		pointsDisplay << "Total Points Earned: " << player.points;
 		RenderTextOnScreen(meshList[GEO_TEXT], pointsDisplay.str(), Color(1, 0, 0), 3, 0, 0);
-		highscore.data.push_back(points);
-		std::ofstream OutputFile("Scores//HighScore.txt");
-		vector<int> temp(highscore.data);
-		highscore.data.clear();
-		int highestscore = 0;
-		int slot = 0;
-		while (temp.size() > 0)
-		{
-			for (int i = 0; i < temp.size(); ++i)
-			{
-				if (temp[i] > highestscore)
-				{
-					highestscore = temp[i];
-					slot = i;
-				}
-			}
-			cout << temp.size() << endl;
-			temp.erase(temp.begin() + slot);
-			highscore.data.push_back(highestscore);
-			highestscore = 0;
-			if (slot <= 0)
-			{
-				break;
-			}
-		}
-		for (int i = 0; i < highscore.data.size(); ++i)
-		{
-			OutputFile << highscore.data[i] << '\n';
-		}
-		OutputFile.close();
-		for (int i = 0; i < highscore.data.size(); ++i)
-		{
-			pointsDisplay.str("");
-			pointsDisplay << highscore.data[i];
-			RenderTextOnScreen(meshList[GEO_TEXT], pointsDisplay.str(), Color(1, 0, 0), 3, 10, 5-i);
-		}
 
 	}
 }
