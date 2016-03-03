@@ -320,7 +320,6 @@ void Shooting::reloadClip(Player &player, double dt, float time)
 		{
 			if (player.inv.GunSelected == &player.inv.Rifle)
 			{
-				cout << " HI 1";
 				int bullet = 30 - player.inv.GunSelected->clip;
 				if (player.inv.GunSelected->ammo > 30 && player.inv.GunSelected->clip==0)
 				{
@@ -347,7 +346,6 @@ void Shooting::reloadClip(Player &player, double dt, float time)
 			}
 			else	if (player.inv.GunSelected == &player.inv.SMG)
 			{
-				cout << " HI 2";
 				int bullet = 30 - player.inv.GunSelected->clip;
 				if (player.inv.GunSelected->ammo > 30 && player.inv.GunSelected->clip == 0)
 				{
@@ -374,7 +372,6 @@ void Shooting::reloadClip(Player &player, double dt, float time)
 			}
 			else  if (player.inv.GunSelected == &player.inv.Pistol)
 			{
-				cout << " HI 3";
 				int bullet = 10 - player.inv.GunSelected->clip;
 				if (player.inv.GunSelected->ammo > 10)
 				{

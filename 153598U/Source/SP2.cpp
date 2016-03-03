@@ -32,7 +32,6 @@ SP2::~SP2()
 
 void SP2::Init()
 {
-	player.points = 300;
 	move.allowInput = true;
 	// Init VBO here
 	// Set background color to dark blue
@@ -329,7 +328,6 @@ void SP2::Init()
 		++i;
 		temp.tempPos = temp.position;
 		allAliens.push_back(temp);
-		cout << temp.position << endl;
 	}
 
 	//Player Health
@@ -359,9 +357,6 @@ void SP2::Init()
 	meshList[GEO_SHOPMENU] = MeshBuilder::GenerateQuad("Shop", Color(0, 0, 0));
 	meshList[GEO_SHOPMENU]->textureID = LoadTGA("Image//ShopMenu.tga");
 	coin.init();
-	//TriggerBox temp(Vector3(-14, 260, -420), Vector3(14, 300, -390), "test");
-	//events.push_back(temp);
-
 
 	Start.mini = Vector3(462, 389, 0);
 	Start.maxi = Vector3(942, 450, 0);
@@ -879,6 +874,7 @@ void SP2::ButtonPress(double mouseX, double mouseY)
 	if (mouseX > Start.mini.x && mouseX < Start.maxi.x &&
 		mouseY > Start.mini.y && mouseY < Start.maxi.y)
 	{
+		delete meshList[GEO_MAINMENUBOX1];
 		meshList[GEO_MAINMENUBOX1] = MeshBuilder::GenerateQuad("Box Around Text", Color(1, 1, 0));
 		if (Application::IsKeyPressed(VK_LBUTTON))
 		{
@@ -888,11 +884,13 @@ void SP2::ButtonPress(double mouseX, double mouseY)
 	}
 	else
 	{
+		delete meshList[GEO_MAINMENUBOX1];
 		meshList[GEO_MAINMENUBOX1] = MeshBuilder::GenerateQuad("Box Around Text", Color(1, 0, 0));
 	}
 	if (mouseX > Quit.mini.x && mouseX < Quit.maxi.x &&
 		mouseY > Quit.mini.y && mouseY < Quit.maxi.y)
 	{
+		delete meshList[GEO_MAINMENUBOX2];
 		meshList[GEO_MAINMENUBOX2] = MeshBuilder::GenerateQuad("Box Around Text", Color(1, 1, 0));
 		if (Application::IsKeyPressed(VK_LBUTTON))
 		{
@@ -901,6 +899,7 @@ void SP2::ButtonPress(double mouseX, double mouseY)
 	}
 	else
 	{
+		delete meshList[GEO_MAINMENUBOX2];
 		meshList[GEO_MAINMENUBOX2] = MeshBuilder::GenerateQuad("Box Around Text", Color(1, 0, 0));
 	}
 }
@@ -954,13 +953,24 @@ void SP2::Update(double dt)
 		ButtonPress(Application::mouseX, Application::mouseY);
 		break;
 	case DISABLE_MOUSE:
-		cout << "hi" << endl;
 		glfwSetInputMode(Application::m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		state = SCENARIO1;
 		break;
 	case SCENARIO1:
 		if (!player.isDead())
 		{
+			if (shoot.shooting)
+			{
+				light[3].position.Set(camera.position.x + camera.view.x, camera.position.y + camera.view.y, camera.position.z + camera.view.z);
+				light[3].spotDirection.Set(-camera.view.x, -camera.view.y, -camera.view.z);
+				light[3].power = 10;
+				glUniform1f(m_parameters[U_LIGHT3_POWER], light[3].power);
+			}
+			else
+			{
+				light[3].power = 0;
+				glUniform1f(m_parameters[U_LIGHT3_POWER], light[3].power);
+			}
 			player.currentItems(dt, camera, meshList);
 			time += dt;
 			fps = 1 / dt;
@@ -1033,10 +1043,6 @@ void SP2::Update(double dt)
 				allAliens[i].findPath(camera, meshList, GEO_ARENAFRONTWALL1, GEO_RAINBOW);
 			}
 			coin.pickup(camera, player);
-			if (Application::IsKeyPressed('Q'))
-			{
-				AI::deathCount = 9;
-			}
 			if (AI::deathCount >= 9)
 			{
 				if (events[1].TriggerEvent(dt, camera, time))
@@ -1047,13 +1053,21 @@ void SP2::Update(double dt)
 			glfwSetCursorPos(Application::m_window, 1280 / 2, 720 / 2);
 			break;
 		}
+		else
+		{
+			camera.position = Vector3(160, -492, -250);
+			player.inv.Rifle.ammo = 100;
+			player.inv.SMG.ammo = 100;
+			player.inv.Pistol.ammo = 100;
+			player.Health = 100;
+
+		}
 	case TRANSITION2:
 		time += dt;
 		break;
 	case SCENARIO3:
 		if (!player.isDead())
 		{
-			cout << camera.position << endl;
 			player.currentItems(dt, camera, meshList);
 			time += dt;
 			fps = 1 / dt;
@@ -2469,7 +2483,6 @@ void SP2::Render()
 					slot = i;
 				}
 			}
-			cout << temp.size() << endl;
 			temp.erase(temp.begin() + slot);
 			highscore.data.push_back(highestscore);
 			highestscore = 0;

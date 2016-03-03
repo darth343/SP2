@@ -63,11 +63,8 @@ Mesh* Shop::ShopInteraction(double dt, Camera5 camera, Mesh** meshList)
 
 	for (Vector3 temp = camera.view.Normalized(); temp.Length() <= range; temp += camera.view.Normalized())
 	{
-	
-		/*for (int i = SP2::GEO_STORE;  i < SP2::GEO_TEXT; i++)
-		{*/
 			if (meshList[SP2::GEO_STORE]->min != nullptr || meshList[SP2::GEO_STORE]->max != nullptr)
-			{	//std::cout << "TEST" << std::endl;
+			{
 				if ((temp.x + camera.position.x <= meshList[SP2::GEO_STORE]->max->x + meshList[SP2::GEO_STORE]->position.x + offset && temp.x + camera.position.x >= meshList[SP2::GEO_STORE]->min->x + meshList[SP2::GEO_STORE]->position.x - offset) //Check min and max for x
 					&& (temp.y + camera.position.y <= meshList[SP2::GEO_STORE]->max->y + meshList[SP2::GEO_STORE]->position.y + offset && temp.y + camera.position.y >= meshList[SP2::GEO_STORE]->min->y + meshList[SP2::GEO_STORE]->position.y - offset) //Check min and max for y
 					&& (temp.z + camera.position.z <= meshList[SP2::GEO_STORE]->max->z + meshList[SP2::GEO_STORE]->position.z + offset && temp.z + camera.position.z >= meshList[SP2::GEO_STORE]->min->z + meshList[SP2::GEO_STORE]->position.z - offset)) //Check min and max for z
@@ -82,11 +79,9 @@ Mesh* Shop::ShopInteraction(double dt, Camera5 camera, Mesh** meshList)
 						return meshList[SP2::GEO_STORE];
 						break;
 					}
-				//}
 			}
 		}
 	}
-	//meshList[SP2::GEO_STORE]->lookAtShop = false;
 	return nullptr;
 }
 /************************************************************************/
@@ -101,9 +96,7 @@ bool Shop::buyRifle(Inventory &inv, int &points)
 	if (Application::IsKeyPressed('1') && inv.Rifle.ammo <400 && points>=50)
 	{
 		inv.Rifle.ammo = 400;
-		cout << "bought Rifle,ammo: "<<inv.Rifle.ammo << endl;
 		points-= 50;
-		cout << "Total Cash: " << points << endl;
 		return true;
 	}
 	else
@@ -121,9 +114,7 @@ bool Shop::buySMG(Inventory &inv, int &points)
 	if (Application::IsKeyPressed('2') && inv.SMG.ammo < 600 && points>=35)
 	{
 		inv.SMG.ammo = 600;
-		cout << "bought SMG,ammo: " << inv.SMG.ammo << endl;
 		points -= 35;
-		cout << "Total Cash: " << points << endl;
 		return true;
 	}
 	else
@@ -141,9 +132,7 @@ bool Shop::buyPistol(Inventory &inv, int &points)
 	if (Application::IsKeyPressed('3') && inv.Pistol.ammo < 90 && points>=20)
 	{
 		inv.Pistol.ammo = 90;
-		cout << "bought Pistol,ammo: "<<inv.Pistol.ammo << endl;
 		points -= 20;
-		cout << "Total Cash: " << points << endl;
 		return true;
 	}
 	else

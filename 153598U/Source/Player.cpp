@@ -43,13 +43,11 @@ void Player::currentItems(double dt, Camera5 camera, Mesh** meshList)
 	if (Application::IsKeyPressed('E') && shop.openShop == false && time > delay&& object == meshList[SP2::GEO_STORE])
 	{
 		shop.openShop = true;
-		cout << "shop is open bois";
 		delay = time + 0.5;
 	}
 	else if (Application::IsKeyPressed('E') && shop.openShop == true && time > delay&& object == meshList[SP2::GEO_STORE])
 	{
 		shop.openShop = false;
-		cout << "shop is close bois";
 		delay = time + 0.5;
 	}
 	if (shop.openShop == true && object == meshList[SP2::GEO_STORE])
