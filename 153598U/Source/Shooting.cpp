@@ -1,17 +1,42 @@
 #include "Shooting.h"
 #include "Enemy.h"
 #include "Application.h"
+/**************************************************************************************************/
+/*!
+\file     Shooting.cpp
+\author   Jeffrey Low Zheng Long
+\par
+\brief
+Functions for all the shooting
+*/
+/**************************************************************************************************/
 
+
+/************************************************************************/
+/*!
+\brief A constructor for Shooting and for initialising
+*/
+/***********************************************************************/
 Shooting::Shooting()
 {
 	bulletspeed = 100;
 	delay = 0;
 }
+/************************************************************************/
+/*!
+\brief A destructor for Shooting
+*/
+/***********************************************************************/
 Shooting::~Shooting()
 {
 
 }
-
+/************************************************************************/
+/*!
+\brief A function that shoots Bullets
+\param takes in delta time,camera stuff , the time ,the mesh list and a reference to player
+*/
+/***********************************************************************/
 void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshList,Player &player )
 {
 	if (Application::IsKeyPressed(VK_LBUTTON) && player.inv.GunSelected->semiAuto == false)
@@ -100,7 +125,12 @@ void Shooting::ShootingBullets(Camera5 camera,double dt,float time,Mesh** meshLi
 		shooting = false;
 	}
 }
-
+/************************************************************************/
+/*!
+\brief A function that checks whether the bullet has hit an enemy
+\param takes in a vector of AI, delta time and camera
+*/
+/***********************************************************************/
 void Shooting::bulletHitDetection(vector<AI> &mobs, double dt, Camera5 camera)
 {
 	if (bullets.size() > 0)
@@ -276,7 +306,12 @@ void Shooting::bulletHitDetection(vector<AI> &mobs, double dt, Camera5 camera)
 		}
 	}
 }
-
+/************************************************************************/
+/*!
+\brief A function to reload the gun
+\param  takes in a reference to player, delta time and current game time
+*/
+/***********************************************************************/
 void Shooting::reloadClip(Player &player, double dt, float time)
 {
 	/*if (player.inv.GunSelected->reload==true && time>delay)
@@ -367,4 +402,3 @@ void Shooting::reloadClip(Player &player, double dt, float time)
 
 		}
 	}
-//}
