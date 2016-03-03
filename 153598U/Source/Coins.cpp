@@ -1,7 +1,25 @@
+/******************************************************************************/
+/*!
+\file	Coins.cpp
+\author Tay Kiat Yeow
+\par	email: epicfantasygamers@gmail.com
+\brief
+All coins related functions go here
+*/
+/******************************************************************************/
 #include "Coins.h"
 #include "MeshBuilder.h"
 #include "GL\glew.h"
 #include "LoadTGA.h"
+/******************************************************************************/
+/*!
+\brief
+Initialize all coin positions using Vector 3
+
+\return
+Position coordinates of all coins
+*/
+/******************************************************************************/
 void coins::init()
 {
 	Vector3 coordinates[47]
@@ -67,7 +85,12 @@ void coins::init()
 	}
 	return;
 }
-
+/******************************************************************************/
+/*!
+\brief
+Function to let players pickup coins
+*/
+/******************************************************************************/
 void coins::pickup(Camera5 camera, Player & player)
 {
 	int offset = 1;
